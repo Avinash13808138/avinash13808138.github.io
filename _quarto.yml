@@ -13,9 +13,14 @@ website:
         text: Research
       - href: teaching.qmd
         text: Teaching
-      - href: cv.qmd
-        text: CV
-
+      - href: Avinash_Singh_Resume.pdf
+        text: Resume
+      - text: Assignments
+        menu:
+          - href: epps6302_assignment01.pdf
+            text: "Assignment 1 - Instructions"
+          - href: assign01.qmd
+            text: "Assignment 1 - Website Design Note"
 format:
   html:
     theme:

@@ -1,0 +1,15 @@
+---
+title: "Assignment 1"
+---
+
+\# Website Design Note
+
+I created this website using RStudio and Quarto. The website provides a professional, organized platform where visitors can learn about my academic background, research interests, teaching activities, curriculum vitae, and course assignments.
+
+I used the Cosmo theme because it offers a clean, professional appearance. The design is simple and easy to read, allowing visitors to focus on the website's content. I also used a custom CSS file to support the overall appearance and formatting of the website.
+
+The navigation bar contains links to Home, About, Research, Teaching, Resume, and Assignments. The Home page serves as the website's main entry point. The About page provides information about my background. The Research page presents my research interests and academic work, while the Teaching page includes information about my teaching activities.
+
+The Resume link provides direct access to my updated résumé. I included it in the main navigation bar so that visitors can easily view my academic and professional qualifications.
+
+The Assignments section is organized as a dropdown menu. Assignment 1 is included under this menu, and this page contains the website design note required for the assignment. This organization will also allow me to add additional assignments to the website during the semester.
