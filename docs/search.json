@@ -1,23 +1,9 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "avinash13808138.github.io",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "assign01.html",
     "href": "assign01.html",
     "title": "Assignment 1",
     "section": "",
     "text": "# Website Design Note\nI created this website using RStudio and Quarto. The website provides a professional, organized platform where visitors can learn about my academic background, research interests, teaching activities, curriculum vitae, and course assignments.\nI used the Cosmo theme because it offers a clean, professional appearance. The design is simple and easy to read, allowing visitors to focus on the website’s content. I also used a custom CSS file to support the overall appearance and formatting of the website.\nThe navigation bar contains links to Home, About, Research, Teaching, Resume, and Assignments. The Home page serves as the website’s main entry point. The About page provides information about my background. The Research page presents my research interests and academic work, while the Teaching page includes information about my teaching activities.\nThe Resume link provides direct access to my updated résumé. I included it in the main navigation bar so that visitors can easily view my academic and professional qualifications.\nThe Assignments section is organized as a dropdown menu. Assignment 1 is included under this menu, and this page contains the website design note required for the assignment. This organization will also allow me to add additional assignments to the website during the semester."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
   }
 ]
