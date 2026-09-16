@@ -35,7 +35,7 @@ website:
             text: "Assignment 2 - Instructions"
 
           - href: Assignment_2_Notes.qmd
-            text: "Assignment 2 - Notes (Word)"
+            text: "Assignment 2 - Notes"
 
           - href: assign02.qmd
             text: "Assignment 2 - Google Trends Analysis"
