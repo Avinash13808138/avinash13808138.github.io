@@ -1,14 +1,22 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - Avinash_Singh_Resume.pdf
+    - epps6302_assignment01.pdf
+    - epps6302_assignment02.pdf
+    - Assignment_2_Notes.docx
+    
 
 website:
   title: "avinash13808138.github.io"
+  
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
       - href: research.qmd
         text: Research
       - href: teaching.qmd
