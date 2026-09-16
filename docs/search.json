@@ -7,20 +7,6 @@
     "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
   },
   {
-    "objectID": "assign01.html",
-    "href": "assign01.html",
-    "title": "Assignment 1",
-    "section": "",
-    "text": "# Website Design Note\nI created this website using RStudio and Quarto. The website provides a professional, organized platform where visitors can learn about my academic background, research interests, teaching activities, curriculum vitae, and course assignments.\nI used the Cosmo theme because it offers a clean, professional appearance. The design is simple and easy to read, allowing visitors to focus on the website’s content. I also used a custom CSS file to support the overall appearance and formatting of the website.\nThe navigation bar contains links to Home, About, Research, Teaching, Resume, and Assignments. The Home page serves as the website’s main entry point. The About page provides information about my background. The Research page presents my research interests and academic work, while the Teaching page includes information about my teaching activities.\nThe Resume link provides direct access to my updated résumé. I included it in the main navigation bar so that visitors can easily view my academic and professional qualifications.\nThe Assignments section is organized as a dropdown menu. Assignment 1 is included under this menu, and this page contains the website design note required for the assignment. This organization will also allow me to add additional assignments to the website during the semester."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "assign02.html",
     "href": "assign02.html",
     "title": "Assignment 2: Google Trends",
@@ -40,5 +26,33 @@
     "title": "Assignment 2: Google Trends",
     "section": "Comparison plot",
     "text": "Comparison plot\n\n\n\nComparison of Google Trends website and gtrendsR results"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "assign01.html",
+    "href": "assign01.html",
+    "title": "Assignment 1",
+    "section": "",
+    "text": "# Website Design Note\nI created this website using RStudio and Quarto. The website provides a professional, organized platform where visitors can learn about my academic background, research interests, teaching activities, curriculum vitae, and course assignments.\nI used the Cosmo theme because it offers a clean, professional appearance. The design is simple and easy to read, allowing visitors to focus on the website’s content. I also used a custom CSS file to support the overall appearance and formatting of the website.\nThe navigation bar contains links to Home, About, Research, Teaching, Resume, and Assignments. The Home page serves as the website’s main entry point. The About page provides information about my background. The Research page presents my research interests and academic work, while the Teaching page includes information about my teaching activities.\nThe Resume link provides direct access to my updated résumé. I included it in the main navigation bar so that visitors can easily view my academic and professional qualifications.\nThe Assignments section is organized as a dropdown menu. Assignment 1 is included under this menu, and this page contains the website design note required for the assignment. This organization will also allow me to add additional assignments to the website during the semester."
+  },
+  {
+    "objectID": "Assignment_2_Notes.html",
+    "href": "Assignment_2_Notes.html",
+    "title": "Assignment 2 Notes",
+    "section": "",
+    "text": "Part 1 Trump, Kamala Harris, Election Search terms: Trump, Kamala Harris, and Election Geography: United States Time window: Past 24 hours Category: All Categories Search type: Web Search Date/time: 09/16/26 8:01 AM\nHouthi Search terms: Houthi Geography: United States Time window: Past 24 hours Category: All Categories Search type: Web Search Date/time: 09/16/26 8:05 AM\nPart 2)\nHouthi file: 2026-09-15 13:04 UTC → 2026-09-16 12:48 UTC, about 23h44m\nHouthi\nSearch terms: Houthi Geography: United States Time window: Past 1 Week Category: All Categories Search type: Web Search Date/time: 09/16/26 8:23 AM Interval: Every 4 Hours Did the Interval Change: Yes\n• At 2026-09-15 14:24 UTC, Trump = 92 in the three-term file but 91 in the two-term file. • At 2026-09-16 10:24 UTC, Trump = 100 (a peak) in the three-term file but drops to 99 in the two-term file — because the peak point in the 24-hour window shifted to 10:08 once “Election” was removed.\nThe website CSV gave me only the interest_over_time data. It did not give me the interest_by_country, interest_by_region, interest_by_dma, interest_by_city, related_topics, or related_queries data frames. Because onlyInterest was left at its default value, gtrendsR returned these additional data frames in the tct object.\nNo, the “Harris” and “Kamala Harris” series are not the same. Their values and patterns differ because Google treats them as two different search terms. “Kamala Harris” captures searches containing the full name, while “Harris” captures searches for the word “Harris,” which may refer to Kamala Harris or to unrelated people, places, and organizations.\nThe gap shows that a search term is not necessarily the same as the concept the researcher wants to measure. The search term “Harris” is broad and ambiguous because it can capture searches unrelated to Kamala Harris. Therefore, it has lower measurement validity as an indicator of public interest in Kamala Harris. The more specific term “Kamala Harris” provides a closer measure of the intended concept, although it may still miss searches using other wording. Researchers must carefully choose search terms and explain how those terms operationalize the concept they intend to study.\nFor Trump, the website values were approximately 7.59 points higher on average, with a maximum difference of 28.50 points. Kamala Harris showed a much smaller difference: the R values were approximately 0.10 points higher on average, although the mean absolute difference was 0.78 points and the maximum difference was 5.50 points. Thus, the direction was not uniform across all terms: the website was generally higher for Trump and election, while R was slightly higher on average for Kamala Harris.\nThe website method may break or produce inconsistent data when:\nThe R method may break when:\nNevertheless, this result does not mean Google Trends data are permanently fixed or completely reproducible. Google Trends uses a sample of searches and normalizes the results according to the selected terms, geography, and time period. The identical results may mean that Google returned the same sample or a cached version of the data during the short interval between my calls. A query repeated later could still produce different values."
+  },
+  {
+    "objectID": "Assignment_2_Notes.html#therefore-every-finding-reported-from-google-trends-should-be-treated-as-an-estimate-of-relative-search-interest-rather-than-an-exact-count.-researchers-should-record-the-complete-query-parameters-and-retrieval-time-save-the-original-data-and-repeat-important-queries-to-test-whether-their-substantive-conclusions-remain-stable.-small-differences-should-not-be-overinterpreted-even-though-the-two-pulls-in-this-particular-test-were-identical.",
+    "href": "Assignment_2_Notes.html#therefore-every-finding-reported-from-google-trends-should-be-treated-as-an-estimate-of-relative-search-interest-rather-than-an-exact-count.-researchers-should-record-the-complete-query-parameters-and-retrieval-time-save-the-original-data-and-repeat-important-queries-to-test-whether-their-substantive-conclusions-remain-stable.-small-differences-should-not-be-overinterpreted-even-though-the-two-pulls-in-this-particular-test-were-identical.",
+    "title": "Assignment 2 Notes",
+    "section": "Therefore, every finding reported from Google Trends should be treated as an estimate of relative search interest rather than an exact count. Researchers should record the complete query parameters and retrieval time, save the original data, and repeat important queries to test whether their substantive conclusions remain stable. Small differences should not be overinterpreted, even though the two pulls in this particular test were identical.",
+    "text": "Therefore, every finding reported from Google Trends should be treated as an estimate of relative search interest rather than an exact count. Researchers should record the complete query parameters and retrieval time, save the original data, and repeat important queries to test whether their substantive conclusions remain stable. Small differences should not be overinterpreted, even though the two pulls in this particular test were identical."
   }
 ]

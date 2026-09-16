@@ -1,0 +1,94 @@
+---
+title: "Assignment 2 Notes"
+---
+A)	Part 1
+Trump, Kamala Harris, Election
+Search terms: Trump, Kamala Harris, and Election
+Geography: United States 
+Time window: Past 24 hours 
+Category: All Categories 
+Search type: Web Search 
+Date/time:  09/16/26 8:01 AM
+
+Houthi
+Search terms: Houthi
+Geography: United States 
+Time window: Past 24 hours 
+Category: All Categories 
+Search type: Web Search 
+Date/time:  09/16/26 8:05 AM
+
+Part 2)
+
+a)	Trump/Kamala Harris/Election file: 2026-09-15 12:48 UTC → 2026-09-16 12:48 UTC, 24-hour window.
+
+Houthi file: 2026-09-15 13:04 UTC → 2026-09-16 12:48 UTC, about 23h44m
+
+b)	Interval: Both files update every 16 minutes
+Downloading the Houthi File again with a window of 1 week
+
+Houthi
+
+Search terms: Houthi
+Geography: United States 
+Time window: Past 1 Week
+Category: All Categories 
+Search type: Web Search 
+Date/time:  09/16/26 8:23 AM
+Interval: Every 4 Hours
+Did the Interval Change: Yes
+
+c)	The units are an index from 0 to 100, not a count of searches.
+100 = the peak moment for that term within this file's specific time range and geography; 0 = below the reportable threshold, not "no searches."
+
+d)	Downloaded by removing the term “Election”: No, the numbers did not stay the same. Out of 88 timestamps that appear in both files, 86 have different values for Trump and/or Kamala Harris — even though these are the exact same two search terms over almost the exact same time window. For example:
+
+•	At 2026-09-15 14:24 UTC, Trump = 92 in the three-term file but 91 in the two-term file.
+•	At 2026-09-16 10:24 UTC, Trump = 100 (a peak) in the three-term file but drops to 99 in the two-term file — because the peak point in the 24-hour window shifted to 10:08 once "Election" was removed.
+
+3) Part c  
+"interest_over_time" "interest_by_country" "interest_by_region" "interest_by_dma" "interest_by_city" "related_topics" "related_queries"
+
+The website CSV gave me only the interest_over_time data. It did not give me the interest_by_country, interest_by_region, interest_by_dma, interest_by_city, related_topics, or related_queries data frames. Because onlyInterest was left at its default value, gtrendsR returned these additional data frames in the tct object.
+
+No, the “Harris” and “Kamala Harris” series are not the same. Their values and patterns differ because Google treats them as two different search terms. “Kamala Harris” captures searches containing the full name, while “Harris” captures searches for the word “Harris,” which may refer to Kamala Harris or to unrelated people, places, and organizations.
+
+The gap shows that a search term is not necessarily the same as the concept the researcher wants to measure. The search term “Harris” is broad and ambiguous because it can capture searches unrelated to Kamala Harris. Therefore, it has lower measurement validity as an indicator of public interest in Kamala Harris. The more specific term “Kamala Harris” provides a closer measure of the intended concept, although it may still miss searches using other wording. Researchers must carefully choose search terms and explain how those terms operationalize the concept they intend to study.
+
+4) a) I lined up the website and gtrendsR series by month and obtained 61 matched monthly observations for each search term. The numbers were not identical: all 61 observations differed for Trump, Kamala Harris, and election. For election, the website values were approximately 3.07 points higher on average, with a mean absolute difference of 3.10 points and a maximum absolute difference of 70.75 points. 
+
+For Trump, the website values were approximately 7.59 points higher on average, with a maximum difference of 28.50 points. Kamala Harris showed a much smaller difference: the R values were approximately 0.10 points higher on average, although the mean absolute difference was 0.78 points and the maximum difference was 5.50 points. Thus, the direction was not uniform across all terms: the website was generally higher for Trump and election, while R was slightly higher on average for Kamala Harris.
+
+b) i) The R method is more reproducible because the code records the search terms, geography, time period, category, and search type. Another researcher can rerun this code. However, they may not obtain exactly the same numbers because Google Trends uses sampled and normalized data. In addition, today+5-y is a moving window, so running it on another date covers a different five-year period. The website method is less reproducible because the selections are made manually. Unless the researcher records every setting and the retrieval date and time, another person may not know precisely how the CSV was created.
+
+ii) R provides better provenance because the code documents where the data came from and how the query was constructed. The returned R data also include variables such as: keyword, geo, time, gprop, and category. The website CSV mainly contains the dates and interest values. It may not preserve every choice used to generate the download. Therefore, the researcher must separately record the terms, geography, period, category, search type, and retrieval time.
+
+iii) R is more efficient for large or repeated data-collection tasks. The code can automate downloading, organizing, plotting, and saving multiple queries. Collecting fifty terms manually from the website would require many searches and downloads, increasing the time required and the possibility of human error.
+However, Google Trends limits the number of terms that can be compared in one query. Fifty terms would need to be divided into several batches. Because Google normalizes each query separately from 0 to 100, the results from different batches are not automatically comparable. A researcher may need to include the same reference term in every batch and use it to connect or rescale the results.
+
+iv) Both methods are fragile, but in different ways.
+
+The website method may break or produce inconsistent data when:
+
+1)	Google changes the website interface. 
+2)	A researcher accidentally chooses the wrong setting. 
+3)	The downloaded file format or column names change. 
+4)	Different browsers or dates produce different defaults.
+5)	The researcher forgets to document a setting.
+
+The R method may break when:
+
+1)	Google changes the service used by gtrendsR. 
+2)	The package becomes outdated. 
+3)	Google imposes rate limits. 
+4)	The internet connection fails. 
+5)	A query returns empty data. 
+6)	Column names, formats, or temporal intervals change. 
+7)	Values such as <1 produce conversion warnings or missing values.
+
+c) I ran the same gtrendsR call twice, a few minutes apart. In this test, the two calls returned exactly the same numbers. For Trump, Harris, and election, all 262 matched observations were identical. The mean difference, mean absolute difference, and maximum absolute difference were all zero.
+
+Nevertheless, this result does not mean Google Trends data are permanently fixed or completely reproducible. Google Trends uses a sample of searches and normalizes the results according to the selected terms, geography, and time period. The identical results may mean that Google returned the same sample or a cached version of the data during the short interval between my calls. A query repeated later could still produce different values.
+
+Therefore, every finding reported from Google Trends should be treated as an estimate of relative search interest rather than an exact count. Researchers should record the complete query parameters and retrieval time, save the original data, and repeat important queries to test whether their substantive conclusions remain stable. Small differences should not be overinterpreted, even though the two pulls in this particular test were identical.
+---
