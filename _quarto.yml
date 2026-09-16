@@ -16,7 +16,7 @@ website:
       - href: index.qmd
         text: Home
       - href: about.qmd
-        text: About
+        qutext: About
       - href: research.qmd
         text: Research
       - href: teaching.qmd
@@ -34,7 +34,7 @@ website:
           - href: epps6302_assignment02.pdf
             text: "Assignment 2 - Instructions"
 
-          - href: Assignment_2_Notes.docx
+          - href: Assignment_2_Notes.qmd
             text: "Assignment 2 - Notes (Word)"
 
           - href: assign02.qmd
