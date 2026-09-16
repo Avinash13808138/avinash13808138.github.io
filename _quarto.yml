@@ -5,7 +5,7 @@ project:
     - Avinash_Singh_Resume.pdf
     - epps6302_assignment01.pdf
     - epps6302_assignment02.pdf
-    - Assignment_2_Notes.docx
+    
     
 
 website:
@@ -16,7 +16,7 @@ website:
       - href: index.qmd
         text: Home
       - href: about.qmd
-        qutext: About
+        text: About
       - href: research.qmd
         text: Research
       - href: teaching.qmd
