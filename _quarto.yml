@@ -19,8 +19,18 @@ website:
         menu:
           - href: epps6302_assignment01.pdf
             text: "Assignment 1 - Instructions"
+            
           - href: assign01.qmd
             text: "Assignment 1 - Website Design Note"
+            
+          - href: epps6302_assignment02.pdf
+            text: "Assignment 2 - Instructions"
+
+          - href: Assignment_2_Notes.docx
+            text: "Assignment 2 - Notes (Word)"
+
+          - href: assign02.qmd
+            text: "Assignment 2 - Google Trends Analysis"
 format:
   html:
     theme:

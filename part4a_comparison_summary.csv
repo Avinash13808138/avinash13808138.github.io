@@ -1,0 +1,4 @@
+keyword,matched_months,identical_values,different_values,mean_website_value,mean_R_value,mean_difference,mean_absolute_difference,maximum_absolute_difference,general_direction
+election,61,0,61,4.60655737704918,1.533879781420765,-3.072677595628415,3.0956284153005464,70.75,Website generally higher
+kamala harris,61,0,61,0.5081967213114754,0.6098360655737705,0.10163934426229508,0.7836065573770492,5.5,R generally higher
+trump,61,0,61,10.721311475409836,3.1278688524590166,-7.593442622950819,7.593442622950819,28.5,Website generally higher

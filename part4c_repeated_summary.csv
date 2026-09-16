@@ -1,0 +1,4 @@
+keyword,matched_observations,identical_values,different_values,mean_difference,mean_absolute_difference,maximum_absolute_difference
+election,262,262,0,0,0,0
+harris,262,262,0,0,0,0
+trump,262,262,0,0,0,0
