@@ -5,12 +5,11 @@ project:
     - Avinash_Singh_Resume.pdf
     - epps6302_assignment01.pdf
     - epps6302_assignment02.pdf
-    
-    
+    - epps6302_assignment03.pdf
 
 website:
   title: "avinash13808138.github.io"
-  
+
   navbar:
     left:
       - href: index.qmd
@@ -27,10 +26,10 @@ website:
         menu:
           - href: epps6302_assignment01.pdf
             text: "Assignment 1 - Instructions"
-            
+
           - href: assign01.qmd
             text: "Assignment 1 - Website Design Note"
-            
+
           - href: epps6302_assignment02.pdf
             text: "Assignment 2 - Instructions"
 
@@ -40,9 +39,17 @@ website:
           - href: assign02.qmd
             text: "Assignment 2 - Google Trends Analysis"
             
+          - href: epps6302_assignment03.pdf
+            text: "Assignment 3 - Instructions"
+
           - href: Assignment 3.qmd
             text: "Assignment 3 - ACS via tidycensus"
-            
+
+# Apply these execution settings to all .qmd pages
+execute:
+  warning: false
+  message: false
+
 format:
   html:
     theme:
@@ -52,4 +59,3 @@ format:
     toc: true
 
 editor: visual
-

@@ -1,5 +1,10 @@
 ---
-title: "Assignment 3"
+title: "Assignment 3: ACS via tidycensus"
+author: "Avinash Singh"
+format: html
+execute:
+  warning: false
+  message: false
 ---
 
 ## Part 1: Set-up packages
