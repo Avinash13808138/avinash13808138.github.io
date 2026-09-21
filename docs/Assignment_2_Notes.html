@@ -137,6 +137,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="./assign02.html">
  <span class="dropdown-text">Assignment 2 - Google Trends Analysis</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment 3.html">
+ <span class="dropdown-text">Assignment 3 - ACS via tidycensus</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -218,6 +222,7 @@ ul.task-list li input[type="checkbox"] {
 <li>The R method is more reproducible because the code records the search terms, geography, time period, category, and search type. Another researcher can rerun this code. However, they may not obtain exactly the same numbers because Google Trends uses sampled and normalized data. In addition, today+5-y is a moving window, so running it on another date covers a different five-year period. The website method is less reproducible because the selections are made manually. Unless the researcher records every setting and the retrieval date and time, another person may not know precisely how the CSV was created.</li>
 </ol></li>
 </ol>
+<!-- -->
 <ol start="2" type="i">
 <li><p>R provides better provenance because the code documents where the data came from and how the query was constructed. The returned R data also include variables such as: keyword, geo, time, gprop, and category. The website CSV mainly contains the dates and interest values. It may not preserve every choice used to generate the download. Therefore, the researcher must separately record the terms, geography, period, category, search type, and retrieval time.</p></li>
 <li><p>R is more efficient for large or repeated data-collection tasks. The code can automate downloading, organizing, plotting, and saving multiple queries. Collecting fifty terms manually from the website would require many searches and downloads, increasing the time required and the possibility of human error. However, Google Trends limits the number of terms that can be compared in one query. Fifty terms would need to be divided into several batches. Because Google normalizes each query separately from 0 to 100, the results from different batches are not automatically comparable. A researcher may need to include the same reference term in every batch and use it to connect or rescale the results.</p></li>
@@ -241,6 +246,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Column names, formats, or temporal intervals change.</li>
 <li>Values such as &lt;1 produce conversion warnings or missing values.</li>
 </ol>
+<!-- -->
 <ol start="3" type="a">
 <li>I ran the same gtrendsR call twice, a few minutes apart. In this test, the two calls returned exactly the same numbers. For Trump, Harris, and election, all 262 matched observations were identical. The mean difference, mean absolute difference, and maximum absolute difference were all zero.</li>
 </ol>

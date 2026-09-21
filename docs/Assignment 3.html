@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Assignment 3 – avinash13808138.github.io</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">avinash13808138.github.io</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Avinash_Singh_Resume.pdf"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment01.pdf">
+ <span class="dropdown-text">Assignment 1 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./assign01.html">
+ <span class="dropdown-text">Assignment 1 - Website Design Note</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment02.pdf">
+ <span class="dropdown-text">Assignment 2 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment_2_Notes.html">
+ <span class="dropdown-text">Assignment 2 - Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./assign02.html">
+ <span class="dropdown-text">Assignment 2 - Google Trends Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment 3.html">
+ <span class="dropdown-text">Assignment 3 - ACS via tidycensus</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1-set-up-packages" id="toc-part-1-set-up-packages" class="nav-link active" data-scroll-target="#part-1-set-up-packages">Part 1: Set-up packages</a>
+  <ul class="collapse">
+  <li><a href="#this-chunk-loads-all-the-packages-required-for-the-assignment.-it-also-tells-tigris-to-reuse-downloaded-geographic-boundaries." id="toc-this-chunk-loads-all-the-packages-required-for-the-assignment.-it-also-tells-tigris-to-reuse-downloaded-geographic-boundaries." class="nav-link" data-scroll-target="#this-chunk-loads-all-the-packages-required-for-the-assignment.-it-also-tells-tigris-to-reuse-downloaded-geographic-boundaries.">This chunk loads all the packages required for the assignment. It also tells tigris to reuse downloaded geographic boundaries.</a></li>
+  </ul></li>
+  <li><a href="#part-2-choose-the-geography-and-acs-variables" id="toc-part-2-choose-the-geography-and-acs-variables" class="nav-link" data-scroll-target="#part-2-choose-the-geography-and-acs-variables">Part 2: Choose the geography and ACS variables</a>
+  <ul class="collapse">
+  <li><a href="#this-chunk-searches-the-2024-acs-five-year-variable-list-and-establishes-the-parameters-for-the-analysis.-the-unit-of-analysis-is-the-texas-county.-median-household-income-will-be-used-for-the-map-while-the-poverty-count-and-its-denominator-will-be-used-to-calculate-a-county-poverty-rate." id="toc-this-chunk-searches-the-2024-acs-five-year-variable-list-and-establishes-the-parameters-for-the-analysis.-the-unit-of-analysis-is-the-texas-county.-median-household-income-will-be-used-for-the-map-while-the-poverty-count-and-its-denominator-will-be-used-to-calculate-a-county-poverty-rate." class="nav-link" data-scroll-target="#this-chunk-searches-the-2024-acs-five-year-variable-list-and-establishes-the-parameters-for-the-analysis.-the-unit-of-analysis-is-the-texas-county.-median-household-income-will-be-used-for-the-map-while-the-poverty-count-and-its-denominator-will-be-used-to-calculate-a-county-poverty-rate.">This chunk searches the 2024 ACS five-year variable list and establishes the parameters for the analysis. The unit of analysis is the Texas county. Median household income will be used for the map, while the poverty count and its denominator will be used to calculate a county poverty rate.</a></li>
+  </ul></li>
+  <li><a href="#part-3-download-the-data-and-calculate-the-poverty-rate" id="toc-part-3-download-the-data-and-calculate-the-poverty-rate" class="nav-link" data-scroll-target="#part-3-download-the-data-and-calculate-the-poverty-rate">Part 3: Download the data and calculate the poverty rate</a>
+  <ul class="collapse">
+  <li><a href="#this-chunk-downloads-the-2024-acs-estimates-margins-of-error-and-geographic-boundaries-for-texas-counties.-the-e-suffix-identifies-an-estimate-while-the-m-suffix-identifies-its-margin-of-error.-it-then-calculates-the-poverty-rate-and-propagates-the-uncertainty-using-moe_prop." id="toc-this-chunk-downloads-the-2024-acs-estimates-margins-of-error-and-geographic-boundaries-for-texas-counties.-the-e-suffix-identifies-an-estimate-while-the-m-suffix-identifies-its-margin-of-error.-it-then-calculates-the-poverty-rate-and-propagates-the-uncertainty-using-moe_prop." class="nav-link" data-scroll-target="#this-chunk-downloads-the-2024-acs-estimates-margins-of-error-and-geographic-boundaries-for-texas-counties.-the-e-suffix-identifies-an-estimate-while-the-m-suffix-identifies-its-margin-of-error.-it-then-calculates-the-poverty-rate-and-propagates-the-uncertainty-using-moe_prop.">This chunk downloads the 2024 ACS estimates, margins of error, and geographic boundaries for Texas counties. The <code>E</code> suffix identifies an estimate, while the <code>M</code> suffix identifies its margin of error. It then calculates the poverty rate and propagates the uncertainty using <code>moe_prop()</code>.</a></li>
+  </ul></li>
+  <li><a href="#part-4-produce-the-map-tables-uncertainty-check-and-csv-file" id="toc-part-4-produce-the-map-tables-uncertainty-check-and-csv-file" class="nav-link" data-scroll-target="#part-4-produce-the-map-tables-uncertainty-check-and-csv-file">Part 4: Produce the map, tables, uncertainty check, and CSV file</a>
+  <ul class="collapse">
+  <li><a href="#this-chunk-produces-all-the-main-assignment-outputs" id="toc-this-chunk-produces-all-the-main-assignment-outputs" class="nav-link" data-scroll-target="#this-chunk-produces-all-the-main-assignment-outputs">This chunk produces all the main assignment outputs:</a></li>
+  </ul></li>
+  <li><a href="#a-map-interpretation" id="toc-a-map-interpretation" class="nav-link" data-scroll-target="#a-map-interpretation">4(a) Map Interpretation</a></li>
+  <li><a href="#b-table-interpretation" id="toc-b-table-interpretation" class="nav-link" data-scroll-target="#b-table-interpretation">4(b) Table Interpretation</a></li>
+  <li><a href="#c-uncertainty-check" id="toc-c-uncertainty-check" class="nav-link" data-scroll-target="#c-uncertainty-check">4(c) Uncertainty Check</a></li>
+  <li><a href="#d-methods-note" id="toc-d-methods-note" class="nav-link" data-scroll-target="#d-methods-note">4(d) Methods Note</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Assignment 3</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="part-1-set-up-packages" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-set-up-packages">Part 1: Set-up packages</h2>
+<section id="this-chunk-loads-all-the-packages-required-for-the-assignment.-it-also-tells-tigris-to-reuse-downloaded-geographic-boundaries." class="level3">
+<h3 class="anchored" data-anchor-id="this-chunk-loads-all-the-packages-required-for-the-assignment.-it-also-tells-tigris-to-reuse-downloaded-geographic-boundaries.">This chunk loads all the packages required for the assignment. It also tells tigris to reuse downloaded geographic boundaries.</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages needed to retrieve, organize, map, and save ACS data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus) <span class="co"># Download ACS estimates and calculate margins of error</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)     <span class="co"># Download Census geographic boundaries</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tigris' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>To enable caching of data, set `options(tigris_use_cache = TRUE)`
+in your R script or .Rprofile.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)         <span class="co"># Work with spatial data and map geometry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.3.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)      <span class="co"># Organize, calculate, select, and sort variables</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)      <span class="co"># Reshape tidy data when necessary</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.4.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)    <span class="co"># Create the choropleth map</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.4.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)      <span class="co"># Save the finished dataset as a CSV file</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.4.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cache geographic boundaries so they do not need to be downloaded repeatedly</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tigris_use_cache =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="part-2-choose-the-geography-and-acs-variables" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-choose-the-geography-and-acs-variables">Part 2: Choose the geography and ACS variables</h2>
+<section id="this-chunk-searches-the-2024-acs-five-year-variable-list-and-establishes-the-parameters-for-the-analysis.-the-unit-of-analysis-is-the-texas-county.-median-household-income-will-be-used-for-the-map-while-the-poverty-count-and-its-denominator-will-be-used-to-calculate-a-county-poverty-rate." class="level3">
+<h3 class="anchored" data-anchor-id="this-chunk-searches-the-2024-acs-five-year-variable-list-and-establishes-the-parameters-for-the-analysis.-the-unit-of-analysis-is-the-texas-county.-median-household-income-will-be-used-for-the-map-while-the-poverty-count-and-its-denominator-will-be-used-to-calculate-a-county-poverty-rate.">This chunk searches the 2024 ACS five-year variable list and establishes the parameters for the analysis. The unit of analysis is the Texas county. Median household income will be used for the map, while the poverty count and its denominator will be used to calculate a county poverty rate.</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the variables available in the 2024 ACS 5-year dataset</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not use the deprecated `cache` argument</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="dv">2024</span>, <span class="st">"acs5"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first 10 variables whose codes begin with B19</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>vars <span class="sc">|&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"^B19"</span>, name)) <span class="sc">|&gt;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   name        label                                concept            geography
+   &lt;chr&gt;       &lt;chr&gt;                                &lt;chr&gt;              &lt;chr&gt;    
+ 1 B19001A_001 Estimate!!Total:                     Household Income … tract    
+ 2 B19001A_002 Estimate!!Total:!!Less than $10,000  Household Income … tract    
+ 3 B19001A_003 Estimate!!Total:!!$10,000 to $14,999 Household Income … tract    
+ 4 B19001A_004 Estimate!!Total:!!$15,000 to $19,999 Household Income … tract    
+ 5 B19001A_005 Estimate!!Total:!!$20,000 to $24,999 Household Income … tract    
+ 6 B19001A_006 Estimate!!Total:!!$25,000 to $29,999 Household Income … tract    
+ 7 B19001A_007 Estimate!!Total:!!$30,000 to $34,999 Household Income … tract    
+ 8 B19001A_008 Estimate!!Total:!!$35,000 to $39,999 Household Income … tract    
+ 9 B19001A_009 Estimate!!Total:!!$40,000 to $44,999 Household Income … tract    
+10 B19001A_010 Estimate!!Total:!!$45,000 to $49,999 Household Income … tract    </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select Texas as the state for the analysis</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>state_abbr <span class="ot">&lt;-</span> <span class="st">"TX"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select counties as the geographic unit</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>geo_level <span class="ot">&lt;-</span> <span class="st">"county"</span> <span class="co"># options: state, county, tract, block group</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Select income, poverty count, and poverty denominator variables</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>my_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">income =</span> <span class="st">"B19013_001"</span>, <span class="co"># median household income</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">pov =</span> <span class="st">"B17001_002"</span>,    <span class="co"># people below poverty</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">povden =</span> <span class="st">"B17001_001"</span>  <span class="co"># poverty universe = denominator</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the required ACS year</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>year_acs <span class="ot">&lt;-</span> <span class="dv">2024</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the ACS 5-year survey</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="st">"acs5"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code></code></pre>
+</section>
+</section>
+<section id="part-3-download-the-data-and-calculate-the-poverty-rate" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-download-the-data-and-calculate-the-poverty-rate">Part 3: Download the data and calculate the poverty rate</h2>
+<section id="this-chunk-downloads-the-2024-acs-estimates-margins-of-error-and-geographic-boundaries-for-texas-counties.-the-e-suffix-identifies-an-estimate-while-the-m-suffix-identifies-its-margin-of-error.-it-then-calculates-the-poverty-rate-and-propagates-the-uncertainty-using-moe_prop." class="level3">
+<h3 class="anchored" data-anchor-id="this-chunk-downloads-the-2024-acs-estimates-margins-of-error-and-geographic-boundaries-for-texas-counties.-the-e-suffix-identifies-an-estimate-while-the-m-suffix-identifies-its-margin-of-error.-it-then-calculates-the-poverty-rate-and-propagates-the-uncertainty-using-moe_prop.">This chunk downloads the 2024 ACS estimates, margins of error, and geographic boundaries for Texas counties. The <code>E</code> suffix identifies an estimate, while the <code>M</code> suffix identifies its margin of error. It then calculates the poverty rate and propagates the uncertainty using <code>moe_prop()</code>.</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the selected ACS variables and Texas county geometry</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Wide output produces one row per county with separate estimate and MOE columns</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>acs_wide <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">geography =</span> geo_level,  <span class="co"># Use counties as the geographic unit</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variables =</span> my_vars,    <span class="co"># Download the three selected ACS variables</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">state =</span> state_abbr,     <span class="co"># Limit the data to Texas</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> year_acs,        <span class="co"># Use the 2024 ACS</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">survey =</span> survey,        <span class="co"># Use the ACS 5-year estimates</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">geometry =</span> <span class="cn">TRUE</span>,        <span class="co"># Retain county boundaries for mapping</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">output =</span> <span class="st">"wide"</span>         <span class="co"># Produce one row for each county</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting data from the 2020-2024 5-year ACS</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Derive the poverty rate and carry its margin of error through</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>acs_wide <span class="ot">&lt;-</span> acs_wide <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">pov_rate =</span> povE <span class="sc">/</span> povdenE, <span class="co"># Divide poverty count by its denominator</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">pov_moe =</span> <span class="fu">moe_prop</span>(        <span class="co"># Calculate the MOE for the poverty rate</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>            povE,                  <span class="co"># Poverty-count estimate</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>            povdenE,               <span class="co"># Poverty-denominator estimate</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>            povM,                  <span class="co"># MOE for the poverty-count estimate</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>            povdenM                <span class="co"># MOE for the denominator estimate</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the completed spatial dataset</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>acs_wide</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 254 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
+Geodetic CRS:  NAD83
+First 10 features:
+   GEOID                     NAME incomeE incomeM   povE povM povdenE povdenM
+1  48287        Lee County, Texas   76371    8546   1986  594   17524      58
+2  48037      Bowie County, Texas   59803    2992  13997 1348   86368     135
+3  48273    Kleberg County, Texas   61292    4466   8077 1250   28749     353
+4  48229   Hudspeth County, Texas   48600   11506    508  228    2929      13
+5  48419     Shelby County, Texas   49776    6129   4917  835   23887      91
+6  48301     Loving County, Texas   51250     617      2    2      33      30
+7  48339 Montgomery County, Texas   97701    2366  64224 4653  680151     718
+8  48029      Bexar County, Texas   72341     701 296387 9067 2027961    1300
+9  48245  Jefferson County, Texas   60026    1694  46448 2562  238359     459
+10 48457      Tyler County, Texas   55396    6988   3229  569   18037     130
+                         geometry   pov_rate     pov_moe
+1  MULTIPOLYGON (((-97.30648 3... 0.11333029 0.033894295
+2  MULTIPOLYGON (((-94.74663 3... 0.16206234 0.015605577
+3  MULTIPOLYGON (((-97.3178 27... 0.28094890 0.043342708
+4  MULTIPOLYGON (((-105.998 32... 0.17343803 0.077838461
+5  MULTIPOLYGON (((-94.51143 3... 0.20584418 0.034947455
+6  MULTIPOLYGON (((-103.9839 3... 0.06060606 0.025248351
+7  MULTIPOLYGON (((-95.83024 3... 0.09442609 0.006840402
+8  MULTIPOLYGON (((-98.80655 2... 0.14615025 0.004470012
+9  MULTIPOLYGON (((-94.44491 3... 0.19486573 0.010741941
+10 MULTIPOLYGON (((-94.65799 3... 0.17902090 0.031519868</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(acs_wide)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 254</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(acs_wide)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "GEOID"    "NAME"     "incomeE"  "incomeM"  "povE"     "povM"    
+ [7] "povdenE"  "povdenM"  "geometry" "pov_rate" "pov_moe" </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="part-4-produce-the-map-tables-uncertainty-check-and-csv-file" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-produce-the-map-tables-uncertainty-check-and-csv-file">Part 4: Produce the map, tables, uncertainty check, and CSV file</h2>
+<section id="this-chunk-produces-all-the-main-assignment-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="this-chunk-produces-all-the-main-assignment-outputs">This chunk produces all the main assignment outputs:</h3>
+<ul>
+<li><p>A choropleth map of median household income</p></li>
+<li><p>The ten counties with the highest poverty rates</p></li>
+<li><p>The ten counties with the lowest poverty rates</p></li>
+<li><p>Poverty-rate margins of error</p></li>
+<li><p>Confidence-interval limits for evaluating the rankings</p></li>
+<li><p>A CSV file containing the completed ACS dataset</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a choropleth map of median household income</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(acs_wide) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">fill =</span> incomeE), <span class="co"># Fill each county according to its income estimate</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="cn">NA</span>           <span class="co"># Remove county-border lines</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Median HH Income"</span>, <span class="co"># Give the map legend a clear title</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>()</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste0</span>(</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ACS "</span>, year_acs,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">" 5-year: Median Income — "</span>,</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>            state_abbr, <span class="st">" ("</span>, geo_level, <span class="st">")"</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Source: U.S. Census Bureau via tidycensus"</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Palatino"</span>), <span class="co"># Drop family if unavailable</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"inside"</span>,</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.15</span>)</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+not found in Windows font database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+not found in Windows font database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+not found in Windows font database
+Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+not found in Windows font database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database
+Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+family not found in Windows font database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database
+Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+font family not found in Windows font database</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment-3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a table of the 10 counties with the highest poverty rates</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>top10 <span class="ot">&lt;-</span> acs_wide <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span>            <span class="co"># Remove geometry because it is not needed</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(pov_rate)) <span class="sc">|&gt;</span>       <span class="co"># Sort from highest to lowest poverty rate</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>        NAME,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        pov_rate,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        pov_moe,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>        povE,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>        povM</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)               <span class="co"># Keep the first 10 counties</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a table of the 10 counties with the lowest poverty rates</span></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>bottom10 <span class="ot">&lt;-</span> acs_wide <span class="sc">|&gt;</span></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span>            <span class="co"># Remove geometry because it is not needed</span></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(pov_rate) <span class="sc">|&gt;</span>             <span class="co"># Sort from lowest to highest poverty rate</span></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>        NAME,</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>        pov_rate,</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>        pov_moe,</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>        povE,</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>        povM</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)               <span class="co"># Keep the first 10 counties</span></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the two tables</span></span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>top10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     NAME  pov_rate    pov_moe  povE povM
+1    Dimmit County, Texas 0.4110586 0.08875886  3390  732
+2    Zapata County, Texas 0.3839325 0.06042973  5190  818
+3    Zavala County, Texas 0.3392113 0.09532959  3174  892
+4     Starr County, Texas 0.3351580 0.03229430 21981 2118
+5     Duval County, Texas 0.3327076 0.08395552  3013  761
+6  Presidio County, Texas 0.3200000 0.12776257  1896  757
+7   Edwards County, Texas 0.3186549 0.23243917   398  304
+8  Jim Hogg County, Texas 0.3142733 0.11147440  1451  515
+9   Swisher County, Texas 0.3009816 0.06897943  1901  436
+10  Kleberg County, Texas 0.2809489 0.04334271  8077 1250</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>bottom10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      NAME   pov_rate     pov_moe  povE povM
+1   Rockwall County, Texas 0.04038319 0.006878397  4949  843
+2   Sterling County, Texas 0.04323570 0.028825941    62   42
+3     Sutton County, Texas 0.04509202 0.028526638   147   93
+4    Kendall County, Texas 0.05029487 0.014324837  2405  685
+5  Armstrong County, Texas 0.05194805 0.027989677    92   50
+6      Foard County, Texas 0.05573419 0.043883153    52   42
+7    Roberts County, Texas 0.05649038 0.038729854    47   33
+8     Loving County, Texas 0.06060606 0.025248351     2    2
+9   Hemphill County, Texas 0.06191075 0.032366749   197  103
+10    Collin County, Texas 0.06234559 0.003548944 71971 4097</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add confidence-interval limits to help check uncertainty in the rankings</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>ranked_areas <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    top10 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">table_group =</span> <span class="st">"Highest poverty rates"</span>),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    bottom10 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">table_group =</span> <span class="st">"Lowest poverty rates"</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">pov_lower =</span> <span class="fu">pmax</span>(<span class="dv">0</span>, pov_rate <span class="sc">-</span> pov_moe), <span class="co"># Lower confidence limit</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">pov_upper =</span> <span class="fu">pmin</span>(<span class="dv">1</span>, pov_rate <span class="sc">+</span> pov_moe)  <span class="co"># Upper confidence limit</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>        table_group,</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>        NAME,</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>        pov_rate,</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>        pov_moe,</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>        pov_lower,</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>        pov_upper</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display rates, MOEs, and confidence-interval limits</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>ranked_areas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             table_group                    NAME   pov_rate     pov_moe
+1  Highest poverty rates    Dimmit County, Texas 0.41105857 0.088758863
+2  Highest poverty rates    Zapata County, Texas 0.38393253 0.060429732
+3  Highest poverty rates    Zavala County, Texas 0.33921129 0.095329589
+4  Highest poverty rates     Starr County, Texas 0.33515797 0.032294300
+5  Highest poverty rates     Duval County, Texas 0.33270760 0.083955520
+6  Highest poverty rates  Presidio County, Texas 0.32000000 0.127762572
+7  Highest poverty rates   Edwards County, Texas 0.31865492 0.232439173
+8  Highest poverty rates  Jim Hogg County, Texas 0.31427334 0.111474404
+9  Highest poverty rates   Swisher County, Texas 0.30098163 0.068979431
+10 Highest poverty rates   Kleberg County, Texas 0.28094890 0.043342708
+11  Lowest poverty rates  Rockwall County, Texas 0.04038319 0.006878397
+12  Lowest poverty rates  Sterling County, Texas 0.04323570 0.028825941
+13  Lowest poverty rates    Sutton County, Texas 0.04509202 0.028526638
+14  Lowest poverty rates   Kendall County, Texas 0.05029487 0.014324837
+15  Lowest poverty rates Armstrong County, Texas 0.05194805 0.027989677
+16  Lowest poverty rates     Foard County, Texas 0.05573419 0.043883153
+17  Lowest poverty rates   Roberts County, Texas 0.05649038 0.038729854
+18  Lowest poverty rates    Loving County, Texas 0.06060606 0.025248351
+19  Lowest poverty rates  Hemphill County, Texas 0.06191075 0.032366749
+20  Lowest poverty rates    Collin County, Texas 0.06234559 0.003548944
+    pov_lower  pov_upper
+1  0.32229970 0.49981743
+2  0.32350280 0.44436227
+3  0.24388170 0.43454088
+4  0.30286367 0.36745227
+5  0.24875208 0.41666312
+6  0.19223743 0.44776257
+7  0.08621575 0.55109410
+8  0.20279893 0.42574774
+9  0.23200220 0.36996107
+10 0.23760619 0.32429161
+11 0.03350479 0.04726158
+12 0.01440976 0.07206164
+13 0.01656539 0.07361866
+14 0.03597003 0.06461970
+15 0.02395837 0.07993773
+16 0.01185104 0.09961734
+17 0.01776053 0.09522024
+18 0.03535771 0.08585441
+19 0.02954400 0.09427750
+20 0.05879665 0.06589453</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the completed nonspatial data as a CSV file</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_drop_geometry</span>(acs_wide),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"acs_"</span>, state_abbr, <span class="st">"_"</span>, year_acs, <span class="st">".csv"</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="a-map-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="a-map-interpretation">4(a) Map Interpretation</h2>
+<p>The map shows substantial variation in median household income across Texas counties. Higher-income counties appear primarily around major metropolitan areas, especially the Dallas–Fort Worth, Austin, and Houston regions. Many counties in South Texas, along the Rio Grande border, and in parts of West Texas have lower median household incomes. Overall, the pattern suggests that counties near large urban economies tend to have higher household incomes than many rural and border counties.</p>
+</section>
+<section id="b-table-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="b-table-interpretation">4(b) Table Interpretation</h2>
+<p>The highest estimated poverty rate is in Dimmit County at approximately 41.1%, followed by Zapata County at 38.4% and Zavala County at 33.9%. Many counties in the highest-poverty group are located in South Texas or near the Texas–Mexico border. In contrast, Rockwall County has the lowest estimated poverty rate at approximately 4.0%, followed by Sterling County at 4.3% and Sutton County at 4.5%. The margins of error vary substantially across counties, meaning the estimated ordering should be interpreted cautiously, particularly for counties with relatively large margins of error.<br>
+</p>
+</section>
+<section id="c-uncertainty-check" class="level2">
+<h2 class="anchored" data-anchor-id="c-uncertainty-check">4(c) Uncertainty Check</h2>
+<p>Dimmit County and Zapata County provide one clear example of overlapping confidence intervals.</p>
+<ul>
+<li><p>Dimmit County: estimated poverty rate = 41.1%, MOE = 8.9 percentage points, interval = 32.2%–50.0%.</p></li>
+<li><p>Zapata County: estimated poverty rate = 38.4%, MOE = 6.0 percentage points, interval = 32.4%–44.4%.</p></li>
+</ul>
+<p>The two intervals overlap substantially. Therefore, although Dimmit County is ranked above Zapata County based on the point estimates, the data do not provide strong evidence that Dimmit County’s true poverty rate is higher. Sampling uncertainty could reverse or eliminate the apparent difference. The ranking should consequently be treated as descriptive rather than as a definitive ordering of the counties.</p>
+</section>
+<section id="d-methods-note" class="level2">
+<h2 class="anchored" data-anchor-id="d-methods-note">4(d) Methods Note</h2>
+<p>This analysis uses 2024 American Community Survey five-year estimates for Texas counties. Counties were selected because they provide meaningful geographic comparisons while remaining readable on a statewide map. Median household income (<code>B19013_001</code>) was mapped to show the geographic distribution of economic resources. Poverty was measured using the population below the poverty level (<code>B17001_002</code>) divided by the population for whom poverty status was determined (<code>B17001_001</code>). Using a rate instead of a raw count prevents counties with larger populations from appearing more disadvantaged simply because they contain more residents. I retained the ACS margins of error and used <code>moe_prop()</code> to propagate uncertainty into the calculated poverty rate. The margins of error show that some county estimates are much less precise than others. Several confidence intervals overlap, so small differences between counties should not be interpreted as definitive differences in their true poverty rates. Consequently, the top-and-bottom rankings are descriptive and should be interpreted cautiously.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

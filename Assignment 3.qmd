@@ -1,0 +1,229 @@
+---
+title: "Assignment 3"
+---
+
+## Part 1: Set-up packages
+
+### This chunk loads all the packages required for the assignment. It also tells tigris to reuse downloaded geographic boundaries.
+
+```{r}
+
+# Packages needed to retrieve, organize, map, and save ACS data
+library(tidycensus) # Download ACS estimates and calculate margins of error
+library(tigris)     # Download Census geographic boundaries
+library(sf)         # Work with spatial data and map geometry
+library(dplyr)      # Organize, calculate, select, and sort variables
+library(tidyr)      # Reshape tidy data when necessary
+library(ggplot2)    # Create the choropleth map
+library(readr)      # Save the finished dataset as a CSV file
+
+# Cache geographic boundaries so they do not need to be downloaded repeatedly
+options(tigris_use_cache = TRUE)
+
+
+```
+
+## Part 2: Choose the geography and ACS variables
+
+### This chunk searches the 2024 ACS five-year variable list and establishes the parameters for the analysis. The unit of analysis is the Texas county. Median household income will be used for the map, while the poverty count and its denominator will be used to calculate a county poverty rate.
+
+```{r}
+
+# Explore the variables available in the 2024 ACS 5-year dataset
+# Do not use the deprecated `cache` argument
+vars <- load_variables(2024, "acs5")
+
+# Display the first 10 variables whose codes begin with B19
+vars |>
+    dplyr::filter(grepl("^B19", name)) |>
+    dplyr::slice_head(n = 10)
+
+# Select Texas as the state for the analysis
+state_abbr <- "TX"
+
+# Select counties as the geographic unit
+geo_level <- "county" # options: state, county, tract, block group
+
+# Select income, poverty count, and poverty denominator variables
+my_vars <- c(
+    income = "B19013_001", # median household income
+    pov = "B17001_002",    # people below poverty
+    povden = "B17001_001"  # poverty universe = denominator
+)
+
+# Select the required ACS year
+year_acs <- 2024
+
+# Select the ACS 5-year survey
+survey <- "acs5"
+
+```
+
+```         
+```
+
+## Part 3: Download the data and calculate the poverty rate
+
+### This chunk downloads the 2024 ACS estimates, margins of error, and geographic boundaries for Texas counties. The `E` suffix identifies an estimate, while the `M` suffix identifies its margin of error. It then calculates the poverty rate and propagates the uncertainty using `moe_prop()`.
+
+```{r}
+
+# Download the selected ACS variables and Texas county geometry
+# Wide output produces one row per county with separate estimate and MOE columns
+acs_wide <- get_acs(
+    geography = geo_level,  # Use counties as the geographic unit
+    variables = my_vars,    # Download the three selected ACS variables
+    state = state_abbr,     # Limit the data to Texas
+    year = year_acs,        # Use the 2024 ACS
+    survey = survey,        # Use the ACS 5-year estimates
+    geometry = TRUE,        # Retain county boundaries for mapping
+    output = "wide"         # Produce one row for each county
+)
+
+# Derive the poverty rate and carry its margin of error through
+acs_wide <- acs_wide |>
+    mutate(
+        pov_rate = povE / povdenE, # Divide poverty count by its denominator
+        pov_moe = moe_prop(        # Calculate the MOE for the poverty rate
+            povE,                  # Poverty-count estimate
+            povdenE,               # Poverty-denominator estimate
+            povM,                  # MOE for the poverty-count estimate
+            povdenM                # MOE for the denominator estimate
+        )
+    )
+
+# Check the completed spatial dataset
+acs_wide
+nrow(acs_wide)
+names(acs_wide)
+```
+
+## Part 4: Produce the map, tables, uncertainty check, and CSV file
+
+### This chunk produces all the main assignment outputs:
+
+-   A choropleth map of median household income
+
+-   The ten counties with the highest poverty rates
+
+-   The ten counties with the lowest poverty rates
+
+-   Poverty-rate margins of error
+
+-   Confidence-interval limits for evaluating the rankings
+
+-   A CSV file containing the completed ACS dataset
+
+```{r}
+
+# Create a choropleth map of median household income
+ggplot(acs_wide) +
+    geom_sf(
+        aes(fill = incomeE), # Fill each county according to its income estimate
+        color = NA           # Remove county-border lines
+    ) +
+    scale_fill_viridis_c(
+        name = "Median HH Income", # Give the map legend a clear title
+        labels = scales::label_dollar()
+    ) +
+    labs(
+        title = paste0(
+            "ACS ", year_acs,
+            " 5-year: Median Income — ",
+            state_abbr, " (", geo_level, ")"
+        ),
+        caption = "Source: U.S. Census Bureau via tidycensus"
+    ) +
+    theme_minimal() +
+    theme(
+        text = element_text(family = "Palatino"), # Drop family if unavailable
+        plot.title = element_text(size = 14, face = "bold"),
+        plot.caption = element_text(size = 8),
+        legend.position = "inside",
+        legend.position.inside = c(0.2, 0.15)
+    )
+
+
+# Create a table of the 10 counties with the highest poverty rates
+top10 <- acs_wide |>
+    st_drop_geometry() |>            # Remove geometry because it is not needed
+    arrange(desc(pov_rate)) |>       # Sort from highest to lowest poverty rate
+    select(
+        NAME,
+        pov_rate,
+        pov_moe,
+        povE,
+        povM
+    ) |>
+    slice_head(n = 10)               # Keep the first 10 counties
+
+
+# Create a table of the 10 counties with the lowest poverty rates
+bottom10 <- acs_wide |>
+    st_drop_geometry() |>            # Remove geometry because it is not needed
+    arrange(pov_rate) |>             # Sort from lowest to highest poverty rate
+    select(
+        NAME,
+        pov_rate,
+        pov_moe,
+        povE,
+        povM
+    ) |>
+    slice_head(n = 10)               # Keep the first 10 counties
+
+
+# Display the two tables
+top10
+bottom10
+
+
+# Add confidence-interval limits to help check uncertainty in the rankings
+ranked_areas <- bind_rows(
+    top10 |> mutate(table_group = "Highest poverty rates"),
+    bottom10 |> mutate(table_group = "Lowest poverty rates")
+) |>
+    mutate(
+        pov_lower = pmax(0, pov_rate - pov_moe), # Lower confidence limit
+        pov_upper = pmin(1, pov_rate + pov_moe)  # Upper confidence limit
+    ) |>
+    select(
+        table_group,
+        NAME,
+        pov_rate,
+        pov_moe,
+        pov_lower,
+        pov_upper
+    )
+
+# Display rates, MOEs, and confidence-interval limits
+ranked_areas
+
+
+# Save the completed nonspatial data as a CSV file
+write_csv(
+    st_drop_geometry(acs_wide),
+    paste0("acs_", state_abbr, "_", year_acs, ".csv")
+)
+```
+
+## 4(a) Map Interpretation
+
+The map shows substantial variation in median household income across Texas counties. Higher-income counties appear primarily around major metropolitan areas, especially the Dallas–Fort Worth, Austin, and Houston regions. Many counties in South Texas, along the Rio Grande border, and in parts of West Texas have lower median household incomes. Overall, the pattern suggests that counties near large urban economies tend to have higher household incomes than many rural and border counties.
+
+## 4(b) Table Interpretation
+
+The highest estimated poverty rate is in Dimmit County at approximately 41.1%, followed by Zapata County at 38.4% and Zavala County at 33.9%. Many counties in the highest-poverty group are located in South Texas or near the Texas–Mexico border. In contrast, Rockwall County has the lowest estimated poverty rate at approximately 4.0%, followed by Sterling County at 4.3% and Sutton County at 4.5%. The margins of error vary substantially across counties, meaning the estimated ordering should be interpreted cautiously, particularly for counties with relatively large margins of error.\
+
+## 4(c) Uncertainty Check
+
+Dimmit County and Zapata County provide one clear example of overlapping confidence intervals.
+
+-    Dimmit County: estimated poverty rate = 41.1%, MOE = 8.9 percentage points, interval = 32.2%–50.0%.
+
+-    Zapata County: estimated poverty rate = 38.4%, MOE = 6.0 percentage points, interval = 32.4%–44.4%.
+
+The two intervals overlap substantially. Therefore, although Dimmit County is ranked above Zapata County based on the point estimates, the data do not provide strong evidence that Dimmit County’s true poverty rate is higher. Sampling uncertainty could reverse or eliminate the apparent difference. The ranking should consequently be treated as descriptive rather than as a definitive ordering of the counties.
+
+## 4(d) Methods Note
+
+This analysis uses 2024 American Community Survey five-year estimates for Texas counties. Counties were selected because they provide meaningful geographic comparisons while remaining readable on a statewide map. Median household income (`B19013_001`) was mapped to show the geographic distribution of economic resources. Poverty was measured using the population below the poverty level (`B17001_002`) divided by the population for whom poverty status was determined (`B17001_001`). Using a rate instead of a raw count prevents counties with larger populations from appearing more disadvantaged simply because they contain more residents. I retained the ACS margins of error and used `moe_prop()` to propagate uncertainty into the calculated poverty rate. The margins of error show that some county estimates are much less precise than others. Several confidence intervals overlap, so small differences between counties should not be interpreted as definitive differences in their true poverty rates. Consequently, the top-and-bottom rankings are descriptive and should be interpreted cautiously.

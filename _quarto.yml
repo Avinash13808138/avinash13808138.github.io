@@ -39,6 +39,10 @@ website:
 
           - href: assign02.qmd
             text: "Assignment 2 - Google Trends Analysis"
+            
+          - href: Assignment 3.qmd
+            text: "Assignment 3 - ACS via tidycensus"
+            
 format:
   html:
     theme:
