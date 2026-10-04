@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Avinash Singh">
+
+<title>Assignment 4: Web Scraping – avinash13808138.github.io</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">avinash13808138.github.io</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Avinash_Singh_Resume.pdf"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment01.pdf">
+ <span class="dropdown-text">Assignment 1 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./assign01.html">
+ <span class="dropdown-text">Assignment 1 - Website Design Note</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment02.pdf">
+ <span class="dropdown-text">Assignment 2 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment_2_Notes.html">
+ <span class="dropdown-text">Assignment 2 - Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./assign02.html">
+ <span class="dropdown-text">Assignment 2 - Google Trends Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment03.pdf">
+ <span class="dropdown-text">Assignment 3 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment 3.html">
+ <span class="dropdown-text">Assignment 3 - ACS via tidycensus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment04.pdf">
+ <span class="dropdown-text">epps6302_assignment04 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment 04_Data Plan.html">
+ <span class="dropdown-text">Assignment 04_Data Plan</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment04.html">
+ <span class="dropdown-text">Assignment04</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-0-ask-permission-first" id="toc-part-0-ask-permission-first" class="nav-link active" data-scroll-target="#part-0-ask-permission-first">Part 0: Ask permission first</a></li>
+  <li><a href="#part-1-practice-scraping-books-to-scrape" id="toc-part-1-practice-scraping-books-to-scrape" class="nav-link" data-scroll-target="#part-1-practice-scraping-books-to-scrape">Part 1: Practice scraping Books to Scrape</a>
+  <ul class="collapse">
+  <li><a href="#part-1a-run-the-sample-against-the-practice-website" id="toc-part-1a-run-the-sample-against-the-practice-website" class="nav-link" data-scroll-target="#part-1a-run-the-sample-against-the-practice-website">Part 1(a): Run the sample against the practice website</a></li>
+  <li><a href="#part-1b-extract-titles-prices-and-ratings-from-five-pages" id="toc-part-1b-extract-titles-prices-and-ratings-from-five-pages" class="nav-link" data-scroll-target="#part-1b-extract-titles-prices-and-ratings-from-five-pages">Part 1(b): Extract titles, prices, and ratings from five pages</a></li>
+  </ul></li>
+  <li><a href="#extracting-title-price-and-rating-and-binding-the-scraped-data-from-the-first-5-pages-into-one-data-frame." id="toc-extracting-title-price-and-rating-and-binding-the-scraped-data-from-the-first-5-pages-into-one-data-frame." class="nav-link" data-scroll-target="#extracting-title-price-and-rating-and-binding-the-scraped-data-from-the-first-5-pages-into-one-data-frame.">Extracting title, price, and rating and binding the scraped data from the first 5 pages into one data frame.</a></li>
+  <li><a href="#part-2-scrape-and-clean-wikipedia-tables" id="toc-part-2-scrape-and-clean-wikipedia-tables" class="nav-link" data-scroll-target="#part-2-scrape-and-clean-wikipedia-tables">Part 2: Scrape and clean Wikipedia tables</a>
+  <ul class="collapse">
+  <li><a href="#part-2a-scrape-the-foreign-exchange-reserves-table" id="toc-part-2a-scrape-the-foreign-exchange-reserves-table" class="nav-link" data-scroll-target="#part-2a-scrape-the-foreign-exchange-reserves-table">Part 2(a): Scrape the foreign-exchange reserves table</a></li>
+  <li><a href="#part-2b-scrape-a-different-table-and-explain-what-changed" id="toc-part-2b-scrape-a-different-table-and-explain-what-changed" class="nav-link" data-scroll-target="#part-2b-scrape-a-different-table-and-explain-what-changed">Part 2(b): Scrape a different table and explain what changed</a></li>
+  <li><a href="#part-2c-clean-the-dataframes" id="toc-part-2c-clean-the-dataframes" class="nav-link" data-scroll-target="#part-2c-clean-the-dataframes">Part 2(c): Clean the dataframes</a></li>
+  </ul></li>
+  <li><a href="#part-3-fetch-the-same-quantity-through-an-api" id="toc-part-3-fetch-the-same-quantity-through-an-api" class="nav-link" data-scroll-target="#part-3-fetch-the-same-quantity-through-an-api">Part 3: Fetch the same quantity through an API</a></li>
+  <li><a href="#obtaining-reserves-through-a-structured-data-interface-and-comparing-them-with-the-scraped-wikipedia-figures." id="toc-obtaining-reserves-through-a-structured-data-interface-and-comparing-them-with-the-scraped-wikipedia-figures." class="nav-link" data-scroll-target="#obtaining-reserves-through-a-structured-data-interface-and-comparing-them-with-the-scraped-wikipedia-figures.">Obtaining reserves through a structured data interface and comparing them with the scraped Wikipedia figures.</a>
+  <ul class="collapse">
+  <li><a href="#part-3a-fetch-world-bank-reserves" id="toc-part-3a-fetch-world-bank-reserves" class="nav-link" data-scroll-target="#part-3a-fetch-world-bank-reserves">Part 3(a): Fetch World Bank reserves</a></li>
+  <li><a href="#part-3b-which-countries-differ-why-and-which-vintage" id="toc-part-3b-which-countries-differ-why-and-which-vintage" class="nav-link" data-scroll-target="#part-3b-which-countries-differ-why-and-which-vintage">Part 3(b): Which countries differ, why, and which vintage?</a></li>
+  <li><a href="#part-3c-when-is-scraping-the-right-tool" id="toc-part-3c-when-is-scraping-the-right-tool" class="nav-link" data-scroll-target="#part-3c-when-is-scraping-the-right-tool">Part 3(c): When is scraping the right tool?</a></li>
+  </ul></li>
+  <li><a href="#fetch-total-reserves-from-the-world-bank-using-one-wdi-call." id="toc-fetch-total-reserves-from-the-world-bank-using-one-wdi-call." class="nav-link" data-scroll-target="#fetch-total-reserves-from-the-world-bank-using-one-wdi-call.">Fetch total reserves from the World Bank using one <code>WDI()</code> call.</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Assignment 4: Web Scraping</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Avinash Singh </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<pre><code></code></pre>
+<section id="part-0-ask-permission-first" class="level2">
+<h2 class="anchored" data-anchor-id="part-0-ask-permission-first">Part 0: Ask permission first</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check permission before scraping the Wikipedia page</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wiki_url <span class="ot">&lt;-</span> <span class="st">"https://en.wikipedia.org/wiki/List_of_countries_by_foreign-exchange_reserves"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wiki_allowed <span class="ot">&lt;-</span> robotstxt<span class="sc">::</span><span class="fu">paths_allowed</span>(wiki_url)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>wiki_allowed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check permission before scraping the practice page</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>books_url <span class="ot">&lt;-</span> <span class="st">"https://books.toscrape.com/catalogue/page-1.html"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>books_allowed <span class="ot">&lt;-</span> robotstxt<span class="sc">::</span><span class="fu">paths_allowed</span>(books_url)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>books_allowed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="part-1-practice-scraping-books-to-scrape" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-practice-scraping-books-to-scrape">Part 1: Practice scraping Books to Scrape</h2>
+<p>Turning information displayed on five webpages into one structured dataframe. Each row represents one book listing.</p>
+<section id="part-1a-run-the-sample-against-the-practice-website" class="level3">
+<h3 class="anchored" data-anchor-id="part-1a-run-the-sample-against-the-practice-website">Part 1(a): Run the sample against the practice website</h3>
+<ul>
+<li><p>Books to Scrape is designed for scraping practice.</p></li>
+<li><p>Its static HTML lets us practice extracting information without needing JavaScript tools.</p></li>
+<li><p>We first read page 1 and inspect the extracted results before repeating the process across more pages.</p></li>
+</ul>
+</section>
+<section id="part-1b-extract-titles-prices-and-ratings-from-five-pages" class="level3">
+<h3 class="anchored" data-anchor-id="part-1b-extract-titles-prices-and-ratings-from-five-pages">Part 1(b): Extract titles, prices, and ratings from five pages</h3>
+<ul>
+<li><p>We extract each book’s <strong>title, price, and star rating</strong>.</p></li>
+<li><p>We convert the price text into a numeric variable called <code>price_gbp</code>.</p></li>
+<li><p>We repeat the extraction for pages 2–5 and reuse the page 1 results.</p></li>
+<li><p>We combine the five page-level dataframes into <code>books_all</code>.</p></li>
+<li><p>The expected result is <strong>100 book listings</strong>, with 20 listings from each page.</p></li>
+<li><p>The additional <code>page</code> column records where each listing came from.</p></li>
+</ul>
+</section>
+</section>
+<section id="extracting-title-price-and-rating-and-binding-the-scraped-data-from-the-first-5-pages-into-one-data-frame." class="level2">
+<h2 class="anchored" data-anchor-id="extracting-title-price-and-rating-and-binding-the-scraped-data-from-the-first-5-pages-into-one-data-frame.">Extracting title, price, and rating and binding the scraped data from the first 5 pages into one data frame.</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- 1. The sandbox: books.toscrape.com ------------------------------------</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Built and published for scraping practice. 1,000 books, 50 pages, no</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">## JavaScript. Learn the verbs here before you point them at anyone's server.</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the first page of book listings</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>books_pg <span class="ot">&lt;-</span> <span class="fu">read_html</span>(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://books.toscrape.com/catalogue/page-1.html"</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">title  =</span> books_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"article.product_pod h3 a"</span>) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"title"</span>),</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">price  =</span> books_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"article.product_pod p.price_color"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>(),</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">rating =</span> books_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"article.product_pod p.star-rating"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>             <span class="fu">html_attr</span>(<span class="st">"class"</span>) <span class="sc">|&gt;</span> <span class="fu">str_remove</span>(<span class="st">"star-rating "</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">price_gbp =</span> <span class="fu">parse_number</span>(price))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(books)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  title                                 price  rating price_gbp
+  &lt;chr&gt;                                 &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;
+1 A Light in the Attic                  £51.77 Three       51.8
+2 Tipping the Velvet                    £53.74 One         53.7
+3 Soumission                            £50.10 One         50.1
+4 Sharp Objects                         £47.82 Four        47.8
+5 Sapiens: A Brief History of Humankind £54.23 Five        54.2
+6 The Requiem Red                       £22.65 One         22.7</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of rows and columns</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(books)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20  4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Column names and data types</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(books)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 20
+Columns: 4
+$ title     &lt;chr&gt; "A Light in the Attic", "Tipping the Velvet", "Soumission", …
+$ price     &lt;chr&gt; "£51.77", "£53.74", "£50.10", "£47.82", "£54.23", "£22.65", …
+$ rating    &lt;chr&gt; "Three", "One", "One", "Four", "Five", "One", "Four", "Three…
+$ price_gbp &lt;dbl&gt; 51.77, 53.74, 50.10, 47.82, 54.23, 22.65, 33.34, 17.93, 22.6…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ----Creating URLs for five pages -----------------------------------------------</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>books_urls <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://books.toscrape.com/catalogue/page-"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                     <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="st">".html"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>books_urls</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "https://books.toscrape.com/catalogue/page-1.html"
+[2] "https://books.toscrape.com/catalogue/page-2.html"
+[3] "https://books.toscrape.com/catalogue/page-3.html"
+[4] "https://books.toscrape.com/catalogue/page-4.html"
+[5] "https://books.toscrape.com/catalogue/page-5.html"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Ask permission before fetching ------------------------------------</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>books_allowed <span class="ot">&lt;-</span> robotstxt<span class="sc">::</span><span class="fu">paths_allowed</span>(books_urls)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>books_allowed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE TRUE TRUE TRUE TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(books_allowed <span class="sc">%in%</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Permission was not confirmed for every page."</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Extract five pages ------------------------------------------------</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>books_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Page 1 was already scraped</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>books_list[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> books <span class="sc">|&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">page =</span> <span class="dv">1</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Scrape pages 2 through 5</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">1</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  books_pg <span class="ot">&lt;-</span> <span class="fu">read_html</span>(books_urls[i])</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  books_page <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">title  =</span> books_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"article.product_pod h3 a"</span>) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"title"</span>),</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">price  =</span> books_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"article.product_pod p.price_color"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>(),</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">rating =</span> books_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"article.product_pod p.star-rating"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>               <span class="fu">html_attr</span>(<span class="st">"class"</span>) <span class="sc">|&gt;</span> <span class="fu">str_remove</span>(<span class="st">"star-rating "</span>)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">price_gbp =</span> <span class="fu">parse_number</span>(price),</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">page =</span> i)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>  books_list[[i]] <span class="ot">&lt;-</span> books_page</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Combine the pages -----------------------------------------------</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>books_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(books_list)</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(books_all)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  title                                 price  rating price_gbp  page
+  &lt;chr&gt;                                 &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;
+1 A Light in the Attic                  £51.77 Three       51.8     1
+2 Tipping the Velvet                    £53.74 One         53.7     1
+3 Soumission                            £50.10 One         50.1     1
+4 Sharp Objects                         £47.82 Four        47.8     1
+5 Sapiens: A Brief History of Humankind £54.23 Five        54.2     1
+6 The Requiem Red                       £22.65 One         22.7     1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Inspect the results ----------------------------------------------</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(books_all)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100   5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(books_all)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 100
+Columns: 5
+$ title     &lt;chr&gt; "A Light in the Attic", "Tipping the Velvet", "Soumission", …
+$ price     &lt;chr&gt; "£51.77", "£53.74", "£50.10", "£47.82", "£54.23", "£22.65", …
+$ rating    &lt;chr&gt; "Three", "One", "One", "Four", "Five", "One", "Four", "Three…
+$ price_gbp &lt;dbl&gt; 51.77, 53.74, 50.10, 47.82, 54.23, 22.65, 33.34, 17.93, 22.6…
+$ page      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>books_all <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(page)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+   page     n
+  &lt;dbl&gt; &lt;int&gt;
+1     1    20
+2     2    20
+3     3    20
+4     4    20
+5     5    20</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(books_all))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    title     price    rating price_gbp      page 
+        0         0         0         0         0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Cache what you pulled --------------------------------------------</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(books_all, <span class="fu">paste0</span>(<span class="st">"books_five_pages_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="part-2-scrape-and-clean-wikipedia-tables" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-scrape-and-clean-wikipedia-tables">Part 2: Scrape and clean Wikipedia tables</h2>
+<p>Extracting tables from a real website, adapting the program to another table, and cleaning the results into usable dataframes.</p>
+<section id="part-2a-scrape-the-foreign-exchange-reserves-table" class="level3">
+<h3 class="anchored" data-anchor-id="part-2a-scrape-the-foreign-exchange-reserves-table">Part 2(a): Scrape the foreign-exchange reserves table</h3>
+<ul>
+<li><p>We checked the page’s robots rules before fetching it.</p></li>
+<li><p>We inspected the candidate tables and extracted the reserves table.</p></li>
+<li><p>We identified the <strong>including-gold amount</strong> column: <code>foreign_exchange_reserves</code>.</p></li>
+<li><p>Its unit is <strong>US$ millions</strong>.</p></li>
+<li><p>We retained the country, reserves amount, and reporting date.</p></li>
+</ul>
+</section>
+<section id="part-2b-scrape-a-different-table-and-explain-what-changed" class="level3">
+<h3 class="anchored" data-anchor-id="part-2b-scrape-a-different-table-and-explain-what-changed">Part 2(b): Scrape a different table and explain what changed</h3>
+<ul>
+<li><p>We changed the target to Wikipedia’s <strong>countries-and-dependencies population table</strong>.</p></li>
+<li><p>The country column changed from <code>country_as_recognized_by_the_un</code> to <code>location</code>.</p></li>
+<li><p>The amount column changed from <code>foreign_exchange_reserves</code> to <code>population</code>.</p></li>
+<li><p>The reporting-date column changed from <code>last_reporteddate</code> to <code>date</code>.</p></li>
+<li><p>Therefore, the column-selection code needed changing.</p></li>
+<li><p>The reserves table contained two additional header rows that needed removal.</p></li>
+<li><p>Both tables used day–month–year dates, so the same date-conversion function worked for both.</p></li>
+</ul>
+<p><strong>What broke and why:</strong> Column-specific code cannot automatically transfer between tables with different names. The placeholder errors we encountered were caused by unreplaced example names; they were not evidence that Wikipedia had changed its page.</p>
+</section>
+<section id="part-2c-clean-the-dataframes" class="level3">
+<h3 class="anchored" data-anchor-id="part-2c-clean-the-dataframes">Part 2(c): Clean the dataframes</h3>
+<ul>
+<li><p>Standardized column names.</p></li>
+<li><p>Removed bracketed footnotes, thin spaces, nonbreaking spaces, and extra whitespace.</p></li>
+<li><p>Removed unnecessary columns.</p></li>
+<li><p>Removed repeated country headers and any Total or World rows.</p></li>
+<li><p>Converted reserve amounts and population counts into numbers.</p></li>
+<li><p>Converted reporting dates into R dates.</p></li>
+<li><p>Preserved the original amount and date text to check conversions.</p></li>
+<li><p>Added checks to identify missing or unsuccessfully converted values.</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(robotstxt)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">## --- 2a. The Wikipedia Foreign Exchange reserves tabl-------------------------------------</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>wiki_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://en.wikipedia.org/wiki/"</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"List_of_countries_by_foreign-exchange_reserves"</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Ask permission before fetching the page.</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>wiki_allowed <span class="ot">&lt;-</span> robotstxt<span class="sc">::</span><span class="fu">paths_allowed</span>(wiki_url)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>wiki_allowed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">isTRUE</span>(wiki_allowed)) {</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Permission was not confirmed."</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>wiki_pg <span class="ot">&lt;-</span> <span class="fu">read_html</span>(wiki_url)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Never assume the table you want is [[1]]. Look first.</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>tabs <span class="ot">&lt;-</span> wiki_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"table.wikitable"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(tabs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>tabs <span class="sc">|&gt;</span> <span class="fu">html_table</span>() <span class="sc">|&gt;</span> <span class="fu">lapply</span>(\(x) <span class="fu">dim</span>(x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 198   8
+
+[[2]]
+[1] 28 13</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>reserves_raw <span class="ot">&lt;-</span> tabs[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">html_table</span>()</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(reserves_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 198
+Columns: 8
+$ `Country(as recognized by the UN)` &lt;chr&gt; "Country(as recognized by the UN)",…
+$ Continent                          &lt;chr&gt; "Continent", "Continent", "Asia", "…
+$ `Foreign exchange reserves`        &lt;chr&gt; "Including gold", "US$ million", "3…
+$ `Foreign exchange reserves`        &lt;chr&gt; "Including gold", "Change", "4,299"…
+$ `Foreign exchange reserves`        &lt;chr&gt; "Excluding gold", "US$ million", "3…
+$ `Foreign exchange reserves`        &lt;chr&gt; "Excluding gold", "Change", "115,49…
+$ `Last reporteddate`                &lt;chr&gt; "Last reporteddate", "Last reported…
+$ Ref.                               &lt;chr&gt; "Ref.", "Ref.", "[3]", "[4]", "[5]"…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  Country(as recognize…¹ Continent Foreign exchange res…² Foreign exchange res…³
+  &lt;chr&gt;                  &lt;chr&gt;     &lt;chr&gt;                  &lt;chr&gt;                 
+1 Country(as recognized… Continent Including gold         Including gold        
+2 Country(as recognized… Continent US$ million            Change                
+3 China                  Asia      3,854,885              4,299                 
+4 Japan                  Asia      1,287,470              18,400                
+5 Switzerland            Europe    939,140                13,935                
+6 India                  Asia      785,710                45,290                
+# ℹ abbreviated names: ¹​`Country(as recognized by the UN)`,
+#   ²​`Foreign exchange reserves`, ³​`Foreign exchange reserves`
+# ℹ 4 more variables: `Foreign exchange reserves` &lt;chr&gt;,
+#   `Foreign exchange reserves` &lt;chr&gt;, `Last reporteddate` &lt;chr&gt;, Ref. &lt;chr&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- 2c. Clean names, footnotes and spaces --------------------------------</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>reserves_text <span class="ot">&lt;-</span> reserves_raw <span class="sc">|&gt;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character),</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> .x <span class="sc">|&gt;</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_remove_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[.*?</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span>   <span class="co"># [1], [note 2]</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_replace_all</span>(<span class="st">"[\u2009\u202F\u00A0]"</span>, <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_squish</span>()))</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(reserves_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "country_as_recognized_by_the_un" "continent"                      
+[3] "foreign_exchange_reserves"       "foreign_exchange_reserves_2"    
+[5] "foreign_exchange_reserves_3"     "foreign_exchange_reserves_4"    
+[7] "last_reporteddate"               "ref"                            </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  country_as_recognize…¹ continent foreign_exchange_res…² foreign_exchange_res…³
+  &lt;chr&gt;                  &lt;chr&gt;     &lt;chr&gt;                  &lt;chr&gt;                 
+1 Country(as recognized… Continent Including gold         Including gold        
+2 Country(as recognized… Continent US$ million            Change                
+3 China                  Asia      3,854,885              4,299                 
+4 Japan                  Asia      1,287,470              18,400                
+5 Switzerland            Europe    939,140                13,935                
+6 India                  Asia      785,710                45,290                
+# ℹ abbreviated names: ¹​country_as_recognized_by_the_un,
+#   ²​foreign_exchange_reserves, ³​foreign_exchange_reserves_2
+# ℹ 4 more variables: foreign_exchange_reserves_3 &lt;chr&gt;,
+#   foreign_exchange_reserves_4 &lt;chr&gt;, last_reporteddate &lt;chr&gt;, ref &lt;chr&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Keep and clean the required reserves columns -------------------------</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>reserves <span class="ot">&lt;-</span> reserves_text <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">country =</span> country_as_recognized_by_the_un,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">reserves_text =</span> foreign_exchange_reserves,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">date_text =</span> last_reporteddate) <span class="sc">|&gt;</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(country),</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>         country <span class="sc">!=</span> <span class="st">""</span>,</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(country,</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">regex</span>(<span class="st">"^(total|world)</span><span class="sc">\\</span><span class="st">b"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(country,</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">regex</span>(<span class="st">"^country</span><span class="sc">\\</span><span class="st">b"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">reserves_usd_million =</span> reserves_text <span class="sc">|&gt;</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">str_remove_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>           <span class="fu">parse_number</span>(),</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">date =</span> lubridate<span class="sc">::</span><span class="fu">dmy</span>(date_text))</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  country     reserves_text date_text         reserves_usd_million date      
+  &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;                            &lt;dbl&gt; &lt;date&gt;    
+1 China       3,854,885     1 August 2026                  3854885 2026-08-01
+2 Japan       1,287,470     30 June 2026                   1287470 2026-06-30
+3 Switzerland 939,140       30 June 2026                    939140 2026-06-30
+4 India       785,710       04 September 2026               785710 2026-09-04
+5 Russia      761,200       21 August 2026                  761200 2026-08-21
+6 Taiwan      597,150       30 June 2026                    597150 2026-06-30</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(reserves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 196
+Columns: 5
+$ country              &lt;chr&gt; "China", "Japan", "Switzerland", "India", "Russia…
+$ reserves_text        &lt;chr&gt; "3,854,885", "1,287,470", "939,140", "785,710", "…
+$ date_text            &lt;chr&gt; "1 August 2026", "30 June 2026", "30 June 2026", …
+$ reserves_usd_million &lt;dbl&gt; 3854885, 1287470, 939140, 785710, 761200, 597150,…
+$ date                 &lt;date&gt; 2026-08-01, 2026-06-30, 2026-06-30, 2026-09-04, …</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- 2b. A different Wikipedia table-- Population Table -------------------------------------</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>population_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://en.wikipedia.org/wiki/"</span>,</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"List_of_countries_and_dependencies_by_population"</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>population_allowed <span class="ot">&lt;-</span> robotstxt<span class="sc">::</span><span class="fu">paths_allowed</span>(population_url)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>population_allowed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">isTRUE</span>(population_allowed)) {</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Permission was not confirmed."</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>population_pg <span class="ot">&lt;-</span> <span class="fu">read_html</span>(population_url)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Inspect candidate tables before selecting one.</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>population_tabs <span class="ot">&lt;-</span> population_pg <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"table.wikitable"</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(population_tabs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>population_tabs <span class="sc">|&gt;</span> <span class="fu">html_table</span>() <span class="sc">|&gt;</span> <span class="fu">lapply</span>(\(x) <span class="fu">dim</span>(x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 240   6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>population_raw <span class="ot">&lt;-</span> population_tabs[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">html_table</span>()</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(population_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 240
+Columns: 6
+$ Location                                      &lt;chr&gt; "World", "India", "China…
+$ Population                                    &lt;chr&gt; "8,232,000,000", "1,429,…
+$ `% ofworld`                                   &lt;chr&gt; "100%", "17.3%", "17.0%"…
+$ Date                                          &lt;chr&gt; "13 Jun 2025", "1 Jul 20…
+$ `Source (official or fromthe United Nations)` &lt;chr&gt; "UN projection[1][3]", "…
+$ Notes                                         &lt;chr&gt; "", "[b]", "[c]", "[d]",…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(population_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  Location      Population    `% ofworld` Date      Source (official or …¹ Notes
+  &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                  &lt;chr&gt;
+1 World         8,232,000,000 100%        13 Jun 2… UN projection[1][3]    ""   
+2 India         1,429,404,000 17.3%       1 Jul 20… Official projection[4] "[b]"
+3 China         1,404,890,000 17.0%       31 Dec 2… Official estimate[5]   "[c]"
+4 United States 341,784,857   4.1%        1 Jul 20… Official estimate[6]   "[d]"
+5 Indonesia     288,315,089   3.5%        31 Dec 2… National annual proje… ""   
+6 Pakistan      241,499,431   2.9%        1 Mar 20… 2023 census result[8]  "[e]"
+# ℹ abbreviated name: ¹​`Source (official or fromthe United Nations)`</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Clean the population table ------------------------------------------</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>population_text <span class="ot">&lt;-</span> population_raw <span class="sc">|&gt;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character),</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> .x <span class="sc">|&gt;</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_remove_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[.*?</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_replace_all</span>(<span class="st">"[\u2009\u202F\u00A0]"</span>, <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_squish</span>()))</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(population_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "location"                                 
+[2] "population"                               
+[3] "percent_ofworld"                          
+[4] "date"                                     
+[5] "source_official_or_fromthe_united_nations"
+[6] "notes"                                    </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(population_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  location      population    percent_ofworld date  source_official_or_f…¹ notes
+  &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt;                  &lt;chr&gt;
+1 World         8,232,000,000 100%            13 J… UN projection          ""   
+2 India         1,429,404,000 17.3%           1 Ju… Official projection    ""   
+3 China         1,404,890,000 17.0%           31 D… Official estimate      ""   
+4 United States 341,784,857   4.1%            1 Ju… Official estimate      ""   
+5 Indonesia     288,315,089   3.5%            31 D… National annual proje… ""   
+6 Pakistan      241,499,431   2.9%            1 Ma… 2023 census result     ""   
+# ℹ abbreviated name: ¹​source_official_or_fromthe_united_nations</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Inspect population column names and values ---------------------------</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(population_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "location"                                 
+[2] "population"                               
+[3] "percent_ofworld"                          
+[4] "date"                                     
+[5] "source_official_or_fromthe_united_nations"
+[6] "notes"                                    </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(population_text) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  location      population    percent_ofworld date       
+  &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;      
+1 World         8,232,000,000 100%            13 Jun 2025
+2 India         1,429,404,000 17.3%           1 Jul 2026 
+3 China         1,404,890,000 17.0%           31 Dec 2025
+4 United States 341,784,857   4.1%            1 Jul 2025 
+5 Indonesia     288,315,089   3.5%            31 Dec 2025
+6 Pakistan      241,499,431   2.9%            1 Mar 2023 
+  source_official_or_fromthe_united_nations notes
+  &lt;chr&gt;                                     &lt;chr&gt;
+1 UN projection                             ""   
+2 Official projection                       ""   
+3 Official estimate                         ""   
+4 Official estimate                         ""   
+5 National annual projection                ""   
+6 2023 census result                        ""   </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Keep the required population columns --------------------------------</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> population_text <span class="sc">|&gt;</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">country =</span> location,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">population_text =</span> population,</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">date_text =</span> date) <span class="sc">|&gt;</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(country),</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>         country <span class="sc">!=</span> <span class="st">""</span>,</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(country,</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">regex</span>(<span class="st">"^(total|world)</span><span class="sc">\\</span><span class="st">b"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(country,</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">regex</span>(<span class="st">"^country(</span><span class="sc">\\</span><span class="st">s|$)"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">population_value =</span> population_text <span class="sc">|&gt;</span></span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">str_remove_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>           <span class="fu">parse_number</span>(),</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">date =</span> lubridate<span class="sc">::</span><span class="fu">dmy</span>(date_text))</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(population)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  country       population_text date_text   population_value date      
+  &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;                  &lt;dbl&gt; &lt;date&gt;    
+1 India         1,429,404,000   1 Jul 2026        1429404000 2026-07-01
+2 China         1,404,890,000   31 Dec 2025       1404890000 2025-12-31
+3 United States 341,784,857     1 Jul 2025         341784857 2025-07-01
+4 Indonesia     288,315,089     31 Dec 2025        288315089 2025-12-31
+5 Pakistan      241,499,431     1 Mar 2023         241499431 2023-03-01
+6 Nigeria       223,800,000     1 Jul 2023         223800000 2023-07-01</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(population)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 239
+Columns: 5
+$ country          &lt;chr&gt; "India", "China", "United States", "Indonesia", "Paki…
+$ population_text  &lt;chr&gt; "1,429,404,000", "1,404,890,000", "341,784,857", "288…
+$ date_text        &lt;chr&gt; "1 Jul 2026", "31 Dec 2025", "1 Jul 2025", "31 Dec 20…
+$ population_value &lt;dbl&gt; 1429404000, 1404890000, 341784857, 288315089, 2414994…
+$ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 2023…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Check the cleaned dataframes ----------------------------------------</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(reserves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 196
+Columns: 5
+$ country              &lt;chr&gt; "China", "Japan", "Switzerland", "India", "Russia…
+$ reserves_text        &lt;chr&gt; "3,854,885", "1,287,470", "939,140", "785,710", "…
+$ date_text            &lt;chr&gt; "1 August 2026", "30 June 2026", "30 June 2026", …
+$ reserves_usd_million &lt;dbl&gt; 3854885, 1287470, 939140, 785710, 761200, 597150,…
+$ date                 &lt;date&gt; 2026-08-01, 2026-06-30, 2026-06-30, 2026-09-04, …</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(reserves))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             country        reserves_text            date_text 
+                   0                    0                    0 
+reserves_usd_million                 date 
+                   0                    1 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(population)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 239
+Columns: 5
+$ country          &lt;chr&gt; "India", "China", "United States", "Indonesia", "Paki…
+$ population_text  &lt;chr&gt; "1,429,404,000", "1,404,890,000", "341,784,857", "288…
+$ date_text        &lt;chr&gt; "1 Jul 2026", "31 Dec 2025", "1 Jul 2025", "31 Dec 20…
+$ population_value &lt;dbl&gt; 1429404000, 1404890000, 341784857, 288315089, 2414994…
+$ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 2023…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(population))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         country  population_text        date_text population_value 
+               0                0                0                0 
+            date 
+              10 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Inspect unsuccessful conversions ------------------------------------</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>reserves <span class="sc">|&gt;</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(reserves_usd_million) <span class="sc">|</span> <span class="fu">is.na</span>(date)) <span class="sc">|&gt;</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, reserves_text, date_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  country reserves_text date_text  
+  &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;      
+1 Albania 5,290         31 Apr 2024</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>population <span class="sc">|&gt;</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(population_value) <span class="sc">|</span> <span class="fu">is.na</span>(date)) <span class="sc">|&gt;</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, population_text, date_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   country               population_text date_text
+   &lt;chr&gt;                 &lt;chr&gt;           &lt;chr&gt;    
+ 1 Thailand              70,250,751      2025     
+ 2 Lebanon               5,895,466       2026     
+ 3 Lesotho               2,116,427       2024     
+ 4 Comoros               944,388         2026     
+ 5 Bhutan                790,718         2026     
+ 6 São Tomé and Príncipe 209,607         2024     
+ 7 Grenada               109,021         2021     
+ 8 Dominica              65,514          2026     
+ 9 Saint Kitts and Nevis 51,320          2022     
+10 Pitcairn Islands (UK) 35              2023     </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Cache what you pulled ----------------------------------------------</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(reserves, <span class="fu">paste0</span>(<span class="st">"reserves_wiki_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(population, <span class="fu">paste0</span>(<span class="st">"population_wiki_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_text) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  country_as_recognized_by_the_un  continent foreign_exchange_reserves
+  &lt;chr&gt;                            &lt;chr&gt;     &lt;chr&gt;                    
+1 Country(as recognized by the UN) Continent Including gold           
+2 Country(as recognized by the UN) Continent US$ million              
+3 China                            Asia      3,854,885                
+4 Japan                            Asia      1,287,470                
+5 Switzerland                      Europe    939,140                  
+6 India                            Asia      785,710                  
+  foreign_exchange_reserves_2 foreign_exchange_reserves_3
+  &lt;chr&gt;                       &lt;chr&gt;                      
+1 Including gold              Excluding gold             
+2 Change                      US$ million                
+3 4,299                       3,504,805                  
+4 18,400                      1,259,248                  
+5 13,935                      932,282                    
+6 45,290                      671,900                    
+  foreign_exchange_reserves_4 last_reporteddate ref   
+  &lt;chr&gt;                       &lt;chr&gt;             &lt;chr&gt; 
+1 Excluding gold              Last reporteddate "Ref."
+2 Change                      Last reporteddate "Ref."
+3 115,499                     1 August 2026     ""    
+4 16,230                      30 June 2026      ""    
+5 24,490                      30 June 2026      ""    
+6 56,790                      04 September 2026 ""    </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="part-3-fetch-the-same-quantity-through-an-api" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-fetch-the-same-quantity-through-an-api">Part 3: Fetch the same quantity through an API</h2>
+</section>
+<section id="obtaining-reserves-through-a-structured-data-interface-and-comparing-them-with-the-scraped-wikipedia-figures." class="level2">
+<h2 class="anchored" data-anchor-id="obtaining-reserves-through-a-structured-data-interface-and-comparing-them-with-the-scraped-wikipedia-figures.">Obtaining reserves through a structured data interface and comparing them with the scraped Wikipedia figures.</h2>
+<section id="part-3a-fetch-world-bank-reserves" class="level3">
+<h3 class="anchored" data-anchor-id="part-3a-fetch-world-bank-reserves">Part 3(a): Fetch World Bank reserves</h3>
+<ul>
+<li><p>We used the <code>WDI</code> package to request indicator <strong><code>FI.RES.TOTL.CD</code></strong>, total reserves including gold in current US dollars.</p></li>
+<li><p>One <code>WDI()</code> call requested observations for <strong>2015–2024</strong>.</p></li>
+<li><p>The results were stored in <code>reserves_api</code>.</p></li>
+<li><p>Each row represents a country or aggregate in one observation year.</p></li>
+</ul>
+</section>
+<section id="part-3b-which-countries-differ-why-and-which-vintage" class="level3">
+<h3 class="anchored" data-anchor-id="part-3b-which-countries-differ-why-and-which-vintage">Part 3(b): Which countries differ, why, and which vintage?</h3>
+<p><strong>All four countries displayed in your output differ:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Country</th>
+<th>Wikipedia, US$ millions</th>
+<th>World Bank, US$ millions*</th>
+<th>Wikipedia higher by</th>
+<th>Wikipedia reporting date</th>
+<th>World Bank year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>China</td>
+<td>3,854,885</td>
+<td>3,456,025</td>
+<td>11.5%</td>
+<td>August 1, 2026</td>
+<td>2024</td>
+</tr>
+<tr class="even">
+<td>Japan</td>
+<td>1,287,470</td>
+<td>1,230,667</td>
+<td>4.62%</td>
+<td>June 30, 2026</td>
+<td>2024</td>
+</tr>
+<tr class="odd">
+<td>Switzerland</td>
+<td>939,140</td>
+<td>909,366</td>
+<td>3.27%</td>
+<td>June 30, 2026</td>
+<td>2024</td>
+</tr>
+<tr class="even">
+<td>India</td>
+<td>785,710</td>
+<td>643,043</td>
+<td>22.2%</td>
+<td>September 4, 2026</td>
+<td>2024</td>
+</tr>
+</tbody>
+</table>
+<p><em>World Bank figures are rounded here to whole US$ millions.</em></p>
+<ul>
+<li><p><strong>Vintage:</strong> Wikipedia reports country-specific observations from 2026. The World Bank observations in this comparison are from 2024.</p></li>
+<li><p><strong>Why they differ:</strong> The sources describe different reporting periods. Reserve holdings, exchange rates, and gold valuations can change between those periods.</p></li>
+<li><p>Rounding, revisions, and methodological differences may also contribute, but the comparison does not establish their individual effects.</p></li>
+<li><p>Both amounts were converted to <strong>US$ millions</strong>, so the differences are not simply a dollars-versus-millions mismatch.</p></li>
+<li><p>India has the largest percentage difference among these four; China has the largest absolute difference.</p></li>
+<li><p>The World Bank request ended in 2024. This does <strong>not</strong> establish whether newer observations are available.</p></li>
+<li><p>These four countries are examples from our displayed output, not necessarily the complete list of differing countries.</p></li>
+</ul>
+</section>
+<section id="part-3c-when-is-scraping-the-right-tool" class="level3">
+<h3 class="anchored" data-anchor-id="part-3c-when-is-scraping-the-right-tool">Part 3(c): When is scraping the right tool?</h3>
+<p>Web scraping is the right tool when the required data are available on webpages but cannot be obtained through a suitable API, downloadable dataset, or bulk export. It should be used when the website’s robots rules and Terms of Service permit the intended collection, with reasonable request rates and checks to detect changes in the page structure.</p>
+</section>
+</section>
+<section id="fetch-total-reserves-from-the-world-bank-using-one-wdi-call." class="level2">
+<h2 class="anchored" data-anchor-id="fetch-total-reserves-from-the-world-bank-using-one-wdi-call.">Fetch total reserves from the World Bank using one <code>WDI()</code> call.</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- 3a. The same quantity, from an API ------------------------------------</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Foreign reserves are published by the World Bank as FI.RES.TOTL.CD,</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="do">## "Total reserves (includes gold, current US$)".</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WDI)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>reserves_api <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">"FI.RES.TOTL.CD"</span>,</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">start =</span> <span class="dv">2015</span>, <span class="at">end =</span> <span class="dv">2024</span>, <span class="at">extra =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_api)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      country iso2c iso3c year FI.RES.TOTL.CD status lastupdated
+1 Afghanistan    AF   AFG 2024             NA         2026-07-13
+2 Afghanistan    AF   AFG 2023             NA         2026-07-13
+3 Afghanistan    AF   AFG 2022             NA         2026-07-13
+4 Afghanistan    AF   AFG 2021             NA         2026-07-13
+5 Afghanistan    AF   AFG 2020     9748946327         2026-07-13
+6 Afghanistan    AF   AFG 2019     8497655795         2026-07-13
+                                             region capital longitude latitude
+1 Middle East, North Africa, Afghanistan &amp; Pakistan   Kabul   69.1761  34.5228
+2 Middle East, North Africa, Afghanistan &amp; Pakistan   Kabul   69.1761  34.5228
+3 Middle East, North Africa, Afghanistan &amp; Pakistan   Kabul   69.1761  34.5228
+4 Middle East, North Africa, Afghanistan &amp; Pakistan   Kabul   69.1761  34.5228
+5 Middle East, North Africa, Afghanistan &amp; Pakistan   Kabul   69.1761  34.5228
+6 Middle East, North Africa, Afghanistan &amp; Pakistan   Kabul   69.1761  34.5228
+      income lending
+1 Low income     IDA
+2 Low income     IDA
+3 Low income     IDA
+4 Low income     IDA
+5 Low income     IDA
+6 Low income     IDA</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- 3b. Prepare World Bank reserves for comparison ------------------------</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Keep countries and economies rather than regional aggregates.</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Convert current US dollars to US$ millions.</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>reserves_wb <span class="ot">&lt;-</span> reserves_api <span class="sc">|&gt;</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(region),</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>         region <span class="sc">!=</span> <span class="st">"Aggregates"</span>,</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(FI.RES.TOTL.CD)) <span class="sc">|&gt;</span></span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(iso2c) <span class="sc">|&gt;</span></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(year, <span class="at">n =</span> <span class="dv">1</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">country_wb =</span> country,</span>
+<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a>         iso2c,</span>
+<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">wb_year =</span> year,</span>
+<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">wb_usd =</span> FI.RES.TOTL.CD) <span class="sc">|&gt;</span></span>
+<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wb_usd_million =</span> wb_usd <span class="sc">/</span> <span class="dv">1000000</span>)</span>
+<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-18"><a href="#cb83-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_wb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  country_wb           iso2c wb_year        wb_usd wb_usd_million
+  &lt;chr&gt;                &lt;chr&gt;   &lt;int&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+1 United Arab Emirates AE       2024 237931339945.        237931.
+2 Afghanistan          AF       2020   9748946327.          9749.
+3 Antigua and Barbuda  AG       2024    358440632.           358.
+4 Albania              AL       2024   6515581528.          6516.
+5 Armenia              AM       2024   3685220143.          3685.
+6 Angola               AO       2024  14242892505.         14243.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Prepare Wikipedia reserves -----------------------------------------</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>reserves_wiki <span class="ot">&lt;-</span> reserves <span class="sc">|&gt;</span></span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country,</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">wiki_date =</span> date,</span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">wiki_usd_million =</span> reserves_usd_million)</span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_wiki)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  country     wiki_date  wiki_usd_million
+  &lt;chr&gt;       &lt;date&gt;                &lt;dbl&gt;
+1 China       2026-08-01          3854885
+2 Japan       2026-06-30          1287470
+3 Switzerland 2026-06-30           939140
+4 India       2026-09-04           785710
+5 Russia      2026-08-21           761200
+6 Taiwan      2026-06-30           597150</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Match countries and calculate differences ---------------------------</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>reserves_comparison <span class="ot">&lt;-</span> reserves_wiki <span class="sc">|&gt;</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(reserves_wb, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span> <span class="ot">=</span> <span class="st">"country_wb"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference_million =</span> wiki_usd_million <span class="sc">-</span> wb_usd_million,</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">difference_percent =</span> <span class="fu">if_else</span>(</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>           <span class="sc">!</span><span class="fu">is.na</span>(wb_usd_million) <span class="sc">&amp;</span> wb_usd_million <span class="sc">!=</span> <span class="dv">0</span>,</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>           <span class="dv">100</span> <span class="sc">*</span> difference_million <span class="sc">/</span> wb_usd_million,</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>           <span class="cn">NA_real_</span>))</span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_comparison)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  country     wiki_date  wiki_usd_million iso2c wb_year   wb_usd wb_usd_million
+  &lt;chr&gt;       &lt;date&gt;                &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;    &lt;dbl&gt;          &lt;dbl&gt;
+1 China       2026-08-01          3854885 CN       2024  3.46e12       3456025.
+2 Japan       2026-06-30          1287470 JP       2024  1.23e12       1230667.
+3 Switzerland 2026-06-30           939140 CH       2024  9.09e11        909366.
+4 India       2026-09-04           785710 IN       2024  6.43e11        643043.
+5 Russia      2026-08-21           761200 &lt;NA&gt;       NA NA                  NA 
+6 Taiwan      2026-06-30           597150 &lt;NA&gt;       NA NA                  NA 
+# ℹ 2 more variables: difference_million &lt;dbl&gt;, difference_percent &lt;dbl&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Inspect unmatched countries ----------------------------------------</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>reserves_wiki <span class="sc">|&gt;</span></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(reserves_wb, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span> <span class="ot">=</span> <span class="st">"country_wb"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country) <span class="sc">|&gt;</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 47 × 1
+   country                           
+   &lt;chr&gt;                             
+ 1 Russia                            
+ 2 Taiwan                            
+ 3 Hong Kong *                       
+ 4 South Korea                       
+ 5 Turkey                            
+ 6 Czech Republic                    
+ 7 Vietnam                           
+ 8 Egypt                             
+ 9 Iran                              
+10 Macau *                           
+11 Turkmenistan                      
+12 Ivory Coast                       
+13 North Korea                       
+14 Slovakia                          
+15 Venezuela                         
+16 Vatican City                      
+17 Andorra                           
+18 Brunei                            
+19 Kyrgyzstan                        
+20 Cuba                              
+21 Bahamas                           
+22 Laos                              
+23 Curaçao *                         
+24 Niger                             
+25 Aruba *                           
+26 Kosovo *                          
+27 Cape Verde                        
+28 Gambia                            
+29 Palestine *                       
+30 Mali                              
+31 Democratic Republic of the Congo  
+32 Republic of the Congo             
+33 Syria                             
+34 Federated States of Micronesia    
+35 Saint Kitts and Nevis             
+36 Guinea-Bissau                     
+37 Saint Lucia *                     
+38 Yemen                             
+39 Togo                              
+40 Saint Vincent and the Grenadines *
+41 São Tomé and Príncipe             
+42 Senegal                           
+43 Benin                             
+44 Montserrat                        
+45 Burkina Faso                      
+46 Somalia                           
+47 Kiribati                          </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>reserves_wb <span class="sc">|&gt;</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country_wb) <span class="sc">|&gt;</span></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country_wb) <span class="sc">|&gt;</span></span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 177 × 1
+    country_wb                    
+    &lt;chr&gt;                         
+  1 Afghanistan                   
+  2 Albania                       
+  3 Algeria                       
+  4 Angola                        
+  5 Antigua and Barbuda           
+  6 Argentina                     
+  7 Armenia                       
+  8 Aruba                         
+  9 Australia                     
+ 10 Austria                       
+ 11 Azerbaijan                    
+ 12 Bahamas, The                  
+ 13 Bahrain                       
+ 14 Bangladesh                    
+ 15 Barbados                      
+ 16 Belarus                       
+ 17 Belgium                       
+ 18 Belize                        
+ 19 Bhutan                        
+ 20 Bolivia                       
+ 21 Bosnia and Herzegovina        
+ 22 Botswana                      
+ 23 Brazil                        
+ 24 Brunei Darussalam             
+ 25 Bulgaria                      
+ 26 Burundi                       
+ 27 Cabo Verde                    
+ 28 Cambodia                      
+ 29 Cameroon                      
+ 30 Canada                        
+ 31 Cayman Islands                
+ 32 Central African Republic      
+ 33 Chad                          
+ 34 Chile                         
+ 35 China                         
+ 36 Colombia                      
+ 37 Comoros                       
+ 38 Congo, Dem. Rep.              
+ 39 Congo, Rep.                   
+ 40 Costa Rica                    
+ 41 Croatia                       
+ 42 Cyprus                        
+ 43 Czechia                       
+ 44 Denmark                       
+ 45 Djibouti                      
+ 46 Dominica                      
+ 47 Dominican Republic            
+ 48 Ecuador                       
+ 49 Egypt, Arab Rep.              
+ 50 El Salvador                   
+ 51 Equatorial Guinea             
+ 52 Eritrea                       
+ 53 Estonia                       
+ 54 Eswatini                      
+ 55 Ethiopia                      
+ 56 Fiji                          
+ 57 Finland                       
+ 58 France                        
+ 59 Gabon                         
+ 60 Gambia, The                   
+ 61 Georgia                       
+ 62 Germany                       
+ 63 Ghana                         
+ 64 Greece                        
+ 65 Grenada                       
+ 66 Guatemala                     
+ 67 Guinea                        
+ 68 Guyana                        
+ 69 Haiti                         
+ 70 Honduras                      
+ 71 Hong Kong SAR, China          
+ 72 Hungary                       
+ 73 Iceland                       
+ 74 India                         
+ 75 Indonesia                     
+ 76 Iraq                          
+ 77 Ireland                       
+ 78 Israel                        
+ 79 Italy                         
+ 80 Jamaica                       
+ 81 Japan                         
+ 82 Jordan                        
+ 83 Kazakhstan                    
+ 84 Kenya                         
+ 85 Korea, Rep.                   
+ 86 Kosovo                        
+ 87 Kuwait                        
+ 88 Kyrgyz Republic               
+ 89 Lao PDR                       
+ 90 Latvia                        
+ 91 Lebanon                       
+ 92 Lesotho                       
+ 93 Liberia                       
+ 94 Libya                         
+ 95 Lithuania                     
+ 96 Luxembourg                    
+ 97 Macao SAR, China              
+ 98 Madagascar                    
+ 99 Malawi                        
+100 Malaysia                      
+101 Maldives                      
+102 Malta                         
+103 Mauritania                    
+104 Mauritius                     
+105 Mexico                        
+106 Micronesia, Fed. Sts.         
+107 Moldova                       
+108 Mongolia                      
+109 Montenegro                    
+110 Morocco                       
+111 Mozambique                    
+112 Myanmar                       
+113 Namibia                       
+114 Nepal                         
+115 Netherlands                   
+116 New Zealand                   
+117 Nicaragua                     
+118 Nigeria                       
+119 North Macedonia               
+120 Norway                        
+121 Oman                          
+122 Pakistan                      
+123 Panama                        
+124 Papua New Guinea              
+125 Paraguay                      
+126 Peru                          
+127 Philippines                   
+128 Poland                        
+129 Portugal                      
+130 Qatar                         
+131 Romania                       
+132 Russian Federation            
+133 Rwanda                        
+134 Samoa                         
+135 San Marino                    
+136 Sao Tome and Principe         
+137 Saudi Arabia                  
+138 Serbia                        
+139 Seychelles                    
+140 Sierra Leone                  
+141 Singapore                     
+142 Slovak Republic               
+143 Slovenia                      
+144 Solomon Islands               
+145 South Africa                  
+146 South Sudan                   
+147 Spain                         
+148 Sri Lanka                     
+149 St. Kitts and Nevis           
+150 St. Lucia                     
+151 St. Vincent and the Grenadines
+152 Sudan                         
+153 Suriname                      
+154 Sweden                        
+155 Switzerland                   
+156 Tajikistan                    
+157 Tanzania                      
+158 Thailand                      
+159 Timor-Leste                   
+160 Tonga                         
+161 Trinidad and Tobago           
+162 Tunisia                       
+163 Turkiye                       
+164 Uganda                        
+165 Ukraine                       
+166 United Arab Emirates          
+167 United Kingdom                
+168 United States                 
+169 Uruguay                       
+170 Uzbekistan                    
+171 Vanuatu                       
+172 Venezuela, RB                 
+173 Viet Nam                      
+174 West Bank and Gaza            
+175 Yemen, Rep.                   
+176 Zambia                        
+177 Zimbabwe                      </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Countries with different reported reserves --------------------------</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>reserves_differences <span class="ot">&lt;-</span> reserves_comparison <span class="sc">|&gt;</span></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(difference_million),</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>         difference_million <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(difference_million))) <span class="sc">|&gt;</span></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country,</span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>         wiki_date,</span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>         wb_year,</span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>         wiki_usd_million,</span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>         wb_usd_million,</span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>         difference_million,</span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>         difference_percent)</span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>reserves_differences <span class="sc">|&gt;</span></span>
+<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 149 × 7
+   country              wiki_date  wb_year wiki_usd_million wb_usd_million
+   &lt;chr&gt;                &lt;date&gt;       &lt;int&gt;            &lt;dbl&gt;          &lt;dbl&gt;
+ 1 United States        2025-08-22    2024           253767        910037.
+ 2 China                2026-08-01    2024          3854885       3456025.
+ 3 India                2026-09-04    2024           785710        643043.
+ 4 Thailand             2026-07-01    2024           300180        236934.
+ 5 Japan                2026-06-30    2024          1287470       1230667.
+ 6 Netherlands          2024-03-01    2024           125451         79130.
+ 7 Singapore            2026-06-30    2024           426830        383946.
+ 8 Belgium              2024-03-01    2024            82000         42331.
+ 9 Brazil               2026-04-30    2024           366913        329732.
+10 Germany              2024-10-01    2024           345338        377935.
+11 Switzerland          2026-06-30    2024           939140        909366.
+12 United Arab Emirates 2024-11-01    2024           210000        237931.
+13 Mexico               2026-01-30    2024           255605        232035.
+14 Saudi Arabia         2026-05-31    2024           487370        463870.
+15 Libya                2024-03-01    2024            70524         92894.
+16 Romania              2026-01-31    2024            95127         73391.
+17 Lebanon              2024-03-01    2024            14738         33301.
+18 Israel               2025-10-06    2024           231880        214544.
+19 Bangladesh           2026-07-03    2024            37660         21395.
+20 Denmark              2024-11-01    2024            93196        108405.
+   difference_million difference_percent
+                &lt;dbl&gt;              &lt;dbl&gt;
+ 1           -656270.             -72.1 
+ 2            398860.              11.5 
+ 3            142667.              22.2 
+ 4             63246.              26.7 
+ 5             56803.               4.62
+ 6             46321.              58.5 
+ 7             42884.              11.2 
+ 8             39669.              93.7 
+ 9             37181.              11.3 
+10            -32597.              -8.63
+11             29774.               3.27
+12            -27931.             -11.7 
+13             23570.              10.2 
+14             23500.               5.07
+15            -22370.             -24.1 
+16             21736.              29.6 
+17            -18563.             -55.7 
+18             17336.               8.08
+19             16265.              76.0 
+20            -15209.             -14.0 
+# ℹ 129 more rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>reserves_differences <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>, <span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 149 × 7
+    country                  wiki_date  wb_year wiki_usd_million wb_usd_million
+    &lt;chr&gt;                    &lt;date&gt;       &lt;int&gt;            &lt;dbl&gt;          &lt;dbl&gt;
+  1 United States            2025-08-22    2024           253767       910037. 
+  2 China                    2026-08-01    2024          3854885      3456025. 
+  3 India                    2026-09-04    2024           785710       643043. 
+  4 Thailand                 2026-07-01    2024           300180       236934. 
+  5 Japan                    2026-06-30    2024          1287470      1230667. 
+  6 Netherlands              2024-03-01    2024           125451        79130. 
+  7 Singapore                2026-06-30    2024           426830       383946. 
+  8 Belgium                  2024-03-01    2024            82000        42331. 
+  9 Brazil                   2026-04-30    2024           366913       329732. 
+ 10 Germany                  2024-10-01    2024           345338       377935. 
+ 11 Switzerland              2026-06-30    2024           939140       909366. 
+ 12 United Arab Emirates     2024-11-01    2024           210000       237931. 
+ 13 Mexico                   2026-01-30    2024           255605       232035. 
+ 14 Saudi Arabia             2026-05-31    2024           487370       463870. 
+ 15 Libya                    2024-03-01    2024            70524        92894. 
+ 16 Romania                  2026-01-31    2024            95127        73391. 
+ 17 Lebanon                  2024-03-01    2024            14738        33301. 
+ 18 Israel                   2025-10-06    2024           231880       214544. 
+ 19 Bangladesh               2026-07-03    2024            37660        21395. 
+ 20 Denmark                  2024-11-01    2024            93196       108405. 
+ 21 Algeria                  2024-03-01    2024            68028        83007. 
+ 22 United Kingdom           2024-11-01    2024           189228       174598. 
+ 23 Kazakhstan               2024-03-01    2024            34500        45808. 
+ 24 Greece                   2024-03-01    2024             3926        15222. 
+ 25 Portugal                 2024-03-01    2024            53710        42434. 
+ 26 Italy                    2024-11-01    2024           279631       290547. 
+ 27 Qatar                    2024-03-01    2024            64560        53987. 
+ 28 France                   2024-11-01    2024           272693       282857. 
+ 29 Finland                  2024-03-01    2024             7995        17993. 
+ 30 New Zealand              2024-03-01    2024            31712        22065. 
+ 31 Afghanistan              2024-10-01    2020              443         9749. 
+ 32 Uzbekistan               2024-03-01    2024            32195        41237. 
+ 33 Pakistan                 2026-09-19    2024            26791        18408. 
+ 34 Bulgaria                 2024-03-01    2024            35395        43698. 
+ 35 Kenya                    2024-03-05    2024             2490        10067. 
+ 36 Argentina                2026-06-01    2024            36625        29560. 
+ 37 Spain                    2024-11-01    2024           100983       107774. 
+ 38 Philippines              2024-11-01    2024           112434       106195. 
+ 39 Peru                     2024-03-01    2024            73483        79246. 
+ 40 Nigeria                  2024-03-01    2024            34980        40406. 
+ 41 Serbia                   2026-09-11    2024            35770        30484. 
+ 42 North Macedonia          2025-08-31    2024                4         5252. 
+ 43 Morocco                  2024-03-01    2024            32037        37134. 
+ 44 Hungary                  2024-03-01    2024            41344        46422. 
+ 45 Colombia                 2024-03-08    2024            57269        61898. 
+ 46 Australia                2024-11-07    2024            65018        60404. 
+ 47 Kuwait                   2024-03-01    2024            46420        50728. 
+ 48 Cambodia                 2024-03-01    2024            18496        22506. 
+ 49 Mozambique               2025-07-31    2024                4         3843. 
+ 50 Ecuador                  2024-03-01    2024             3305         6908. 
+ 51 Indonesia                2024-11-01    2024           159246       155708. 
+ 52 Malaysia                 2024-10-01    2024           119700       116229. 
+ 53 Canada                   2024-11-01    2024           123084       119778. 
+ 54 Ukraine                  2024-03-01    2024            40507        43781. 
+ 55 Jordan                   2024-03-01    2024            18765        21939. 
+ 56 Guatemala                2024-03-01    2024            21390        24412. 
+ 57 Mauritius                2024-03-01    2024             5591         8506. 
+ 58 Myanmar                  2024-03-01    2023             6700         9338. 
+ 59 Nepal                    2024-03-11    2024            18400        15847. 
+ 60 Lithuania                2024-03-01    2024             4900         7407. 
+ 61 Zambia                   2026-06-12    2024             6500         4090. 
+ 62 Tajikistan               2024-03-01    2024             1482         3631. 
+ 63 Nicaragua                2024-03-01    2024             3980         6105. 
+ 64 Oman                     2024-03-01    2024            16163        18287. 
+ 65 South Africa             2025-03-31    2024            67450        65435. 
+ 66 Tanzania                 2024-03-22    2018             7022         5050. 
+ 67 Uruguay                  2024-03-01    2024            15449        17378. 
+ 68 Chile                    2024-03-01    2024            42527        44403. 
+ 69 Luxembourg               2024-03-05    2024             1119         2789. 
+ 70 Botswana                 2024-03-01    2024             5080         3456. 
+ 71 Cameroon                 2024-03-01    2024             3459         5062. 
+ 72 Chad                     2024-03-01    2024              143         1548. 
+ 73 Papua New Guinea         2024-03-01    2024             2339         3709. 
+ 74 Namibia                  2024-03-01    2024             2019         3356. 
+ 75 Latvia                   2024-03-01    2024             3913         5141. 
+ 76 Albania                  NA            2024             5290         6516. 
+ 77 El Salvador              2024-03-01    2024             2510         3705. 
+ 78 Madagascar               2024-03-19    2024             1620         2785. 
+ 79 Norway                   2024-10-01    2024            80110        81242. 
+ 80 Ghana                    2024-03-01    2024             3368         4472. 
+ 81 Azerbaijan               2024-03-01    2024            11650        12699. 
+ 82 Equatorial Guinea        2024-03-01    2024               46         1077. 
+ 83 Suriname                 2024-03-08    2024              647         1632. 
+ 84 Costa Rica               2024-03-01    2024            13200        14177. 
+ 85 Rwanda                   2024-03-01    2024             1458         2406. 
+ 86 Dominican Republic       2024-03-01    2024            14371        13471. 
+ 87 Barbados                 2024-03-01    2024              770         1654. 
+ 88 Cyprus                   2024-03-01    2024             1271         2087. 
+ 89 Georgia                  2024-03-25    2024             5224         4447. 
+ 90 Gabon                    2024-03-01    2024             1377          639. 
+ 91 Tunisia                  2024-03-21    2024             8623         9344. 
+ 92 Panama                   2024-03-01    2024             6143         6856. 
+ 93 Jamaica                  2024-03-05    2024             4921         5633. 
+ 94 Bosnia and Herzegovina   2024-03-01    2024             8711         9419. 
+ 95 Iraq                     2024-03-25    2024           100000       100691. 
+ 96 Honduras                 2024-03-21    2024             7390         8036. 
+ 97 Armenia                  2024-03-25    2024             4298         3685. 
+ 98 Bahrain                  2024-03-25    2024             5500         4949. 
+ 99 Austria                  2024-03-01    2024            34856        35406. 
+100 Mauritania               2024-03-01    2021             1493         2039. 
+101 Fiji                     2024-03-05    2024             1065         1600. 
+102 Malta                    2024-03-20    2024              937         1418. 
+103 Guyana                   2024-03-10    2024              553         1010. 
+104 Iceland                  2024-03-15    2024             6847         6403. 
+105 Haiti                    2024-03-01    2024             2296         2714. 
+106 Croatia                  2024-03-01    2024             2935         3335. 
+107 Mongolia                 2024-03-20    2024             5120         5508. 
+108 Sri Lanka                2024-10-31    2024             6467         6094. 
+109 Ethiopia                 2024-03-01    2024             3430         3784. 
+110 Zimbabwe                 2024-03-01    2024              159          485. 
+111 Samoa                    2024-03-01    2024              188          508. 
+112 Slovenia                 2024-03-01    2024             2519         2832. 
+113 Seychelles               2024-03-01    2024              546          774. 
+114 Lesotho                  2024-03-01    2024              785         1008. 
+115 Uganda                   2024-03-01    2024             3700         3483. 
+116 Belize                   2024-03-01    2024              281          498. 
+117 Belarus                  2024-08-31    2024             8697         8912. 
+118 Bolivia                  2024-03-01    2024             1769         1977. 
+119 Trinidad and Tobago      2024-03-18    2024             5800         5601. 
+120 Sierra Leone             2024-03-02    2024              624          433. 
+121 Montenegro               2024-03-01    2024             1558         1741. 
+122 Grenada                  2024-03-01    2024              247          423. 
+123 Djibouti                 2024-03-01    2024              504          349. 
+124 Tonga                    2024-03-01    2024              226          377. 
+125 Paraguay                 2024-03-01    2024             9707         9568. 
+126 Solomon Islands          2024-03-08    2024              551          686. 
+127 Sweden                   2024-11-07    2024            62438        62569. 
+128 Comoros                  2024-03-01    2024              197          324. 
+129 Timor-Leste              2024-03-01    2024              654          780. 
+130 Moldova                  2024-08-30    2024             5600         5484. 
+131 Central African Republic 2024-03-01    2024              375          489. 
+132 Malawi                   2024-03-01    2020              488          594. 
+133 Vanuatu                  2024-03-01    2024              509          615. 
+134 Ireland                  2024-03-01    2024            12599        12698. 
+135 Poland                   2025-01-07    2024           223200       223115. 
+136 Guinea                   2024-03-15    2024             1425         1346. 
+137 Antigua and Barbuda      2024-03-01    2024              285          358. 
+138 Eswatini                 2024-03-01    2024              467          537. 
+139 South Sudan              2024-03-02    2024               80           16.0
+140 San Marino               2024-03-01    2024              716          759. 
+141 Angola                   2024-03-15    2024            14200        14243. 
+142 Bhutan                   2024-03-10    2024              972          941. 
+143 Maldives                 2026-09-01    2024              644          674. 
+144 Liberia                  2024-03-01    2024              342          368. 
+145 Burundi                  2024-03-01    2023              105           90.3
+146 Dominica                 2024-03-01    2024              168          156. 
+147 Estonia                  2024-03-01    2024             2065         2075. 
+148 Sudan                    2024-03-01    2017              172          178. 
+149 Eritrea                  2024-03-01    2019              189          192. 
+    difference_million difference_percent
+                 &lt;dbl&gt;              &lt;dbl&gt;
+  1         -656270.             -72.1   
+  2          398860.              11.5   
+  3          142667.              22.2   
+  4           63246.              26.7   
+  5           56803.               4.62  
+  6           46321.              58.5   
+  7           42884.              11.2   
+  8           39669.              93.7   
+  9           37181.              11.3   
+ 10          -32597.              -8.63  
+ 11           29774.               3.27  
+ 12          -27931.             -11.7   
+ 13           23570.              10.2   
+ 14           23500.               5.07  
+ 15          -22370.             -24.1   
+ 16           21736.              29.6   
+ 17          -18563.             -55.7   
+ 18           17336.               8.08  
+ 19           16265.              76.0   
+ 20          -15209.             -14.0   
+ 21          -14979.             -18.0   
+ 22           14630.               8.38  
+ 23          -11308.             -24.7   
+ 24          -11296.             -74.2   
+ 25           11276.              26.6   
+ 26          -10916.              -3.76  
+ 27           10573.              19.6   
+ 28          -10164.              -3.59  
+ 29           -9998.             -55.6   
+ 30            9647.              43.7   
+ 31           -9306.             -95.5   
+ 32           -9042.             -21.9   
+ 33            8383.              45.5   
+ 34           -8303.             -19.0   
+ 35           -7577.             -75.3   
+ 36            7065.              23.9   
+ 37           -6791.              -6.30  
+ 38            6239.               5.87  
+ 39           -5763.              -7.27  
+ 40           -5426.             -13.4   
+ 41            5286.              17.3   
+ 42           -5248.             -99.9   
+ 43           -5097.             -13.7   
+ 44           -5078.             -10.9   
+ 45           -4629.              -7.48  
+ 46            4614.               7.64  
+ 47           -4308.              -8.49  
+ 48           -4010.             -17.8   
+ 49           -3839.             -99.9   
+ 50           -3603.             -52.2   
+ 51            3538.               2.27  
+ 52            3471.               2.99  
+ 53            3306.               2.76  
+ 54           -3274.              -7.48  
+ 55           -3174.             -14.5   
+ 56           -3022.             -12.4   
+ 57           -2915.             -34.3   
+ 58           -2638.             -28.2   
+ 59            2553.              16.1   
+ 60           -2507.             -33.8   
+ 61            2410.              58.9   
+ 62           -2149.             -59.2   
+ 63           -2125.             -34.8   
+ 64           -2124.             -11.6   
+ 65            2015.               3.08  
+ 66            1972.              39.1   
+ 67           -1929.             -11.1   
+ 68           -1876.              -4.22  
+ 69           -1670.             -59.9   
+ 70            1624.              47.0   
+ 71           -1603.             -31.7   
+ 72           -1405.             -90.8   
+ 73           -1370.             -36.9   
+ 74           -1337.             -39.8   
+ 75           -1228.             -23.9   
+ 76           -1226.             -18.8   
+ 77           -1195.             -32.2   
+ 78           -1165.             -41.8   
+ 79           -1132.              -1.39  
+ 80           -1104.             -24.7   
+ 81           -1049.              -8.26  
+ 82           -1031.             -95.7   
+ 83            -985.             -60.4   
+ 84            -977.              -6.89  
+ 85            -948.             -39.4   
+ 86             900.               6.68  
+ 87            -884.             -53.4   
+ 88            -816.             -39.1   
+ 89             777.              17.5   
+ 90             738.             116.    
+ 91            -721.              -7.71  
+ 92            -713.             -10.4   
+ 93            -712.             -12.6   
+ 94            -708.              -7.52  
+ 95            -691.              -0.686 
+ 96            -646.              -8.04  
+ 97             613.              16.6   
+ 98             551.              11.1   
+ 99            -550.              -1.55  
+100            -546.             -26.8   
+101            -535.             -33.4   
+102            -481.             -33.9   
+103            -457.             -45.2   
+104             444.               6.94  
+105            -418.             -15.4   
+106            -400.             -12.0   
+107            -388.              -7.04  
+108             373.               6.12  
+109            -354.              -9.36  
+110            -326.             -67.2   
+111            -320.             -63.0   
+112            -313.             -11.1   
+113            -228.             -29.4   
+114            -223.             -22.1   
+115             217.               6.23  
+116            -217.             -43.6   
+117            -215.              -2.41  
+118            -208.             -10.5   
+119             199.               3.55  
+120             191.              44.0   
+121            -183.             -10.5   
+122            -176.             -41.6   
+123             155.              44.5   
+124            -151.             -40.1   
+125             139.               1.46  
+126            -135.             -19.7   
+127            -131.              -0.210 
+128            -127.             -39.2   
+129            -126.             -16.2   
+130             116.               2.12  
+131            -114.             -23.4   
+132            -106.             -17.9   
+133            -106.             -17.2   
+134             -99.1             -0.780 
+135              85.1              0.0381
+136              79.4              5.90  
+137             -73.4            -20.5   
+138             -69.6            -13.0   
+139              64.0            401.    
+140             -42.9             -5.66  
+141             -42.9             -0.301 
+142              31.0              3.29  
+143             -29.9             -4.43  
+144             -25.7             -6.99  
+145              14.7             16.2   
+146              12.0              7.71  
+147              -9.51            -0.458 
+148              -5.93            -3.33  
+149              -2.69            -1.41  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Which vintage does each source report? ------------------------------</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>reserves_comparison <span class="sc">|&gt;</span></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(wb_year)) <span class="sc">|&gt;</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(wb_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+  wb_year     n
+    &lt;int&gt; &lt;int&gt;
+1    2017     1
+2    2018     1
+3    2019     1
+4    2020     2
+5    2021     1
+6    2023     2
+7    2024   141</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>reserves_comparison <span class="sc">|&gt;</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"China"</span>, <span class="st">"Japan"</span>, <span class="st">"Switzerland"</span>, <span class="st">"India"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country,</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>         wiki_date,</span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>         wb_year,</span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>         wiki_usd_million,</span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>         wb_usd_million,</span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>         difference_million,</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>         difference_percent) <span class="sc">|&gt;</span></span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 7
+  country     wiki_date  wb_year wiki_usd_million wb_usd_million
+  &lt;chr&gt;       &lt;date&gt;       &lt;int&gt;            &lt;dbl&gt;          &lt;dbl&gt;
+1 China       2026-08-01    2024          3854885       3456025.
+2 Japan       2026-06-30    2024          1287470       1230667.
+3 Switzerland 2026-06-30    2024           939140        909366.
+4 India       2026-09-04    2024           785710        643043.
+  difference_million difference_percent
+               &lt;dbl&gt;              &lt;dbl&gt;
+1            398860.              11.5 
+2             56803.               4.62
+3             29774.               3.27
+4            142667.              22.2 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Cache the comparison ------------------------------------------------</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(reserves_comparison,</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>          <span class="fu">paste0</span>(<span class="st">"reserves_comparison_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<pre><code></code></pre>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,566 @@
+---
+title: "Assignment 4: Web Scraping"
+author: "Avinash Singh"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+---
+
+```         
+```
+
+## Part 0: Ask permission first
+
+```{r}
+# Check permission before scraping the Wikipedia page
+wiki_url <- "https://en.wikipedia.org/wiki/List_of_countries_by_foreign-exchange_reserves"
+
+wiki_allowed <- robotstxt::paths_allowed(wiki_url)
+
+wiki_allowed
+```
+
+```{r}
+# Check permission before scraping the practice page
+books_url <- "https://books.toscrape.com/catalogue/page-1.html"
+
+books_allowed <- robotstxt::paths_allowed(books_url)
+
+books_allowed
+
+```
+
+## Part 1: Practice scraping Books to Scrape
+
+Turning information displayed on five webpages into one structured dataframe. Each row represents one book listing.
+
+### Part 1(a): Run the sample against the practice website
+
+-   Books to Scrape is designed for scraping practice.
+
+-   Its static HTML lets us practice extracting information without needing JavaScript tools.
+
+-   We first read page 1 and inspect the extracted results before repeating the process across more pages.
+
+### Part 1(b): Extract titles, prices, and ratings from five pages
+
+-   We extract each book’s **title, price, and star rating**.
+
+-   We convert the price text into a numeric variable called `price_gbp`.
+
+-   We repeat the extraction for pages 2–5 and reuse the page 1 results.
+
+-   We combine the five page-level dataframes into `books_all`.
+
+-   The expected result is **100 book listings**, with 20 listings from each page.
+
+-   The additional `page` column records where each listing came from.
+
+## Extracting title, price, and rating and binding the scraped data from the first 5 pages into one data frame.
+
+```{r}
+
+
+library(rvest)
+library(dplyr)
+library(stringr)
+library(readr)
+
+
+## ---- 1. The sandbox: books.toscrape.com ------------------------------------
+## Built and published for scraping practice. 1,000 books, 50 pages, no
+## JavaScript. Learn the verbs here before you point them at anyone's server.
+
+# Read the first page of book listings
+books_pg <- read_html(
+  "https://books.toscrape.com/catalogue/page-1.html"
+)
+
+books <- tibble(
+  title  = books_pg |> html_elements("article.product_pod h3 a") |> html_attr("title"),
+  price  = books_pg |> html_elements("article.product_pod p.price_color") |> html_text2(),
+  rating = books_pg |> html_elements("article.product_pod p.star-rating") |>
+             html_attr("class") |> str_remove("star-rating ")
+) |>
+  mutate(price_gbp = parse_number(price))
+
+head(books)
+
+# Number of rows and columns
+dim(books)
+
+# Column names and data types
+glimpse(books)
+
+
+## ----Creating URLs for five pages -----------------------------------------------
+
+books_urls <- paste0("https://books.toscrape.com/catalogue/page-",
+                     1:5, ".html")
+
+books_urls
+
+
+## ---- Ask permission before fetching ------------------------------------
+
+books_allowed <- robotstxt::paths_allowed(books_urls)
+
+books_allowed
+
+if (!all(books_allowed %in% TRUE)) {
+  stop("Permission was not confirmed for every page.")
+}
+
+
+## ---- Extract five pages ------------------------------------------------
+
+books_list <- list()
+
+# Page 1 was already scraped
+books_list[[1]] <- books |>
+  mutate(page = 1)
+
+# Scrape pages 2 through 5
+for (i in 2:5) {
+
+  Sys.sleep(1)
+
+  books_pg <- read_html(books_urls[i])
+
+  books_page <- tibble(
+    title  = books_pg |> html_elements("article.product_pod h3 a") |> html_attr("title"),
+    price  = books_pg |> html_elements("article.product_pod p.price_color") |> html_text2(),
+    rating = books_pg |> html_elements("article.product_pod p.star-rating") |>
+               html_attr("class") |> str_remove("star-rating ")
+  ) |>
+    mutate(price_gbp = parse_number(price),
+           page = i)
+
+  books_list[[i]] <- books_page
+}
+
+
+## ---- Combine the pages -----------------------------------------------
+
+books_all <- bind_rows(books_list)
+
+head(books_all)
+
+
+## ---- Inspect the results ----------------------------------------------
+
+dim(books_all)
+
+glimpse(books_all)
+
+books_all |>
+  count(page)
+
+colSums(is.na(books_all))
+
+
+## ---- Cache what you pulled --------------------------------------------
+
+write_csv(books_all, paste0("books_five_pages_", Sys.Date(), ".csv"))
+
+```
+
+## Part 2: Scrape and clean Wikipedia tables
+
+Extracting tables from a real website, adapting the program to another table, and cleaning the results into usable dataframes.
+
+### Part 2(a): Scrape the foreign-exchange reserves table
+
+-   We checked the page’s robots rules before fetching it.
+
+-   We inspected the candidate tables and extracted the reserves table.
+
+-   We identified the **including-gold amount** column: `foreign_exchange_reserves`.
+
+-   Its unit is **US\$ millions**.
+
+-   We retained the country, reserves amount, and reporting date.
+
+### Part 2(b): Scrape a different table and explain what changed
+
+-   We changed the target to Wikipedia’s **countries-and-dependencies population table**.
+
+-   The country column changed from `country_as_recognized_by_the_un` to `location`.
+
+-   The amount column changed from `foreign_exchange_reserves` to `population`.
+
+-   The reporting-date column changed from `last_reporteddate` to `date`.
+
+-   Therefore, the column-selection code needed changing.
+
+-   The reserves table contained two additional header rows that needed removal.
+
+-   Both tables used day–month–year dates, so the same date-conversion function worked for both.
+
+**What broke and why:** Column-specific code cannot automatically transfer between tables with different names. The placeholder errors we encountered were caused by unreplaced example names; they were not evidence that Wikipedia had changed its page.
+
+### Part 2(c): Clean the dataframes
+
+-   Standardized column names.
+
+-   Removed bracketed footnotes, thin spaces, nonbreaking spaces, and extra whitespace.
+
+-   Removed unnecessary columns.
+
+-   Removed repeated country headers and any Total or World rows.
+
+-   Converted reserve amounts and population counts into numbers.
+
+-   Converted reporting dates into R dates.
+
+-   Preserved the original amount and date text to check conversions.
+
+-   Added checks to identify missing or unsuccessfully converted values.
+
+```{r}
+
+library(janitor)
+library(robotstxt)
+library(lubridate)
+library(rvest)
+library(dplyr)
+library(stringr)
+library(readr)
+
+## --- 2a. The Wikipedia Foreign Exchange reserves tabl-------------------------------------
+
+wiki_url <- paste0("https://en.wikipedia.org/wiki/",
+                   "List_of_countries_by_foreign-exchange_reserves")
+
+## Ask permission before fetching the page.
+wiki_allowed <- robotstxt::paths_allowed(wiki_url)
+wiki_allowed
+
+if (!isTRUE(wiki_allowed)) {
+  stop("Permission was not confirmed.")
+}
+
+wiki_pg <- read_html(wiki_url)
+
+## Never assume the table you want is [[1]]. Look first.
+tabs <- wiki_pg |> html_elements("table.wikitable")
+length(tabs)
+tabs |> html_table() |> lapply(\(x) dim(x))
+
+reserves_raw <- tabs[[1]] |> html_table()
+glimpse(reserves_raw)
+head(reserves_raw)
+
+
+## ---- 2c. Clean names, footnotes and spaces --------------------------------
+
+reserves_text <- reserves_raw |>
+  janitor::clean_names() |>
+  mutate(across(where(is.character),
+                ~ .x |>
+                  str_remove_all("\\[.*?\\]") |>   # [1], [note 2]
+                  str_replace_all("[\u2009\u202F\u00A0]", " ") |>
+                  str_squish()))
+
+names(reserves_text)
+head(reserves_text)
+
+## ---- Keep and clean the required reserves columns -------------------------
+
+reserves <- reserves_text |>
+  select(country = country_as_recognized_by_the_un,
+         reserves_text = foreign_exchange_reserves,
+         date_text = last_reporteddate) |>
+  filter(!is.na(country),
+         country != "",
+         !str_detect(country,
+                     regex("^(total|world)\\b", ignore_case = TRUE)),
+         !str_detect(country,
+                     regex("^country\\b", ignore_case = TRUE))) |>
+  mutate(reserves_usd_million = reserves_text |>
+           str_remove_all("\\s") |>
+           parse_number(),
+         date = lubridate::dmy(date_text))
+
+head(reserves)
+glimpse(reserves)
+
+
+## ---- 2b. A different Wikipedia table-- Population Table -------------------------------------
+
+population_url <- paste0("https://en.wikipedia.org/wiki/",
+                         "List_of_countries_and_dependencies_by_population")
+
+population_allowed <- robotstxt::paths_allowed(population_url)
+population_allowed
+
+if (!isTRUE(population_allowed)) {
+  stop("Permission was not confirmed.")
+}
+
+population_pg <- read_html(population_url)
+
+## Inspect candidate tables before selecting one.
+population_tabs <- population_pg |> html_elements("table.wikitable")
+length(population_tabs)
+population_tabs |> html_table() |> lapply(\(x) dim(x))
+
+population_raw <- population_tabs[[1]] |> html_table()
+glimpse(population_raw)
+head(population_raw)
+
+
+## ---- Clean the population table ------------------------------------------
+
+population_text <- population_raw |>
+  janitor::clean_names() |>
+  mutate(across(where(is.character),
+                ~ .x |>
+                  str_remove_all("\\[.*?\\]") |>
+                  str_replace_all("[\u2009\u202F\u00A0]", " ") |>
+                  str_squish()))
+
+names(population_text)
+head(population_text)
+
+
+## ---- Inspect population column names and values ---------------------------
+
+names(population_text)
+
+head(population_text) |> print(width = Inf)
+
+
+## ---- Keep the required population columns --------------------------------
+
+population <- population_text |>
+  select(country = location,
+         population_text = population,
+         date_text = date) |>
+  filter(!is.na(country),
+         country != "",
+         !str_detect(country,
+                     regex("^(total|world)\\b", ignore_case = TRUE)),
+         !str_detect(country,
+                     regex("^country(\\s|$)", ignore_case = TRUE))) |>
+  mutate(population_value = population_text |>
+           str_remove_all("\\s") |>
+           parse_number(),
+         date = lubridate::dmy(date_text))
+
+head(population)
+glimpse(population)
+
+## ---- Check the cleaned dataframes ----------------------------------------
+
+glimpse(reserves)
+colSums(is.na(reserves))
+
+glimpse(population)
+colSums(is.na(population))
+
+
+
+## ---- Inspect unsuccessful conversions ------------------------------------
+
+reserves |>
+  filter(is.na(reserves_usd_million) | is.na(date)) |>
+  select(country, reserves_text, date_text)
+
+population |>
+  filter(is.na(population_value) | is.na(date)) |>
+  select(country, population_text, date_text)
+
+## ---- Cache what you pulled ----------------------------------------------
+
+write_csv(reserves, paste0("reserves_wiki_", Sys.Date(), ".csv"))
+write_csv(population, paste0("population_wiki_", Sys.Date(), ".csv"))
+
+
+
+head(reserves_text) |> print(width = Inf)
+
+```
+
+## Part 3: Fetch the same quantity through an API
+
+## Obtaining reserves through a structured data interface and comparing them with the scraped Wikipedia figures.
+
+### Part 3(a): Fetch World Bank reserves
+
+-   We used the `WDI` package to request indicator **`FI.RES.TOTL.CD`**, total reserves including gold in current US dollars.
+
+-   One `WDI()` call requested observations for **2015–2024**.
+
+-   The results were stored in `reserves_api`.
+
+-   Each row represents a country or aggregate in one observation year.
+
+### Part 3(b): Which countries differ, why, and which vintage?
+
+**All four countries displayed in your output differ:**
+
+| Country | Wikipedia, US\$ millions | World Bank, US\$ millions\* | Wikipedia higher by | Wikipedia reporting date | World Bank year |
+|----|----|----|----|----|----|
+| China | 3,854,885 | 3,456,025 | 11.5% | August 1, 2026 | 2024 |
+| Japan | 1,287,470 | 1,230,667 | 4.62% | June 30, 2026 | 2024 |
+| Switzerland | 939,140 | 909,366 | 3.27% | June 30, 2026 | 2024 |
+| India | 785,710 | 643,043 | 22.2% | September 4, 2026 | 2024 |
+
+*World Bank figures are rounded here to whole US\$ millions.*
+
+-   **Vintage:** Wikipedia reports country-specific observations from 2026. The World Bank observations in this comparison are from 2024.
+
+-   **Why they differ:** The sources describe different reporting periods. Reserve holdings, exchange rates, and gold valuations can change between those periods.
+
+-   Rounding, revisions, and methodological differences may also contribute, but the comparison does not establish their individual effects.
+
+-   Both amounts were converted to **US\$ millions**, so the differences are not simply a dollars-versus-millions mismatch.
+
+-   India has the largest percentage difference among these four; China has the largest absolute difference.
+
+-   The World Bank request ended in 2024. This does **not** establish whether newer observations are available.
+
+-   These four countries are examples from our displayed output, not necessarily the complete list of differing countries.
+
+### Part 3(c): When is scraping the right tool? 
+
+Web scraping is the right tool when the required data are available on webpages but cannot be obtained through a suitable API, downloadable dataset, or bulk export. It should be used when the website’s robots rules and Terms of Service permit the intended collection, with reasonable request rates and checks to detect changes in the page structure.
+
+## Fetch total reserves from the World Bank using one `WDI()` call.
+
+```{r}
+## ---- 3a. The same quantity, from an API ------------------------------------
+## Foreign reserves are published by the World Bank as FI.RES.TOTL.CD,
+## "Total reserves (includes gold, current US$)".
+
+library(WDI)
+
+reserves_api <- WDI(indicator = "FI.RES.TOTL.CD",
+                    start = 2015, end = 2024, extra = TRUE)
+
+head(reserves_api)
+
+
+## ---- 3b. Prepare World Bank reserves for comparison ------------------------
+## Keep countries and economies rather than regional aggregates.
+## Convert current US dollars to US$ millions.
+
+reserves_wb <- reserves_api |>
+  filter(!is.na(region),
+         region != "Aggregates",
+         !is.na(FI.RES.TOTL.CD)) |>
+  group_by(iso2c) |>
+  slice_max(year, n = 1, with_ties = FALSE) |>
+  ungroup() |>
+  select(country_wb = country,
+         iso2c,
+         wb_year = year,
+         wb_usd = FI.RES.TOTL.CD) |>
+  mutate(wb_usd_million = wb_usd / 1000000)
+
+head(reserves_wb)
+
+## ---- Prepare Wikipedia reserves -----------------------------------------
+
+reserves_wiki <- reserves |>
+  select(country,
+         wiki_date = date,
+         wiki_usd_million = reserves_usd_million)
+
+head(reserves_wiki)
+
+## ---- Match countries and calculate differences ---------------------------
+
+reserves_comparison <- reserves_wiki |>
+  left_join(reserves_wb, by = c("country" = "country_wb")) |>
+  mutate(difference_million = wiki_usd_million - wb_usd_million,
+         difference_percent = if_else(
+           !is.na(wb_usd_million) & wb_usd_million != 0,
+           100 * difference_million / wb_usd_million,
+           NA_real_))
+
+head(reserves_comparison)
+
+## ---- Inspect unmatched countries ----------------------------------------
+
+reserves_wiki |>
+  anti_join(reserves_wb, by = c("country" = "country_wb")) |>
+  select(country) |>
+  print(n = Inf)
+
+  
+
+reserves_wb |>
+  arrange(country_wb) |>
+  select(country_wb) |>
+  print(n = Inf)
+
+
+## ---- Countries with different reported reserves --------------------------
+
+reserves_differences <- reserves_comparison |>
+  filter(!is.na(difference_million),
+         difference_million != 0) |>
+  arrange(desc(abs(difference_million))) |>
+  select(country,
+         wiki_date,
+         wb_year,
+         wiki_usd_million,
+         wb_usd_million,
+         difference_million,
+         difference_percent)
+
+reserves_differences |>
+  print(n = 20, width = Inf)
+
+
+reserves_differences |> print(n = Inf, width = Inf)
+
+## ---- Which vintage does each source report? ------------------------------
+
+reserves_comparison |>
+  filter(!is.na(wb_year)) |>
+  count(wb_year)
+
+reserves_comparison |>
+  filter(country %in% c("China", "Japan", "Switzerland", "India")) |>
+  select(country,
+         wiki_date,
+         wb_year,
+         wiki_usd_million,
+         wb_usd_million,
+         difference_million,
+         difference_percent) |>
+  print(width = Inf)
+
+
+## ---- Cache the comparison ------------------------------------------------
+
+write_csv(reserves_comparison,
+          paste0("reserves_comparison_", Sys.Date(), ".csv"))
+
+
+```
+
+\
+
+\
+
+\
+
+\
+
+\
+
+```         
+```
+
+\
+
+\
+
+\

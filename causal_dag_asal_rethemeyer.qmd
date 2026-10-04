@@ -1,0 +1,97 @@
+---
+title: "Causal Structure of Organizational Lethality"
+subtitle: "Based on Asal & Rethemeyer (2008), *The Nature of the Beast*"
+author: "Avinash"
+format:
+  html:
+    toc: true
+    code-fold: false
+execute:
+  warning: false
+  message: false
+---
+
+## Setup
+
+```{r}
+library(ggdag)
+library(dagitty)
+library(ggplot2)
+```
+
+## What is causal inference?
+
+Causal inference asks not "are X and Y correlated" but "if I intervened and changed X, would Y change as a result" — it's the toolkit for answering that under real-world data limitations, not just experiments.
+
+## Research question
+
+What organizational characteristics *cause* a terrorist organization to be more lethal? (Asal & Rethemeyer 2008)
+
+## Build the DAG
+
+```{r}
+dag <- dagify(
+  L  ~ I + Sz + SS + Ag + C + T + R + W,   # Lethality caused by all these
+  T  ~ R,                                   # Regime type -> territorial control
+  C  ~ Sz,                                  # Size -> alliance connections
+  D  ~ I + Sz,                              # Selection into dataset (the collider)
+  exposure = "T",
+  outcome  = "L",
+  labels = c(
+    I  = "Ideology",
+    Sz = "Org Size",
+    SS = "State\nSponsorship",
+    Ag = "Org Age",
+    C  = "Alliance\nConnections",
+    T  = "Territorial\nControl",
+    R  = "Regime\nType",
+    W  = "Wealth",
+    D  = "Dataset\nSelection",
+    L  = "Lethality"
+  )
+)
+```
+
+## Basic diagram
+
+```{r}
+ggdag(dag, text = FALSE, use_labels = "label") +
+  theme_dag() +
+  ggtitle("Asal & Rethemeyer (2008): Organizational Lethality DAG")
+```
+
+## Confounder check: paths between Territorial Control and Lethality
+
+Regime Type (R) is a common cause of both Territorial Control (T) and Lethality (L) directly, creating a backdoor path T \<- R -\> L.
+
+```{r}
+ggdag_paths(dag, from = "T", to = "L", text = FALSE, use_labels = "label") +
+  theme_dag() +
+  ggtitle("Open paths between Territorial Control and Lethality")
+```
+
+## Required adjustment set
+
+This computes, from the DAG structure, which variables must be controlled for to identify the causal effect of Territorial Control on Lethality.
+
+```{r}
+ggdag_adjustment_set(dag, exposure = "T", outcome = "L",
+                      text = FALSE, use_labels = "label") +
+  theme_dag() +
+  ggtitle("Adjustment set to identify effect of Territorial Control on Lethality")
+```
+
+## Collider check
+
+`D` (whether an organization appears in the TKB dataset at all) is caused by both Ideology and Size — a collider created by sample selection, since TKB only contains organizations that already committed a violent act.
+
+```{r}
+ggdag_collider(dag, text = FALSE, use_labels = "label") +
+  theme_dag() +
+  ggtitle("Collider check")
+```
+
+## Notes
+
+-   **Confounder (Regime Type):** must be adjusted for — it is a common cause of Territorial Control and Lethality.
+-   **Collider (Dataset Selection):** must NOT be adjusted for. Because TKB only includes organizations that already used violence, the entire study is structurally conditioned on this collider — a limitation Asal & Rethemeyer acknowledge directly, noting that unclaimed/nonviolent religious organizations are systematically absent from the sample.

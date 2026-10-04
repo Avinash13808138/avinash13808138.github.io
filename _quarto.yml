@@ -6,6 +6,7 @@ project:
     - epps6302_assignment01.pdf
     - epps6302_assignment02.pdf
     - epps6302_assignment03.pdf
+    - epps6302_assignment04.pdf
 
 website:
   title: "avinash13808138.github.io"
@@ -44,6 +45,16 @@ website:
 
           - href: Assignment 3.qmd
             text: "Assignment 3 - ACS via tidycensus"
+            
+          - href: epps6302_assignment04.pdf
+            text: "epps6302_assignment04 - Instructions"
+            
+          - href: Assignment 04_Data Plan.qmd
+            text: "Assignment 04_Data Plan"
+            
+          - href: Assignment04.qmd
+            text: "Assignment04"   
+            
 
 # Apply these execution settings to all .qmd pages
 execute:

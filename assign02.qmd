@@ -15,7 +15,7 @@ execute:
 ## Data Datasheet
 
 | Query parameter | Selection |
-|---|---|
+|----|----|
 | Search terms | Trump, Kamala Harris, Election |
 | Geography | United States |
 | Time window | Past five years: September 16, 2021–September 16, 2026 |
@@ -26,10 +26,7 @@ execute:
 | Unit | Relative search interest, normalized from 0 to 100 |
 | Collection methods | Google Trends website and `gtrendsR` |
 
-This datasheet records the parameters used to collect the Google Trends
-data. The values represent normalized relative search interest rather than
-the number of searches.
-
+This datasheet records the parameters used to collect the Google Trends data. The values represent normalized relative search interest rather than the number of searches.
 
 ```{r}
 ## EPPS 6302 Methods of Data Collection and Production
@@ -520,11 +517,6 @@ write_csv(
 
 ```
 
-
-
 ## Comparison plot
 
 ![Comparison of Google Trends website and gtrendsR results](part4a_comparison_plot.png)
-
-
-

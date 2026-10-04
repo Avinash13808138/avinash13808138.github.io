@@ -1,0 +1,51 @@
+---
+title: "Assignment 04_Data Plan"
+format: html
+editor: visual
+---
+
+**Part 4: Data Acquisition Plan**
+
+**Research purpose**
+
+-   We will examine whether burglary/breaking and entering, destruction/damage/vandalism of property, motor vehicle theft, and robbery co-locate with recorded drug/narcotic violations and documented homeless encampments in Downtown Dallas and the Harry Hines corridor. We will investigate whether observed patterns also reflect differences in police activity; spatial association alone will not establish causation.
+
+**(a) Sources and reasons for choosing them**
+
+-   We will retain three Dallas OpenData datasets: **Police Incidents** (`qv6i-rri7`), **Police Arrests** (`sdr7-6v3j`), and **Dallas Police Active Calls** (`9fxf-t2tr`). They provide complementary information about recorded offenses, arrests, and calls being handled.
+
+-   Police Incidents will be the main dataset because it contains `NIBRS_Crime_Category`, which identifies the selected offenses. Arrests and calls will provide additional context about police activity, subject to their coverage and available fields.
+
+-   We have requested GIS shapefiles for homeless encampments and sexually oriented businesses. We will obtain or define study-area boundaries and check each layer’s observation dates and coordinate system.
+
+-   We will verify `IncidentNum` as a linkage field in each table. Because an incident may have multiple offenses, arrests, or call records, We will examine duplicates and summarize related records before joining to avoid inflating counts.
+
+**(b) Robots rules and Terms of Service**
+
+-   Before collection, We will check the portal’s `robots.txt` for the intended paths and review Dallas OpenData’s Terms of Use and dataset-specific licensing. We will record the results and the date checked.
+
+-   Permission has not yet been verified. We will use only access methods permitted by the applicable rules and terms, follow any attribution requirements, and check restrictions attached to the requested GIS files. A robots check alone does not establish permission for every use.
+
+**(c) API availability and scraping justification**
+
+-   The supplied R script uses Socrata API endpoints to retrieve the three datasets as JSON. We will use the API or downloadable exports instead of scraping the displayed tables.
+
+-   API queries allow filtering and pagination. We will adapt the script’s example filters—August 2020 and sector 640—to the agreed research period and geography; those example settings do not define my study areas.
+
+-   We will confirm whether Active Calls retains historical records. If it only provides a changing current snapshot, I will request an archive or use it prospectively rather than treating it as a complete historical calls dataset.
+
+**(d) Volume, rate limiting, and caching**
+
+-   We will estimate record counts before downloading and retrieve only necessary fields and dates. Pagination will use stable ordering and an endpoint-supported batch size; the script’s 50,000-row setting will be tested.
+
+-   We will make sequential requests, initially pause one second between batches, use an application token where appropriate, and increase waits after throttling responses. This pause is a proposed collection practice, not a verified portal limit.
+
+-   We will cache dated raw downloads, metadata, query settings, and cleaned files. Analysis will use cached copies, with controlled refreshes instead of repeated downloads.
+
+**(e) Changes and detection**
+
+-   Collection may fail if field names, category labels, endpoints, date formats, coordinates, or identifier conventions change.
+
+-   We will check required columns, exact offense labels, missing coordinates, date coverage, duplicate identifiers, record counts, and unmatched joins after each download. Unexpected changes will trigger review before analysis.
+
+-   We will retain original snapshots and document corrections. Spatial and temporal aggregation will use consistent boundaries and periods, including the observation dates of encampment and business locations.

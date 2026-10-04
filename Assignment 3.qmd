@@ -223,9 +223,9 @@ The highest estimated poverty rate is in Dimmit County at approximately 41.1%, f
 
 Dimmit County and Zapata County provide one clear example of overlapping confidence intervals.
 
--    Dimmit County: estimated poverty rate = 41.1%, MOE = 8.9 percentage points, interval = 32.2%–50.0%.
+-   Dimmit County: estimated poverty rate = 41.1%, MOE = 8.9 percentage points, interval = 32.2%–50.0%.
 
--    Zapata County: estimated poverty rate = 38.4%, MOE = 6.0 percentage points, interval = 32.4%–44.4%.
+-   Zapata County: estimated poverty rate = 38.4%, MOE = 6.0 percentage points, interval = 32.4%–44.4%.
 
 The two intervals overlap substantially. Therefore, although Dimmit County is ranked above Zapata County based on the point estimates, the data do not provide strong evidence that Dimmit County’s true poverty rate is higher. Sampling uncertainty could reverse or eliminate the apparent difference. The ranking should consequently be treated as descriptive rather than as a definitive ordering of the counties.
 

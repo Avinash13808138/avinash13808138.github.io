@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>research – avinash13808138.github.io</title>
+<title>Assignment 04_Data Plan – avinash13808138.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -101,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./research.html" aria-current="page"> 
+    <a class="nav-link" href="./research.html"> 
 <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
@@ -178,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">research</h1>
+<h1 class="title">Assignment 04_Data Plan</h1>
 </div>
 
 
@@ -195,6 +195,41 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p><strong>Part 4: Data Acquisition Plan</strong></p>
+<p><strong>Research purpose</strong></p>
+<ul>
+<li>We will examine whether burglary/breaking and entering, destruction/damage/vandalism of property, motor vehicle theft, and robbery co-locate with recorded drug/narcotic violations and documented homeless encampments in Downtown Dallas and the Harry Hines corridor. We will investigate whether observed patterns also reflect differences in police activity; spatial association alone will not establish causation.</li>
+</ul>
+<p><strong>(a) Sources and reasons for choosing them</strong></p>
+<ul>
+<li><p>We will retain three Dallas OpenData datasets: <strong>Police Incidents</strong> (<code>qv6i-rri7</code>), <strong>Police Arrests</strong> (<code>sdr7-6v3j</code>), and <strong>Dallas Police Active Calls</strong> (<code>9fxf-t2tr</code>). They provide complementary information about recorded offenses, arrests, and calls being handled.</p></li>
+<li><p>Police Incidents will be the main dataset because it contains <code>NIBRS_Crime_Category</code>, which identifies the selected offenses. Arrests and calls will provide additional context about police activity, subject to their coverage and available fields.</p></li>
+<li><p>We have requested GIS shapefiles for homeless encampments and sexually oriented businesses. We will obtain or define study-area boundaries and check each layer’s observation dates and coordinate system.</p></li>
+<li><p>We will verify <code>IncidentNum</code> as a linkage field in each table. Because an incident may have multiple offenses, arrests, or call records, We will examine duplicates and summarize related records before joining to avoid inflating counts.</p></li>
+</ul>
+<p><strong>(b) Robots rules and Terms of Service</strong></p>
+<ul>
+<li><p>Before collection, We will check the portal’s <code>robots.txt</code> for the intended paths and review Dallas OpenData’s Terms of Use and dataset-specific licensing. We will record the results and the date checked.</p></li>
+<li><p>Permission has not yet been verified. We will use only access methods permitted by the applicable rules and terms, follow any attribution requirements, and check restrictions attached to the requested GIS files. A robots check alone does not establish permission for every use.</p></li>
+</ul>
+<p><strong>(c) API availability and scraping justification</strong></p>
+<ul>
+<li><p>The supplied R script uses Socrata API endpoints to retrieve the three datasets as JSON. We will use the API or downloadable exports instead of scraping the displayed tables.</p></li>
+<li><p>API queries allow filtering and pagination. We will adapt the script’s example filters—August 2020 and sector 640—to the agreed research period and geography; those example settings do not define my study areas.</p></li>
+<li><p>We will confirm whether Active Calls retains historical records. If it only provides a changing current snapshot, I will request an archive or use it prospectively rather than treating it as a complete historical calls dataset.</p></li>
+</ul>
+<p><strong>(d) Volume, rate limiting, and caching</strong></p>
+<ul>
+<li><p>We will estimate record counts before downloading and retrieve only necessary fields and dates. Pagination will use stable ordering and an endpoint-supported batch size; the script’s 50,000-row setting will be tested.</p></li>
+<li><p>We will make sequential requests, initially pause one second between batches, use an application token where appropriate, and increase waits after throttling responses. This pause is a proposed collection practice, not a verified portal limit.</p></li>
+<li><p>We will cache dated raw downloads, metadata, query settings, and cleaned files. Analysis will use cached copies, with controlled refreshes instead of repeated downloads.</p></li>
+</ul>
+<p><strong>(e) Changes and detection</strong></p>
+<ul>
+<li><p>Collection may fail if field names, category labels, endpoints, date formats, coordinates, or identifier conventions change.</p></li>
+<li><p>We will check required columns, exact offense labels, missing coordinates, date coverage, duplicate identifiers, record counts, and unmatched joins after each download. Unexpected changes will trigger review before analysis.</p></li>
+<li><p>We will retain original snapshots and document corrections. Spatial and temporal aggregation will use consistent boundaries and periods, including the observation dates of encampment and business locations.</p></li>
+</ul>
 
 
 
