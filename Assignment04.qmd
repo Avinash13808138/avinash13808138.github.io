@@ -426,7 +426,7 @@ head(reserves_text) |> print(width = Inf)
 
 -   These four countries are examples from our displayed output, not necessarily the complete list of differing countries.
 
-### Part 3(c): When is scraping the right tool? 
+### Part 3(c): When is scraping the right tool?
 
 Web scraping is the right tool when the required data are available on webpages but cannot be obtained through a suitable API, downloadable dataset, or bulk export. It should be used when the website’s robots rules and Terms of Service permit the intended collection, with reasonable request rates and checks to detect changes in the page structure.
 

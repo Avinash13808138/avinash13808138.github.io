@@ -1,0 +1,829 @@
+---
+title: "Robustness Test 1B: Separate OCI Components"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show R code"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+  cache: false
+editor: visual
+---
+
+```{r}
+
+#| label: setup
+#| include: false
+
+# Install these packages only if necessary:
+# install.packages(c(
+#   "readxl",
+#   "dplyr",
+#   "lme4",
+#   "broom.mixed",
+#   "knitr"
+# ))
+
+library(readxl)
+library(dplyr)
+library(lme4)
+library(broom.mixed)
+library(knitr)
+
+options(scipen = 999)
+
+
+## 1. Import the incident-level data
+
+#| label: import-data
+
+file_path <- paste0(
+  "D:/PhD in Political Science-UTD/",
+  "Fall 2026/",
+  "Methods of Data Collection and Production/",
+  "avinash13808138.github.io/",
+  "GTD-India_Avinash_with_Districts_and_OCI_",
+  "MatchedData_with_Controls_Final 2(2).xlsx"
+)
+
+if (!file.exists(file_path)) {
+  stop(
+    paste0(
+      "The Excel file was not found at:\n",
+      file_path,
+      "\n\nCurrent working directory:\n",
+      getwd()
+    )
+  )
+}
+
+data_raw <- read_excel(
+  path = file_path,
+  sheet = "Sheet1"
+)
+
+cat(
+  "Rows in original dataset:",
+  nrow(data_raw),
+  "\n"
+)
+
+cat(
+  "Columns in original dataset:",
+  ncol(data_raw),
+  "\n"
+)
+
+
+## 2. Construct the Model 2 analytical sample
+
+#| label: analytical-sample
+
+required_variables <- c(
+  "Target Category",
+  "gname",
+  "iyear",
+  "ideology_category",
+  "conflict_region",
+  "OCI_eligible",
+  "z_prior_attacks",
+  "z_tactical_diversity",
+  "z_geo_spread",
+  "z_success_rate",
+  "lagged_district_terrorism_intensity"
+)
+
+missing_variables <- setdiff(
+  required_variables,
+  names(data_raw)
+)
+
+if (length(missing_variables) > 0) {
+  stop(
+    paste(
+      "The following required variables are missing:",
+      paste(
+        missing_variables,
+        collapse = ", "
+      )
+    )
+  )
+}
+
+model_data <- data_raw |>
+  filter(
+    OCI_eligible == 1,
+    ideology_category %in% c(
+      "Maoist",
+      "Separatist/Ethnonationalist",
+      "Islamist"
+    )
+  ) |>
+  transmute(
+    hard_target =
+      as.numeric(`Target Category`),
+
+    organization =
+      factor(gname),
+
+    year =
+      factor(iyear),
+
+    ideology = factor(
+      ideology_category,
+      levels = c(
+        "Maoist",
+        "Separatist/Ethnonationalist",
+        "Islamist"
+      )
+    ),
+
+    conflict_region = factor(
+      conflict_region,
+      levels = c(
+        "Rest of India",
+        "Kashmir",
+        "Maoist-affected belt",
+        "Northeast"
+      )
+    ),
+
+    prior_attacks =
+      as.numeric(z_prior_attacks),
+
+    tactical_diversity =
+      as.numeric(z_tactical_diversity),
+
+    geographic_spread =
+      as.numeric(z_geo_spread),
+
+    success_rate =
+      as.numeric(z_success_rate),
+
+    # Use the same logged transformation as main Model 2
+    ln_lagged_district_intensity =
+      log1p(
+        as.numeric(
+          lagged_district_terrorism_intensity
+        )
+      )
+  ) |>
+  filter(
+    if_all(
+      everything(),
+      ~ !is.na(.x)
+    )
+  )
+
+# Confirm that the outcome contains only zero and one
+if (!all(
+  sort(
+    unique(model_data$hard_target)
+  ) %in% c(0, 1)
+)) {
+  stop(
+    paste(
+      "Target Category is not coded",
+      "as a binary 0/1 variable."
+    )
+  )
+}
+
+sample_summary <- data.frame(
+  Statistic = c(
+    "Incident-level observations",
+    "Organizations",
+    "Organization-years",
+    "Hard-target observations",
+    "Soft-target observations"
+  ),
+
+  Value = c(
+    nrow(model_data),
+
+    n_distinct(
+      model_data$organization
+    ),
+
+    n_distinct(
+      interaction(
+        model_data$organization,
+        model_data$year,
+        drop = TRUE
+      )
+    ),
+
+    sum(
+      model_data$hard_target == 1
+    ),
+
+    sum(
+      model_data$hard_target == 0
+    )
+  )
+)
+
+kable(
+  sample_summary,
+  caption =
+    "Analytical Sample for Robustness Test 1B"
+)
+
+
+## 3. Verify the reference categories
+
+
+#| label: reference-categories
+
+cat(
+  "Reference ideology:",
+  levels(model_data$ideology)[1],
+  "\n"
+)
+
+cat(
+  "Reference conflict region:",
+  levels(model_data$conflict_region)[1],
+  "\n"
+)
+
+cat(
+  "Dependent-variable values:",
+  paste(
+    sort(
+      unique(model_data$hard_target)
+    ),
+    collapse = ", "
+  ),
+  "\n"
+)
+
+
+## 4. Descriptive statistics for the four components
+
+
+#| label: component-descriptives
+
+component_names <- c(
+  "prior_attacks",
+  "tactical_diversity",
+  "geographic_spread",
+  "success_rate"
+)
+
+component_descriptives <- data.frame(
+  Component = c(
+    "Prior attacks",
+    "Tactical diversity",
+    "Geographic spread",
+    "Success rate"
+  ),
+
+  Mean = sapply(
+    model_data[component_names],
+    mean,
+    na.rm = TRUE
+  ),
+
+  SD = sapply(
+    model_data[component_names],
+    sd,
+    na.rm = TRUE
+  ),
+
+  Minimum = sapply(
+    model_data[component_names],
+    min,
+    na.rm = TRUE
+  ),
+
+  Maximum = sapply(
+    model_data[component_names],
+    max,
+    na.rm = TRUE
+  )
+)
+
+kable(
+  component_descriptives,
+  digits = 3,
+  caption = paste(
+    "Descriptive Statistics for Standardized",
+    "Operational-Capacity Components"
+  )
+)
+
+
+## 5. Component correlation matrix
+
+
+#| label: component-correlations
+
+component_correlations <- cor(
+  model_data[component_names],
+  use = "complete.obs"
+)
+
+rownames(component_correlations) <- c(
+  "Prior attacks",
+  "Tactical diversity",
+  "Geographic spread",
+  "Success rate"
+)
+
+colnames(component_correlations) <- c(
+  "Prior attacks",
+  "Tactical diversity",
+  "Geographic spread",
+  "Success rate"
+)
+
+kable(
+  component_correlations,
+  digits = 3,
+  caption =
+    "Correlation Matrix for the Four OCI Components"
+)
+
+## 6. Multicollinearity diagnostics
+
+
+#| label: component-vif
+
+calculate_vif <- function(
+  variable,
+  data,
+  predictors
+) {
+
+  other_predictors <- setdiff(
+    predictors,
+    variable
+  )
+
+  auxiliary_formula <- as.formula(
+    paste(
+      variable,
+      "~",
+      paste(
+        other_predictors,
+        collapse = " + "
+      )
+    )
+  )
+
+  auxiliary_model <- lm(
+    auxiliary_formula,
+    data = data
+  )
+
+  auxiliary_r_squared <- summary(
+    auxiliary_model
+  )$r.squared
+
+  vif_value <- 1 / (
+    1 - auxiliary_r_squared
+  )
+
+  data.frame(
+    Variable = variable,
+    Auxiliary_R2 =
+      auxiliary_r_squared,
+    VIF = vif_value,
+    Tolerance = 1 / vif_value
+  )
+}
+
+component_vif <- bind_rows(
+  lapply(
+    component_names,
+    calculate_vif,
+    data = model_data,
+    predictors = component_names
+  )
+)
+
+component_vif$Variable <- c(
+  "Prior attacks",
+  "Tactical diversity",
+  "Geographic spread",
+  "Success rate"
+)
+
+kable(
+  component_vif,
+  digits = 3,
+  caption =
+    "Multicollinearity Diagnostics for OCI Components"
+)
+
+
+## 7. Estimate Model 2 with the components entered separately
+
+
+#| label: separate-components-model
+#| cache: false
+
+model_components <- glmer(
+  hard_target ~
+    ideology +
+    prior_attacks +
+    tactical_diversity +
+    geographic_spread +
+    success_rate +
+    conflict_region +
+    ln_lagged_district_intensity +
+    year +
+    (1 | organization),
+
+  data = model_data,
+
+  family = binomial(
+    link = "logit"
+  ),
+
+  # Final publication specification
+  nAGQ = 1,
+
+  control = glmerControl(
+    optimizer = "bobyqa",
+
+    optCtrl = list(
+      maxfun = 200000
+    )
+  )
+)
+
+summary(model_components)
+
+
+## 8. Publication-ready fixed-effects table
+
+
+#| label: fixed-effects-table
+
+fixed_effects <- tidy(
+  model_components,
+  effects = "fixed",
+  conf.int = TRUE,
+  conf.method = "Wald"
+) |>
+  mutate(
+    odds_ratio =
+      exp(estimate),
+
+    odds_ratio_low =
+      exp(conf.low),
+
+    odds_ratio_high =
+      exp(conf.high)
+  ) |>
+  filter(
+    !grepl(
+      "^year",
+      term
+    )
+  ) |>
+  mutate(
+    term = recode(
+      term,
+
+      "(Intercept)" =
+        "Intercept",
+
+      "ideologySeparatist/Ethnonationalist" =
+        "Separatist/Ethnonationalist",
+
+      "ideologyIslamist" =
+        "Islamist",
+
+      "prior_attacks" =
+        "Prior attacks",
+
+      "tactical_diversity" =
+        "Tactical diversity",
+
+      "geographic_spread" =
+        "Geographic spread",
+
+      "success_rate" =
+        "Success rate",
+
+      "conflict_regionKashmir" =
+        "Kashmir",
+
+      "conflict_regionMaoist-affected belt" =
+        "Maoist-affected belt",
+
+      "conflict_regionNortheast" =
+        "Northeast",
+
+      "ln_lagged_district_intensity" =
+        paste(
+          "Logged lagged district",
+          "terrorism intensity"
+        )
+    )
+  ) |>
+  select(
+    Predictor = term,
+    Coefficient = estimate,
+    `Standard Error` = std.error,
+    `95% CI Lower` = conf.low,
+    `95% CI Upper` = conf.high,
+    `Odds Ratio` = odds_ratio,
+    `OR 95% CI Lower` =
+      odds_ratio_low,
+    `OR 95% CI Upper` =
+      odds_ratio_high,
+    `p-value` = p.value
+  )
+
+kable(
+  fixed_effects,
+  digits = 3,
+  caption = paste(
+    "Mixed-Effects Logistic Regression with",
+    "OCI Components Entered Separately"
+  )
+)
+
+
+## 9. Table containing only the four OCI components
+
+
+#| label: component-results-table
+
+component_results <- fixed_effects |>
+  filter(
+    Predictor %in% c(
+      "Prior attacks",
+      "Tactical diversity",
+      "Geographic spread",
+      "Success rate"
+    )
+  )
+
+kable(
+  component_results,
+  digits = 3,
+  caption = paste(
+    "Conditional Relationships Between Individual",
+    "OCI Components and Hard-Target Selection"
+  )
+)
+
+
+## 10. Random effects and intraclass correlation
+
+
+#| label: random-effects-icc
+
+random_variance <- as.data.frame(
+  VarCorr(model_components)
+)$vcov[1]
+
+random_sd <- sqrt(
+  random_variance
+)
+
+icc <- random_variance /
+  (
+    random_variance +
+      (pi^2 / 3)
+  )
+
+random_effects_table <- data.frame(
+  Statistic = c(
+    "Organization random-intercept variance",
+    "Organization random-intercept SD",
+    "Intraclass correlation coefficient"
+  ),
+
+  Value = c(
+    random_variance,
+    random_sd,
+    icc
+  )
+)
+
+kable(
+  random_effects_table,
+  digits = 3,
+  caption =
+    "Organization-Level Random Effects"
+)
+
+
+## 11. Model-fit and estimation diagnostics
+
+
+#| label: model-diagnostics
+
+optimizer_code <-
+  model_components@optinfo$conv$opt
+
+convergence_messages <-
+  model_components@optinfo$conv$lme4$messages
+
+converged_successfully <-
+  is.null(convergence_messages) &&
+  all(optimizer_code == 0)
+
+model_diagnostics <- data.frame(
+  Statistic = c(
+    "Observations",
+    "Organizations",
+    "Organization-years",
+    "Log likelihood",
+    "AIC",
+    "BIC",
+    "Random-intercept variance",
+    "ICC",
+    "Singular fit",
+    "Optimizer convergence code",
+    "Convergence warnings",
+    "Quadrature setting"
+  ),
+
+  Value = c(
+    nobs(model_components),
+
+    n_distinct(
+      model_data$organization
+    ),
+
+    n_distinct(
+      interaction(
+        model_data$organization,
+        model_data$year,
+        drop = TRUE
+      )
+    ),
+
+    round(
+      as.numeric(
+        logLik(model_components)
+      ),
+      3
+    ),
+
+    round(
+      AIC(model_components),
+      3
+    ),
+
+    round(
+      BIC(model_components),
+      3
+    ),
+
+    round(
+      random_variance,
+      3
+    ),
+
+    round(
+      icc,
+      3
+    ),
+
+    isSingular(
+      model_components,
+      tol = 0.0001
+    ),
+
+    paste(
+      optimizer_code,
+      collapse = ", "
+    ),
+
+    ifelse(
+      is.null(convergence_messages),
+      "None",
+      paste(
+        convergence_messages,
+        collapse = "; "
+      )
+    ),
+
+    "nAGQ = 1"
+  )
+)
+
+kable(
+  model_diagnostics,
+  caption =
+    "Model-Fit and Estimation Diagnostics"
+)
+
+cat(
+  "\nConverged successfully:",
+  converged_successfully,
+  "\n"
+)
+
+
+## 12. Save the results
+
+#| label: save-results
+
+output_directory <-
+  "robustness_1B_outputs"
+
+if (!dir.exists(output_directory)) {
+  dir.create(output_directory)
+}
+
+write.csv(
+  sample_summary,
+  file.path(
+    output_directory,
+    "sample_summary.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  component_descriptives,
+  file.path(
+    output_directory,
+    "component_descriptive_statistics.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  component_correlations,
+  file.path(
+    output_directory,
+    "component_correlation_matrix.csv"
+  ),
+  row.names = TRUE
+)
+
+write.csv(
+  component_vif,
+  file.path(
+    output_directory,
+    "component_vif_diagnostics.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  fixed_effects,
+  file.path(
+    output_directory,
+    "separate_components_full_model.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  component_results,
+  file.path(
+    output_directory,
+    "separate_components_key_results.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  random_effects_table,
+  file.path(
+    output_directory,
+    "random_effects_and_icc.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  model_diagnostics,
+  file.path(
+    output_directory,
+    "model_diagnostics.csv"
+  ),
+  row.names = FALSE
+)
+
+saveRDS(
+  model_components,
+  file.path(
+    output_directory,
+    "separate_components_model.rds"
+  )
+)
+
+cat(
+  "All results were saved in:",
+  normalizePath(output_directory),
+  "\n"
+)
+
+
+```

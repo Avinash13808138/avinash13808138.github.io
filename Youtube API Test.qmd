@@ -1,0 +1,82 @@
+---
+title: "Youtube API Test"
+format: html
+editor: visual
+---
+
+```{r}
+library(httr)
+library(jsonlite)
+
+response <- GET(
+  "https://www.googleapis.com/youtube/v3/videos",
+  query = list(
+    part = "snippet",
+    id = "pEBI0vF45ic",
+    key = youtube_key
+  )
+)
+
+# Check the response status
+status_code(response)
+
+# Read the returned data
+result <- fromJSON(
+  content(response, "text", encoding = "UTF-8")
+)
+
+# Display the result
+result
+
+
+str(result)
+
+cat(prettify(content(response, "text", encoding = "UTF-8")))
+
+View(result$items)
+
+
+
+response <- GET(
+  "https://www.googleapis.com/youtube/v3/videos",
+  query = list(
+    part = "snippet,statistics,contentDetails,status",
+    id = "pEBI0vF45ic",
+    key = youtube_key
+  )
+)
+
+result <- fromJSON(
+  content(response, "text", encoding = "UTF-8")
+)
+
+View(result$items)
+
+
+
+result$items$snippet$title
+
+# View count
+result$items$statistics$viewCount
+
+# Duration
+result$items$contentDetails$duration
+
+
+
+
+# List the snippet field names
+names(result$items$snippet)
+
+# Inspect their contents
+str(result$items$snippet)
+
+
+result$items$snippet$title
+result$items$snippet$description
+```
+
+\
+
+\
+\

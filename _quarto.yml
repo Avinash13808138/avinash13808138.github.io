@@ -6,7 +6,8 @@ project:
     - epps6302_assignment01.pdf
     - epps6302_assignment02.pdf
     - epps6302_assignment03.pdf
-    - epps6302_assignment04.pdfqu
+    - epps6302_assignment04.pdf
+    - epps6302_assignment05.pdf
 
 website:
   title: "avinash13808138.github.io"
@@ -54,7 +55,15 @@ website:
             
           - href: Assignment04.qmd
             text: "Assignment04"   
+          
+          - href: epps6302_assignment05
+            text: "epps6302_assignment05 - Instructions"
             
+          - href: Assignment_05.qmd
+            text: "Assignment 05 Solutions"  
+            
+           - href: Assignment_05_Summary.qmd
+            text: "Assignment 05 Summary"
 
 # Apply these execution settings to all .qmd pages
 execute:

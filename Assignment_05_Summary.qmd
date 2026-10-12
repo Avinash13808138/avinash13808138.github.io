@@ -1,0 +1,19 @@
+---
+title: "Assignment 05 Summary"
+format: html
+editor: visual
+---
+
+-   **Overall purpose:** Learn how to find, download, verify, and evaluate government documents for research using both a website and an API.
+
+-   **Step 0 — Set up access:** Obtain a GovInfo API key and store it securely so R can access the API without exposing the key publicly.
+
+-   **Step 1 — Find the relevant documents:** Search manually for Senate Foreign Relations Committee hearings, sort newest first, and export a reference list.
+
+-   **Step 2 — Understand the API:** Learn how to request collections, search results, document metadata, download links, and additional pages through R.
+
+-   **Step 3 — Collect and verify:** Download ten hearings through both methods and compare their identifiers and order. Save logs showing download success. We verified the same ten hearing records, but did not compare the PDFs’ internal content.
+
+-   **Step 4 — Evaluate research usability:** Explain the difficulties encountered and what text extraction, cleaning, or OCR might be needed to turn the documents into a table or text corpus. Consider how metadata and alternative formats could improve the process.
+
+-   **Step 5 — Document and share:** Publish the code, report, and download log on your assignment webpage so the teaching assistant can review your process and results, while keeping the PDFs and API key out of the public repository.

@@ -1,0 +1,528 @@
+---
+title: "Assignment 5: Government Data API"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+---
+
+```         
+## Step 1: Search by hand first  
+
+# Website: https://www.govinfo.gov/app/search/  
+
+# Search query: # collection:(CHRG) AND "Committee on Foreign Relations"  
+
+# Sort order: Date (New to Old)  
+
+# Exported results file: "govinfo-search-results-2026-10-12T16_56_24"
+```
+
+```{r}
+## Assignment 5
+## Step 2: How to use the GovInfo API
+## Documentation: https://api.govinfo.gov/docs
+
+library(httr2)
+
+## Collections: see what is available
+
+collections <- request("https://api.govinfo.gov/collections") |>
+  req_url_query(api_key = Sys.getenv("GOVINFO_API_KEY")) |>
+  req_perform() |>
+  resp_body_json()
+
+# Print the list of collections
+collections$collections
+```
+
+```{r}
+
+```
+
+```{r}
+## CHRG: Congressional Hearings
+## Documents added or changed since the specified date
+
+hearings <- request(
+  "https://api.govinfo.gov/collections/CHRG/2026-01-01T00:00:00Z"
+) |>
+  req_url_query(
+    api_key = Sys.getenv("GOVINFO_API_KEY"),
+    pageSize = 100,
+    offsetMark = "*"
+  ) |>
+  req_perform() |>
+  resp_body_json()
+
+# Inspect the first package
+hearings$packages[[1]]
+```
+
+```{r}
+## Search: Senate Committee on Foreign Relations
+## Sort by publication date, newest first
+
+body <- list(
+  query       = 'collection:(CHRG) AND "Committee on Foreign Relations"',
+  pageSize    = 100,
+  offsetMark  = "*",
+  sorts       = list(list(field = "publishdate", sortOrder = "DESC"))
+)
+
+found <- request("https://api.govinfo.gov/search") |>
+  req_url_query(api_key = Sys.getenv("GOVINFO_API_KEY")) |>
+  req_body_json(body) |>
+  req_perform() |>
+  resp_body_json()
+
+# Number of matching results
+found$count
+
+# Inspect the first result
+found$results[[1]]
+
+
+
+## Extract the list of search results
+## Select simple fields from each document
+
+govfiles <- lapply(found$results, function(x) {
+  data.frame(
+    packageId = if (is.null(x$packageId)) NA_character_ else x$packageId,
+    title = if (is.null(x$title)) NA_character_ else x$title,
+    dateIssued = if (is.null(x$dateIssued)) NA_character_ else x$dateIssued,
+    stringsAsFactors = FALSE
+  )
+}) |> dplyr::bind_rows()
+
+# View the first ten results
+head(govfiles, 10)
+```
+
+```{r}
+## Packages: inspect one document
+
+package_id <- found$results[[1]]$packageId
+
+package_summary <- request(
+  paste0("https://api.govinfo.gov/packages/", package_id, "/summary")
+) |>
+  req_url_query(api_key = Sys.getenv("GOVINFO_API_KEY")) |>
+  req_perform() |>
+  resp_body_json()
+
+# Print the document metadata
+package_summary
+
+# Print the available download links
+package_summary$download
+
+
+
+```
+
+```{r}
+## Paging: inspect the marker for the next page
+
+found$offsetMark
+```
+
+```{r}
+## Run only if a next-page marker is available
+
+body$offsetMark <- found$offsetMark
+
+found_next <- request("https://api.govinfo.gov/search") |>
+  req_url_query(api_key = Sys.getenv("GOVINFO_API_KEY")) |>
+  req_body_json(body) |>
+  req_perform() |>
+  resp_body_json()
+
+# Inspect the next page
+found_next$results
+```
+
+```{r}
+## Assignment 5
+## Step 3: Download the documents
+
+library(purrr)
+library(magrittr)
+library(httr2)
+
+## Set the working directory
+
+setwd("D:/PhD in Political Science-UTD/Fall 2026/Methods of Data Collection and Production/avinash13808138.github.io")
+
+## CSV method
+
+govfiles = read.csv(
+  file = "govinfo-search-results-2026-10-12T17_20_48.csv",
+  stringsAsFactors = FALSE
+)
+
+## Keep the first ten unique hearings
+## The CSV was exported with Date (New to Old)
+
+govfiles_csv <- govfiles[!duplicated(govfiles$packageId), ]
+govfiles_csv <- head(govfiles_csv, 10)
+
+stopifnot(nrow(govfiles_csv) == 10)
+
+# Print the selected hearings
+govfiles_csv[, c("packageId", "title", "publishdate")]
+
+```
+
+```{r}
+## Directories to save the PDFs
+
+dir.create("govinfo_pdfs", showWarnings = FALSE)
+dir.create("govinfo_pdfs/csv", showWarnings = FALSE)
+dir.create("govinfo_pdfs/api", showWarnings = FALSE)
+
+## Exclude the PDF folder from the public repository
+
+ignore_lines <- if (file.exists(".gitignore")) {
+  readLines(".gitignore", warn = FALSE)
+} else {
+  character()
+}
+
+if (!("govinfo_pdfs/" %in% ignore_lines)) {
+  cat("\ngovinfo_pdfs/\n", file = ".gitignore", append = TRUE)
+}
+
+
+## Function to download PDFs
+
+download_govfiles_pdf <- function(url, id) {
+  tryCatch({
+    destfile <- paste0(save_dir, "govfiles_", id, ".pdf")
+
+    status <- download.file(
+      url,
+      destfile = destfile,
+      mode = "wb"
+    )
+
+    if (status != 0) {
+      stop("Download failed")
+    }
+
+    # Check that the downloaded file has a PDF header
+    pdf_header <- readBin(destfile, what = "raw", n = 5)
+
+    if (!identical(pdf_header, charToRaw("%PDF-"))) {
+      stop("Downloaded file is not a PDF")
+    }
+
+    Sys.sleep(runif(1, 1, 3))
+
+    return(paste("Successfully downloaded:", id))
+  },
+  error = function(e) {
+    return(paste("Failed to download:", id))
+  })
+}
+
+
+## Prepare the CSV download list
+
+pdf_govfiles_url <- govfiles_csv$pdfLink
+pdf_govfiles_id <- govfiles_csv$packageId
+
+save_dir <- "govinfo_pdfs/csv/"
+
+## Download ten documents
+
+start.time <- Sys.time()
+message("Starting CSV downloads")
+
+results_csv <- 1:10 %>%
+  purrr::map_chr(
+    ~ download_govfiles_pdf(
+      pdf_govfiles_url[.],
+      pdf_govfiles_id[.]
+    )
+  )
+
+message("Finished CSV downloads")
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+
+time.taken
+print(results_csv)
+
+## Save the CSV download log
+
+log_csv <- data.frame(
+  method = "CSV export",
+  packageId = govfiles_csv$packageId,
+  title = govfiles_csv$title,
+  pdfLink = govfiles_csv$pdfLink,
+  result = results_csv,
+  downloaded_at = as.character(end.time)
+)
+
+write.csv(
+  log_csv,
+  "govinfo_download_log_csv.csv",
+  row.names = FALSE
+)
+
+
+
+
+## API method
+
+body <- list(
+  query = 'collection:(CHRG) AND chamber:senate AND committee:"Foreign Relations"',
+  pageSize = 100,
+  offsetMark = "*",
+  sorts = list(list(field = "publishdate", sortOrder = "DESC"))
+)
+
+found <- request("https://api.govinfo.gov/search") |>
+  req_url_query(api_key = Sys.getenv("GOVINFO_API_KEY")) |>
+  req_body_json(body) |>
+  req_perform() |>
+  resp_body_json()
+
+## Extract simple fields from the API results
+## This avoids the earlier nested-list error
+
+govfiles_api <- lapply(found$results, function(x) {
+  data.frame(
+    packageId = x$packageId,
+    granuleId = if (is.null(x$granuleId) ||
+                    length(x$granuleId) == 0 ||
+                    !nzchar(x$granuleId)) {
+      x$packageId
+    } else {
+      x$granuleId
+    },
+    title = x$title,
+    stringsAsFactors = FALSE
+  )
+}) |> dplyr::bind_rows()
+
+## Keep the first ten unique hearings
+
+govfiles_api <- govfiles_api[
+  !duplicated(govfiles_api$packageId),
+]
+
+govfiles_api <- head(govfiles_api, 10)
+
+stopifnot(nrow(govfiles_api) == 10)
+
+# Print the selected hearings
+govfiles_api
+
+
+## Prepare PDF links from API identifiers
+
+govfiles_api$pdfLink <- paste0(
+  "https://www.govinfo.gov/content/pkg/",
+  govfiles_api$packageId,
+  "/pdf/",
+  govfiles_api$granuleId,
+  ".pdf"
+)
+
+pdf_govfiles_url <- govfiles_api$pdfLink
+pdf_govfiles_id <- govfiles_api$packageId
+
+save_dir <- "govinfo_pdfs/api/"
+
+## Download ten documents
+
+start.time <- Sys.time()
+message("Starting API downloads")
+
+results_api <- 1:10 %>%
+  purrr::map_chr(
+    ~ download_govfiles_pdf(
+      pdf_govfiles_url[.],
+      pdf_govfiles_id[.]
+    )
+  )
+
+message("Finished API downloads")
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+
+time.taken
+print(results_api)
+
+## Save the API download log
+
+log_api <- data.frame(
+  method = "GovInfo API",
+  packageId = govfiles_api$packageId,
+  title = govfiles_api$title,
+  pdfLink = govfiles_api$pdfLink,
+  result = results_api,
+  downloaded_at = as.character(end.time)
+)
+
+write.csv(
+  log_api,
+  "govinfo_download_log_api.csv",
+  row.names = FALSE
+)
+
+
+
+## Create the CSV log from the Step 4 download results
+## No need to download the PDFs again
+
+log_csv <- data.frame(
+  method = "CSV export",
+  packageId = govfiles_csv$packageId,
+  title = govfiles_csv$title,
+  pdfLink = govfiles_csv$pdfLink,
+  result = results_csv,
+  downloaded_at = NA_character_
+)
+
+## Save the CSV log
+
+write.csv(
+  log_csv,
+  "govinfo_download_log_csv.csv",
+  row.names = FALSE
+)
+
+## Combine both download logs
+
+download_log <- rbind(log_csv, log_api)
+
+write.csv(
+  download_log,
+  "govinfo_download_log.csv",
+  row.names = FALSE
+)
+
+# View the combined log
+download_log
+
+## Combine both download logs
+
+download_log <- rbind(log_csv, log_api)
+
+write.csv(
+  download_log,
+  "govinfo_download_log.csv",
+  row.names = FALSE
+)
+
+
+
+## Same ten hearings, regardless of order?
+
+setequal(
+  govfiles_csv$packageId,
+  govfiles_api$packageId
+)
+
+## Same ten hearings in the same order?
+
+identical(
+  govfiles_csv$packageId,
+  govfiles_api$packageId
+)
+
+## Hearings found only in the CSV list
+
+setdiff(
+  govfiles_csv$packageId,
+  govfiles_api$packageId
+)
+
+## Hearings found only in the API list
+
+setdiff(
+  govfiles_api$packageId,
+  govfiles_csv$packageId
+)
+
+## Count successful downloads
+## Expected: 10 for each method
+
+sum(grepl("^Successfully downloaded:", results_csv))
+sum(grepl("^Successfully downloaded:", results_api))
+```
+
+```{r}
+## Check successful downloads
+## Each method should return 10
+
+sum(grepl("^Successfully downloaded:", results_csv))
+sum(grepl("^Successfully downloaded:", results_api))
+
+## Check whether both methods selected the same ten hearings
+
+setequal(
+  govfiles_csv$packageId,
+  govfiles_api$packageId
+)
+
+## Check whether the hearings are in the same order
+
+identical(
+  govfiles_csv$packageId,
+  govfiles_api$packageId
+)
+
+
+
+
+## Display failed downloads
+
+results_csv[grepl("^Failed to download:", results_csv)]
+results_api[grepl("^Failed to download:", results_api)]
+```
+
+## Step 4 : Report
+
+### Difficulties encountered
+
+I downloaded the ten most recent Senate Committee on Foreign Relations hearings available through the refined GovInfo search, including subcommittee hearings, using both a website CSV export and API search results. Both methods successfully downloaded ten PDFs and returned the same ten hearings in the same order.
+
+The initial phrase search also returned a hearing issued by the Senate Committee on Commerce, Science, and Transportation because it mentioned Foreign Relations. I addressed this by restricting the search to the Senate chamber and the Foreign Relations committee. I also encountered an R error when combining API results because some fields contained nested lists of unequal lengths. Extracting simple fields before combining the records resolved this problem. Another error occurred when combining download logs before the CSV log object had been created; creating the missing log resolved it.
+
+### a. Usability of the documents as data
+
+The PDFs provide source documents for analysis, but downloading them does not automatically produce an analysis-ready dataset. Their text must first be extracted and checked for completeness. Any scanned pages without usable embedded text would require optical character recognition (OCR). Headers, footers, page numbers, and formatting may also require cleaning, while tables and images may need separate processing.
+
+To create a document-level table, I would use one row per hearing and include its package ID, title, date, committee, and document link. To create a text corpus, I would extract each hearing’s text, associate it with its package ID, and check the extraction against the original PDF. Analysis of individual statements would require additional work to identify speakers and separate their testimony.
+
+### b. Improvements to the process
+
+I would use committee and chamber metadata filters from the beginning rather than relying only on a phrase search. I would also examine the available HTML or text versions before extracting text from PDFs, since these formats may simplify text processing. The PDFs would remain useful for checking the original layout, tables, and images.
+
+Metadata can supply identifiers, titles, dates, committee information, and available download links without manually opening each hearing. I would preserve this metadata alongside the download log, record the query and sorting settings, and add retries for failed requests. If collecting more documents, I would use pagination to retrieve additional results.
+
+### c. What the API added
+
+The API provided structured search results and document metadata that R could retrieve directly, reducing the manual exporting and page parsing required by website searches and scraping. It also supported repeatable requests with specified queries, sorting, and pagination, making the collection process easier to document and rerun.
+
+```{r}
+## Download Log
+
+## Read and display the saved download log
+
+download_log <- read.csv(
+  "govinfo_download_log.csv",
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(download_log)
+
+```
