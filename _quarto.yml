@@ -56,13 +56,13 @@ website:
           - href: Assignment04.qmd
             text: "Assignment04"   
           
-          - href: epps6302_assignment05
+          - href: epps6302_assignment05.pdf
             text: "epps6302_assignment05 - Instructions"
             
           - href: Assignment_05.qmd
             text: "Assignment 05 Solutions"  
             
-           - href: Assignment_05_Summary.qmd
+          - href: Assignment_05_Summary.qmd
             text: "Assignment 05 Summary"
 
 # Apply these execution settings to all .qmd pages
