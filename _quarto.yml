@@ -1,6 +1,21 @@
 project:
   type: website
   output-dir: docs
+
+  render:
+    - index.qmd
+    - about.qmd
+    - research.qmd
+    - teaching.qmd
+    - assign01.qmd
+    - Assignment_2_Notes.qmd
+    - assign02.qmd
+    - "Assignment 3.qmd"
+    - "Assignment 04_Data Plan.qmd"
+    - Assignment04.qmd
+    - Assignment_05.qmd
+    - Assignment_05_Summary.qmd
+
   resources:
     - Avinash_Singh_Resume.pdf
     - epps6302_assignment01.pdf
@@ -8,7 +23,6 @@ project:
     - epps6302_assignment03.pdf
     - epps6302_assignment04.pdf
     - epps6302_assignment05.pdf
-
 website:
   title: "avinash13808138.github.io"
 
