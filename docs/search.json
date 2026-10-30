@@ -53,7 +53,7 @@
     "href": "Assignment6.html#collection-log-and-manifest",
     "title": "Assignment 6",
     "section": "Collection log and manifest",
-    "text": "Collection log and manifest\nThe collection log and metadata manifest are the files to publish with this report. Do not publish the source PDFs, full-text corpus, or cache directory.\nCollection log\nDocument manifest"
+    "text": "Collection log and manifest\nThe collection log and metadata manifest are the files to publish with this report. Do not publish the source PDFs, full-text corpus, or cache directory.\nCollection log\nDocument manifest\n\n## CPD collection records  - [Download the search log](outputs/assign06/cpd_search_log.csv) - [Download the reviewed document manifest](outputs/assign06/cpd_manifest_reviewed.csv) - [Read the collection note](outputs/assign06/cpd_collection_note.txt)"
   },
   {
     "objectID": "Assignment_05_Summary.html",

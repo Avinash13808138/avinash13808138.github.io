@@ -1353,3 +1353,7 @@ ndoc(cpd_corpus)
 
 table(docvars(cpd_corpus, "administration"))
 ```
+
+```         
+## CPD collection records  - [Download the search log](outputs/assign06/cpd_search_log.csv) - [Download the reviewed document manifest](outputs/assign06/cpd_manifest_reviewed.csv) - [Read the collection note](outputs/assign06/cpd_collection_note.txt)
+```
