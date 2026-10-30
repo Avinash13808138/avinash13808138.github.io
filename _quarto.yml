@@ -26,6 +26,8 @@ project:
     - epps6302_assignment04.pdf
     - epps6302_assignment05.pdf
     - epps6302_assignment06.pdf
+    - outputs/assign06/cpd_search_log.csv
+    - outputs/assign06/cpd_manifest_reviewed.csv
 website:
   title: "avinash13808138.github.io"
 
