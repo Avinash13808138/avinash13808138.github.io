@@ -205,6 +205,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="./Assignment_05_Summary.html">
  <span class="dropdown-text">Assignment 05 Summary</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./epps6302_assignment06.pdf">
+ <span class="dropdown-text">epps6302_assignment06 - Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Assignment6.html">
+ <span class="dropdown-text">Assignment 06 Solutions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Summary_Assignment_6.html">
+ <span class="dropdown-text">Assignment 06 Summary</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -587,7 +599,7 @@ $ Ref.                               &lt;chr&gt; "Ref.", "Ref.", "[3]", "[4]", "
 3 China                  Asia      3,854,885              4,299                 
 4 Japan                  Asia      1,287,470              18,400                
 5 Switzerland            Europe    939,140                13,935                
-6 India                  Asia      785,710                45,290                
+6 Russia                 Europe/A… 761,200                5,600                 
 # ℹ abbreviated names: ¹​`Country(as recognized by the UN)`,
 #   ²​`Foreign exchange reserves`, ³​`Foreign exchange reserves`
 # ℹ 4 more variables: `Foreign exchange reserves` &lt;chr&gt;,
@@ -620,7 +632,7 @@ $ Ref.                               &lt;chr&gt; "Ref.", "Ref.", "[3]", "[4]", "
 3 China                  Asia      3,854,885              4,299                 
 4 Japan                  Asia      1,287,470              18,400                
 5 Switzerland            Europe    939,140                13,935                
-6 India                  Asia      785,710                45,290                
+6 Russia                 Europe/A… 761,200                5,600                 
 # ℹ abbreviated names: ¹​country_as_recognized_by_the_un,
 #   ²​foreign_exchange_reserves, ³​foreign_exchange_reserves_2
 # ℹ 4 more variables: foreign_exchange_reserves_3 &lt;chr&gt;,
@@ -646,24 +658,24 @@ $ Ref.                               &lt;chr&gt; "Ref.", "Ref.", "[3]", "[4]", "
 <span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
-  country     reserves_text date_text         reserves_usd_million date      
-  &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;                            &lt;dbl&gt; &lt;date&gt;    
-1 China       3,854,885     1 August 2026                  3854885 2026-08-01
-2 Japan       1,287,470     30 June 2026                   1287470 2026-06-30
-3 Switzerland 939,140       30 June 2026                    939140 2026-06-30
-4 India       785,710       04 September 2026               785710 2026-09-04
-5 Russia      761,200       21 August 2026                  761200 2026-08-21
-6 Taiwan      597,150       30 June 2026                    597150 2026-06-30</code></pre>
+  country     reserves_text date_text      reserves_usd_million date      
+  &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;                         &lt;dbl&gt; &lt;date&gt;    
+1 China       3,854,885     1 August 2026               3854885 2026-08-01
+2 Japan       1,287,470     30 June 2026                1287470 2026-06-30
+3 Switzerland 939,140       30 June 2026                 939140 2026-06-30
+4 Russia      761,200       21 August 2026               761200 2026-08-21
+5 India       734,606       9 October 2026               734606 2026-10-09
+6 Taiwan      597,150       30 June 2026                 597150 2026-06-30</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(reserves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 196
 Columns: 5
-$ country              &lt;chr&gt; "China", "Japan", "Switzerland", "India", "Russia…
-$ reserves_text        &lt;chr&gt; "3,854,885", "1,287,470", "939,140", "785,710", "…
+$ country              &lt;chr&gt; "China", "Japan", "Switzerland", "Russia", "India…
+$ reserves_text        &lt;chr&gt; "3,854,885", "1,287,470", "939,140", "761,200", "…
 $ date_text            &lt;chr&gt; "1 August 2026", "30 June 2026", "30 June 2026", …
-$ reserves_usd_million &lt;dbl&gt; 3854885, 1287470, 939140, 785710, 761200, 597150,…
-$ date                 &lt;date&gt; 2026-08-01, 2026-06-30, 2026-06-30, 2026-09-04, …</code></pre>
+$ reserves_usd_million &lt;dbl&gt; 3854885, 1287470, 939140, 761200, 734606, 597150,…
+$ date                 &lt;date&gt; 2026-08-01, 2026-06-30, 2026-06-30, 2026-08-21, …</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- 2b. A different Wikipedia table-- Population Table -------------------------------------</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -713,7 +725,7 @@ $ Notes                                         &lt;chr&gt; "", "[b]", "[c]", "[
 2 India         1,429,404,000 17.3%       1 Jul 20… Official projection[4] "[b]"
 3 China         1,404,890,000 17.0%       31 Dec 2… Official estimate[5]   "[c]"
 4 United States 341,784,857   4.1%        1 Jul 20… Official estimate[6]   "[d]"
-5 Indonesia     288,315,089   3.5%        31 Dec 2… National annual proje… ""   
+5 Indonesia     290,125,073   3.5%        30 Jun 2… National annual proje… ""   
 6 Pakistan      241,499,431   2.9%        1 Mar 20… 2023 census result[8]  "[e]"
 # ℹ abbreviated name: ¹​`Source (official or fromthe United Nations)`</code></pre>
 </div>
@@ -745,7 +757,7 @@ $ Notes                                         &lt;chr&gt; "", "[b]", "[c]", "[
 2 India         1,429,404,000 17.3%           1 Ju… Official projection    ""   
 3 China         1,404,890,000 17.0%           31 D… Official estimate      ""   
 4 United States 341,784,857   4.1%            1 Ju… Official estimate      ""   
-5 Indonesia     288,315,089   3.5%            31 D… National annual proje… ""   
+5 Indonesia     290,125,073   3.5%            30 J… National annual proje… ""   
 6 Pakistan      241,499,431   2.9%            1 Ma… 2023 census result     ""   
 # ℹ abbreviated name: ¹​source_official_or_fromthe_united_nations</code></pre>
 </div>
@@ -769,7 +781,7 @@ $ Notes                                         &lt;chr&gt; "", "[b]", "[c]", "[
 2 India         1,429,404,000 17.3%           1 Jul 2026 
 3 China         1,404,890,000 17.0%           31 Dec 2025
 4 United States 341,784,857   4.1%            1 Jul 2025 
-5 Indonesia     288,315,089   3.5%            31 Dec 2025
+5 Indonesia     290,125,073   3.5%            30 Jun 2026
 6 Pakistan      241,499,431   2.9%            1 Mar 2023 
   source_official_or_fromthe_united_nations notes
   &lt;chr&gt;                                     &lt;chr&gt;
@@ -805,7 +817,7 @@ $ Notes                                         &lt;chr&gt; "", "[b]", "[c]", "[
 1 India         1,429,404,000   1 Jul 2026        1429404000 2026-07-01
 2 China         1,404,890,000   31 Dec 2025       1404890000 2025-12-31
 3 United States 341,784,857     1 Jul 2025         341784857 2025-07-01
-4 Indonesia     288,315,089     31 Dec 2025        288315089 2025-12-31
+4 Indonesia     290,125,073     30 Jun 2026        290125073 2026-06-30
 5 Pakistan      241,499,431     1 Mar 2023         241499431 2023-03-01
 6 Nigeria       223,800,000     1 Jul 2023         223800000 2023-07-01</code></pre>
 </div>
@@ -814,10 +826,10 @@ $ Notes                                         &lt;chr&gt; "", "[b]", "[c]", "[
 <pre><code>Rows: 239
 Columns: 5
 $ country          &lt;chr&gt; "India", "China", "United States", "Indonesia", "Paki…
-$ population_text  &lt;chr&gt; "1,429,404,000", "1,404,890,000", "341,784,857", "288…
-$ date_text        &lt;chr&gt; "1 Jul 2026", "31 Dec 2025", "1 Jul 2025", "31 Dec 20…
-$ population_value &lt;dbl&gt; 1429404000, 1404890000, 341784857, 288315089, 2414994…
-$ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 2023…</code></pre>
+$ population_text  &lt;chr&gt; "1,429,404,000", "1,404,890,000", "341,784,857", "290…
+$ date_text        &lt;chr&gt; "1 Jul 2026", "31 Dec 2025", "1 Jul 2025", "30 Jun 20…
+$ population_value &lt;dbl&gt; 1429404000, 1404890000, 341784857, 290125073, 2414994…
+$ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2026-06-30, 2023…</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Check the cleaned dataframes ----------------------------------------</span></span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -825,11 +837,11 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 196
 Columns: 5
-$ country              &lt;chr&gt; "China", "Japan", "Switzerland", "India", "Russia…
-$ reserves_text        &lt;chr&gt; "3,854,885", "1,287,470", "939,140", "785,710", "…
+$ country              &lt;chr&gt; "China", "Japan", "Switzerland", "Russia", "India…
+$ reserves_text        &lt;chr&gt; "3,854,885", "1,287,470", "939,140", "761,200", "…
 $ date_text            &lt;chr&gt; "1 August 2026", "30 June 2026", "30 June 2026", …
-$ reserves_usd_million &lt;dbl&gt; 3854885, 1287470, 939140, 785710, 761200, 597150,…
-$ date                 &lt;date&gt; 2026-08-01, 2026-06-30, 2026-06-30, 2026-09-04, …</code></pre>
+$ reserves_usd_million &lt;dbl&gt; 3854885, 1287470, 939140, 761200, 734606, 597150,…
+$ date                 &lt;date&gt; 2026-08-01, 2026-06-30, 2026-06-30, 2026-08-21, …</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(reserves))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -843,10 +855,10 @@ reserves_usd_million                 date
 <pre><code>Rows: 239
 Columns: 5
 $ country          &lt;chr&gt; "India", "China", "United States", "Indonesia", "Paki…
-$ population_text  &lt;chr&gt; "1,429,404,000", "1,404,890,000", "341,784,857", "288…
-$ date_text        &lt;chr&gt; "1 Jul 2026", "31 Dec 2025", "1 Jul 2025", "31 Dec 20…
-$ population_value &lt;dbl&gt; 1429404000, 1404890000, 341784857, 288315089, 2414994…
-$ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 2023…</code></pre>
+$ population_text  &lt;chr&gt; "1,429,404,000", "1,404,890,000", "341,784,857", "290…
+$ date_text        &lt;chr&gt; "1 Jul 2026", "31 Dec 2025", "1 Jul 2025", "30 Jun 20…
+$ population_value &lt;dbl&gt; 1429404000, 1404890000, 341784857, 290125073, 2414994…
+$ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2026-06-30, 2023…</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(population))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -880,7 +892,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
  5 Bhutan                790,718         2026     
  6 São Tomé and Príncipe 209,607         2024     
  7 Grenada               109,021         2021     
- 8 Dominica              65,514          2026     
+ 8 Dominica              65,431          2026     
  9 Saint Kitts and Nevis 51,320          2022     
 10 Pitcairn Islands (UK) 35              2023     </code></pre>
 </div>
@@ -894,14 +906,14 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 <span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reserves_text) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
-  country_as_recognized_by_the_un  continent foreign_exchange_reserves
-  &lt;chr&gt;                            &lt;chr&gt;     &lt;chr&gt;                    
-1 Country(as recognized by the UN) Continent Including gold           
-2 Country(as recognized by the UN) Continent US$ million              
-3 China                            Asia      3,854,885                
-4 Japan                            Asia      1,287,470                
-5 Switzerland                      Europe    939,140                  
-6 India                            Asia      785,710                  
+  country_as_recognized_by_the_un  continent   foreign_exchange_reserves
+  &lt;chr&gt;                            &lt;chr&gt;       &lt;chr&gt;                    
+1 Country(as recognized by the UN) Continent   Including gold           
+2 Country(as recognized by the UN) Continent   US$ million              
+3 China                            Asia        3,854,885                
+4 Japan                            Asia        1,287,470                
+5 Switzerland                      Europe      939,140                  
+6 Russia                           Europe/Asia 761,200                  
   foreign_exchange_reserves_2 foreign_exchange_reserves_3
   &lt;chr&gt;                       &lt;chr&gt;                      
 1 Including gold              Excluding gold             
@@ -909,7 +921,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 3 4,299                       3,504,805                  
 4 18,400                      1,259,248                  
 5 13,935                      932,282                    
-6 45,290                      671,900                    
+6 5,600                       434,487                    
   foreign_exchange_reserves_4 last_reporteddate ref   
   &lt;chr&gt;                       &lt;chr&gt;             &lt;chr&gt; 
 1 Excluding gold              Last reporteddate "Ref."
@@ -917,7 +929,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 3 115,499                     1 August 2026     ""    
 4 16,230                      30 June 2026      ""    
 5 24,490                      30 June 2026      ""    
-6 56,790                      04 September 2026 ""    </code></pre>
+6 1,517                       21 August 2026    ""    </code></pre>
 </div>
 </div>
 </section>
@@ -1089,8 +1101,8 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 1 China       2026-08-01          3854885
 2 Japan       2026-06-30          1287470
 3 Switzerland 2026-06-30           939140
-4 India       2026-09-04           785710
-5 Russia      2026-08-21           761200
+4 Russia      2026-08-21           761200
+5 India       2026-10-09           734606
 6 Taiwan      2026-06-30           597150</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Match countries and calculate differences ---------------------------</span></span>
@@ -1111,8 +1123,8 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 1 China       2026-08-01          3854885 CN       2024  3.46e12       3456025.
 2 Japan       2026-06-30          1287470 JP       2024  1.23e12       1230667.
 3 Switzerland 2026-06-30           939140 CH       2024  9.09e11        909366.
-4 India       2026-09-04           785710 IN       2024  6.43e11        643043.
-5 Russia      2026-08-21           761200 &lt;NA&gt;       NA NA                  NA 
+4 Russia      2026-08-21           761200 &lt;NA&gt;       NA NA                  NA 
+5 India       2026-10-09           734606 IN       2024  6.43e11        643043.
 6 Taiwan      2026-06-30           597150 &lt;NA&gt;       NA NA                  NA 
 # ℹ 2 more variables: difference_million &lt;dbl&gt;, difference_percent &lt;dbl&gt;</code></pre>
 </div>
@@ -1382,7 +1394,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
    &lt;chr&gt;                &lt;date&gt;       &lt;int&gt;            &lt;dbl&gt;          &lt;dbl&gt;
  1 United States        2025-08-22    2024           253767        910037.
  2 China                2026-08-01    2024          3854885       3456025.
- 3 India                2026-09-04    2024           785710        643043.
+ 3 India                2026-10-09    2024           734606        643043.
  4 Thailand             2026-07-01    2024           300180        236934.
  5 Japan                2026-06-30    2024          1287470       1230667.
  6 Netherlands          2024-03-01    2024           125451         79130.
@@ -1404,7 +1416,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
                 &lt;dbl&gt;              &lt;dbl&gt;
  1           -656270.             -72.1 
  2            398860.              11.5 
- 3            142667.              22.2 
+ 3             91563.              14.2 
  4             63246.              26.7 
  5             56803.               4.62
  6             46321.              58.5 
@@ -1431,7 +1443,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
     &lt;chr&gt;                    &lt;date&gt;       &lt;int&gt;            &lt;dbl&gt;          &lt;dbl&gt;
   1 United States            2025-08-22    2024           253767       910037. 
   2 China                    2026-08-01    2024          3854885      3456025. 
-  3 India                    2026-09-04    2024           785710       643043. 
+  3 India                    2026-10-09    2024           734606       643043. 
   4 Thailand                 2026-07-01    2024           300180       236934. 
   5 Japan                    2026-06-30    2024          1287470      1230667. 
   6 Netherlands              2024-03-01    2024           125451        79130. 
@@ -1582,7 +1594,7 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
                  &lt;dbl&gt;              &lt;dbl&gt;
   1         -656270.             -72.1   
   2          398860.              11.5   
-  3          142667.              22.2   
+  3           91563.              14.2   
   4           63246.              26.7   
   5           56803.               4.62  
   6           46321.              58.5   
@@ -1764,13 +1776,13 @@ $ date             &lt;date&gt; 2026-07-01, 2025-12-31, 2025-07-01, 2025-12-31, 
 1 China       2026-08-01    2024          3854885       3456025.
 2 Japan       2026-06-30    2024          1287470       1230667.
 3 Switzerland 2026-06-30    2024           939140        909366.
-4 India       2026-09-04    2024           785710        643043.
+4 India       2026-10-09    2024           734606        643043.
   difference_million difference_percent
                &lt;dbl&gt;              &lt;dbl&gt;
 1            398860.              11.5 
 2             56803.               4.62
 3             29774.               3.27
-4            142667.              22.2 </code></pre>
+4             91563.              14.2 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ---- Cache the comparison ------------------------------------------------</span></span>
 <span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>

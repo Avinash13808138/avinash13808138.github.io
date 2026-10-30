@@ -8,3 +8,6 @@
 **/*.quarto_ipynb
 
 govinfo_pdfs/
+
+# Private Assignment 6 data and saved models
+/data/assign06_private/

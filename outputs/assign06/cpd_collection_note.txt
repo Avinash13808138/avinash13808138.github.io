@@ -1,0 +1,4 @@
+Query: collection:cpd "Xi Jinping" publishdate:range(2021-01-20,2026-10-30)
+Collection date: 2026-10-30
+Date filter: publication date.
+Unique matches: 352

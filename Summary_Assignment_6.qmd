@@ -1,0 +1,87 @@
+---
+title: "Assignment 6: Summary and Interpretation"
+author: "Avinash Singh"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+editor: visual
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
+---
+
+::: callout-note
+This file contains the written component of Assignment 6. It contains no executable R chunks and does not rerun the analyses. The short report covers Parts 2 and 3; the CPD data note and explanatory material are separate.
+:::
+
+## Report–\> Parts 2 and 3
+
+### 2(a)(i). Archived summit tweets
+
+The archive contained 14,520 tweets, with no missing or blank texts; 9,059 records repeated earlier text. Repetition therefore contributes substantially to the observed frequencies. “Biden” (12,338), “xi” (12,027), and “summit” (11,167) dominated, while “taiwan” and “tensions” indicated attention to geopolitical disputes. These counts measure attention within the archive, not public approval.
+
+The hashtag network connected leader and country labels with coronavirus, fentanyl, and a linked human-rights grouping containing Uyghur and Tibetan references. The mention network included connected media accounts and a grouping involving @eneskanter and basketball-related accounts. These are co-mentions, not evidence of agreement or direct interaction. LSA produced four dimensions. Displayed examples near zero on Dimension 1 included non-English or link-only records, whereas higher-scoring examples contained longer English discussion. Language and text length are therefore plausible influences; the dimension cannot confidently be labeled political support or opposition.
+
+### 2(a)(ii). GovInfo presidential documents
+
+The saved corpus contained 352 documents: 183 associated with Biden and 169 with Trump. KWIC passages showed Biden describing familiarity with Xi and discussing cooperation without seeking conflict. However, many matches appeared in editorial notes, name lists, and subject headings, demonstrating that the corpus includes material beyond presidential speech.
+
+Biden-associated vocabulary included “press,” “announced,” “briefing,” “nominate,” “climate,” and “infrastructure.” Trump-associated vocabulary included “q,” “great,” “know,” and “tariffs.” Some differences suggest substantive themes, but the prominence of “q” and publication-related vocabulary indicates strong effects of question-and-answer formatting and document composition. These results should not be treated as a clean comparison of presidential attitudes toward China.
+
+### 2(a)(iii). Comparison of the sources
+
+Tweets were produced by participating accounts for platform audiences, while presidential documents communicate official positions to domestic and international audiences and are assembled into an institutional record. Tweets reveal captured attention and discussion; CPD documents reveal official public framing. Neither directly measures private beliefs. Keyword and collection-window selection shaped the tweet archive, while editorial decisions and the query shaped the CPD corpus. Furthermore, the tweets concern a short summit period, whereas the government corpus spans years. Direct claims about the 2021 summit require comparison with government documents from that event.
+
+### 2(b)(i). Inaugural addresses
+
+Across 21 addresses, length ranged from 555 word tokens for Roosevelt in 1945 to 2,909 for Trump in 2025. Vocabulary diversity did not rise consistently over time: MATTR ranged from 0.640 for Nixon in 1973 to 0.711 for Reagan in 1985. Flesch reading ease ranged from 48.794 for Truman in 1949 to 73.196 for Biden in 2021. These measures describe language, not speech quality.
+
+Reagan’s 1981 and 1985 addresses were the most similar pair by cosine similarity (0.690). Reagan’s 1985 and Clinton’s 1997 addresses also showed substantial similarity (0.642), demonstrating overlap across parties. Democratic keyness emphasized “democracy” and “change”; Republican keyness included “federal,” “government,” and “freedom.” Individual presidents and historical circumstances may contribute to these differences.
+
+### 2(b)(ii). Latest address
+
+The installed corpus included `2025-Trump`; no additional address was needed.
+
+### 3. Wordfish
+
+Wordfish assumes conditionally independent Poisson word counts, with expected frequencies determined by document and word baselines and their relationships to one latent position. After trimming, 2,093 features remained. Truman’s 1949 address scored lowest (−2.090), while Trump’s 2025 address scored highest (1.464). Party overlap and the broad chronological pattern suggest historical vocabulary and rhetorical change more than a simple partisan scale. Lower-end words included “Europe” and “imperialism”; higher-end words included “deal” and “rebuild.” Validation would require independent coding of themes and rhetoric, contextual reading, and sensitivity checks. Setting `dir` oriented Roosevelt’s 1945 address below Trump’s 2025 address; it fixed the sign, not the substantive meaning. Inaugural tradition also constrains what this scale can represent. The ordering of the two orientation speeches is imposed by the model setup; interpreting historical change therefore requires examining the remaining speeches and independent evidence, rather than those anchors.
+
+## Part 4. CPD data note and submission
+
+### CPD data note
+
+| Item | Description |
+|------------------------------------|------------------------------------|
+| **Source** | Compilation of Presidential Documents (CPD), accessed through GovInfo. The analytical corpus contained 352 documents: 183 associated with Biden and 169 with Trump. Administration labels were obtained from GovInfo's dedicated president metadata. |
+| **Permission** | Under GovInfo's public-domain and copyright notice, official U.S. government works are generally available for public use. Government publications may also contain third-party copyrighted material, so availability does not establish unrestricted rights to every included item. The submission provides the collection log and metadata manifest rather than the downloaded documents. |
+| **Query** | The search selected CPD documents matching the phrase `"Xi Jinping"`, using a publication-date range beginning January 20, 2021. Query: `collection:cpd "Xi Jinping" publishdate:range(2021-01-20,END_DATE)`. **Replace `END_DATE` with the exact date recorded in `cpd_collection_note.txt`.** |
+| **Collection date** | **Insert the actual collection date from the saved collection records.** The rendered output does not display it. |
+| **Selection** | The collection procedure was designed to retrieve all search-result pages and retain unique package IDs. PDFs were downloaded, text was extracted, and documents were grouped using president metadata. The rendered report confirms the analytical sample size but does not itself establish that every available matching document was successfully collected. Confirm completeness against the saved log before making that claim. |
+| **Gaps and limitations** | The exact phrase may miss references using only “Xi,” other names, or alternative wording. Publication dates can differ from event dates. Extracted text includes editorial notes, names, headings, and question labels. The administrations have different periods of coverage and potentially different document compositions. The corpus captures published public communications rather than private diplomacy or public opinion. |
+
+### 
+
+## What we did overall in the code
+
+-   **Loaded the R packages** needed to organize text, calculate statistics, fit models, and make plots.
+-   **Imported the archived summit tweets** and checked missing and repeated text.
+-   **Converted text into tokens and document-feature matrices**, making word use countable.
+-   **Calculated word frequencies** to identify prominent terms in the tweet archive.
+-   **Constructed hashtag and mention networks** to examine which labels and accounts appeared together.
+-   **Ran LSA** to summarize tweet vocabulary patterns using four dimensions.
+-   **Searched GovInfo for CPD documents mentioning Xi Jinping**, downloaded documents, and retained collection records.
+-   **Assigned administrations using official president metadata**, rather than relying only on publication dates.
+-   **Used KWIC** to read references to Xi within surrounding text.
+-   **Calculated administration keyness** to identify relatively distinctive Biden and Trump vocabulary.
+-   **Selected inaugural addresses from 1945 onward** and compared speech length, vocabulary diversity, and readability.
+-   **Calculated cosine similarity and party keyness** to compare vocabulary across presidents and parties.
+-   **Confirmed that the 2025 inaugural address was included.**
+-   **Estimated Wordfish positions** and examined associated words, historical patterns, and party overlap.
+-   **Saved the corpus and model results and revised the rendering workflow** so the report could reuse completed work instead of repeating collection and expensive calculations.
+-   **Rendered the analyses into a report** containing plots, tables, and links to collection records.
+
+## 

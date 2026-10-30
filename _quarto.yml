@@ -15,6 +15,8 @@ project:
     - Assignment04.qmd
     - Assignment_05.qmd
     - Assignment_05_Summary.qmd
+    - Summary_Assignment_6.qmd
+    - Assignment6.qmd
 
   resources:
     - Avinash_Singh_Resume.pdf
@@ -23,6 +25,7 @@ project:
     - epps6302_assignment03.pdf
     - epps6302_assignment04.pdf
     - epps6302_assignment05.pdf
+    - epps6302_assignment06.pdf
 website:
   title: "avinash13808138.github.io"
 
@@ -78,6 +81,15 @@ website:
             
           - href: Assignment_05_Summary.qmd
             text: "Assignment 05 Summary"
+            
+          - href: epps6302_assignment06.pdf
+            text: "epps6302_assignment06 - Instructions"
+            
+          - href: Assignment6.qmd
+            text: "Assignment 06 Solutions"
+            
+          - href: Summary_Assignment_6.qmd
+            text: "Assignment 06 Summary"
 
 # Apply these execution settings to all .qmd pages
 execute:

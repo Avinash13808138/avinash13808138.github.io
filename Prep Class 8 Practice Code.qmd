@@ -1,0 +1,61 @@
+---
+title: "Prep Class 8 Practice Code"
+format: html
+editor: visual
+---
+
+## 
+
+```{r}
+library(quanteda)
+library(quanteda.textstats)
+
+# 1. Load a built-in corpus
+corp <- data_corpus_inaugural
+
+# 2. Inspect documents and their metadata
+ndoc(corp)
+head(docnames(corp))
+head(docvars(corp))
+
+# 3. Select speeches from 1981 onward
+corp_recent <- corpus_subset(corp, Year >= 1981)
+
+# 4. Split the documents into words
+# Keep this version for examining words in context
+toks_context <- tokens(
+  corp_recent,
+  remove_punct = TRUE
+)
+
+# 5. See how "freedom" is used
+kwic(toks_context, pattern = "freedom", window = 5)
+
+# 6. Prepare a version for word-frequency analysis
+toks_clean <- tokens_tolower(toks_context)
+
+toks_clean <- tokens_remove(
+  toks_clean,
+  pattern = stopwords("en")
+)
+
+# 7. Create a document-feature matrix
+dfmat <- dfm(toks_clean)
+
+# Number of documents and word features
+ndoc(dfmat)
+nfeat(dfmat)
+
+# 8. Most frequent words across the corpus
+topfeatures(dfmat, 20)
+
+# 9. A more detailed frequency table
+freq <- textstat_frequency(dfmat, n = 20)
+print(freq)
+
+# 10. Compare relative word frequencies
+dfmat_prop <- dfm_weight(dfmat, scheme = "prop")
+
+# Display a small part of the matrix
+as.matrix(dfmat_prop[1:5, 1:10])
+```

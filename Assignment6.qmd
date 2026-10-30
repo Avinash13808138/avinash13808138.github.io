@@ -1,0 +1,1355 @@
+---
+title: "Assignment 6"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+editor: visual
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
+---
+
+```{=html}
+<!-- Rendering repair: collection is archived in a disabled chunk at the end.
+     No API access or PDF extraction occurs during normal rendering.
+     The first render computes the analyses; subsequent unchanged renders reuse
+     knitr caches. To force recalculation, remove the assignment6_render_cache
+     directory under data/assign06_private, or use cache: false in a chunk.
+     Keep data/assign06_private (including corpus and caches) out of deployment.
+-->
+```
+
+```{r}
+#| label: setup
+#| cache: false
+#| include: false
+
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textmodels)
+library(quanteda.textplots)
+library(tidyverse)
+
+# Locate the saved corpus relative to this document or an ancestor folder.
+input_file <- knitr::current_input(dir = TRUE)
+input_dir <- if (nzchar(input_file) && file.exists(input_file)) {
+  dirname(normalizePath(input_file, winslash = "/"))
+} else {
+  normalizePath(getwd(), winslash = "/")
+}
+project_dir <- input_dir
+repeat {
+  candidate <- file.path(project_dir, "data/assign06_private/cpd_corpus.rds")
+  if (file.exists(candidate)) break
+  parent <- dirname(project_dir)
+  if (identical(parent, project_dir)) {
+    stop(paste(
+      "Saved CPD corpus not found. Put this QMD in your original course project,",
+      "where data/assign06_private/cpd_corpus.rds was saved."
+    ))
+  }
+  project_dir <- parent
+}
+knitr::opts_knit$set(root.dir = project_dir)
+private_dir <- file.path(project_dir, "data/assign06_private")
+output_dir <- file.path(project_dir, "outputs/assign06")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Fail early if the saved corpus is unavailable or lacks administration labels.
+cpd_corpus <- readRDS(candidate)
+if (!inherits(cpd_corpus, "corpus")) stop("The saved object is not a quanteda corpus.")
+admin_labels <- docvars(cpd_corpus, "administration")
+if (length(admin_labels) != ndoc(cpd_corpus) || anyNA(admin_labels) ||
+    !setequal(as.character(admin_labels), c("Biden", "Trump"))) {
+  stop("The saved CPD corpus must contain verified Biden and Trump labels.")
+}
+
+# Download the archived tweet CSV only if it is not already saved locally.
+tweet_file <- file.path(private_dir, "summit_11162021.csv")
+if (!file.exists(tweet_file)) {
+  tweet_temp <- tempfile(tmpdir = private_dir, fileext = ".csv")
+  download_status <- download.file(
+    "https://raw.githubusercontent.com/datageneration/datamethods/master/textanalytics/summit_11162021.csv",
+    tweet_temp, mode = "wb", quiet = TRUE
+  )
+  if (download_status != 0) stop("The archived tweet download failed.")
+  tweet_check <- readr::read_csv(tweet_temp, show_col_types = FALSE)
+  if (!"text" %in% names(tweet_check)) stop("The tweet archive has no text column.")
+  if (!file.rename(tweet_temp, tweet_file)) stop("Could not save the tweet archive.")
+}
+
+# Invalidate the analysis caches if source data or relevant package versions change.
+cache_packages <- c("quanteda", "quanteda.textstats", "quanteda.textmodels",
+                    "quanteda.textplots", "dplyr", "ggplot2", "knitr")
+cache_signature <- list(
+  files = tools::md5sum(c(candidate, tweet_file)),
+  packages = vapply(cache_packages, function(p) as.character(packageVersion(p)),
+                    character(1)),
+  R = as.character(getRversion())
+)
+knitr::opts_chunk$set(
+  cache.path = paste0(file.path(private_dir, "assignment6_render_cache"), "/"),
+  cache.extra = cache_signature,
+  fig.width = 9, fig.height = 6
+)
+set.seed(6302)
+```
+
+## 2(a)(i). Archived summit tweets
+
+```{r}
+#| label: tweet-data
+#| cache: true
+
+# Read the local archive; preserve the professor's object names.
+summit <- read_csv(tweet_file, show_col_types = FALSE)
+sum_twt <- summit$text
+
+tweet_audit <- tibble(
+  archived_rows = nrow(summit),
+  missing_or_blank = sum(is.na(sum_twt) | trimws(sum_twt) == "")
+)
+sum_twt <- sum_twt[!is.na(sum_twt) & trimws(sum_twt) != ""]
+tweet_audit$retained_rows <- length(sum_twt)
+tweet_audit$repeated_text <- sum(duplicated(sum_twt))
+knitr::kable(tweet_audit, caption = "Tweet archive checks; repeated text is retained")
+sum_corpus <- corpus(sum_twt)
+toks <- tokens(sum_twt)
+sumtwtdfm <- dfm(toks)
+```
+
+### Frequent words
+
+```{r}
+#| label: tweet-frequency
+#| cache: true
+#| dependson: tweet-data
+
+# Frequent words
+
+# Counts content words after removing common stopwords and other material. Hashtags and mentions are excluded here because we analyze them separately next.
+
+toks_words <- tokens(
+  sum_twt,
+  remove_punct = TRUE,
+  remove_numbers = TRUE,
+  remove_url = TRUE
+)
+
+toks_words <- tokens_tolower(toks_words)
+
+toks_words <- tokens_remove(
+  toks_words,
+  pattern = c(stopwords("en"), "rt", "#*", "@*"),
+  valuetype = "glob"
+)
+
+word_dfm <- dfm(toks_words)
+
+# Display the 20 most frequent words
+
+
+# Frequency table
+word_frequency <- textstat_frequency(word_dfm, n = 20)
+
+knitr::kable(word_frequency, caption = "Most frequent content words")
+
+# Plot
+ggplot(
+  word_frequency,
+  aes(x = reorder(feature, frequency), y = frequency)
+) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Frequent Words in Summit Tweets",
+    x = "Word",
+    y = "Frequency"
+  ) +
+  theme_bw()
+```
+
+### Hashtag network
+
+```{r}
+#| label: tweet-hashtag-network
+#| cache: true
+#| dependson: tweet-frequency
+
+set.seed(6302)
+tweet_dfm <- tokens(sum_twt, remove_punct = TRUE) %>%
+  dfm()
+
+
+
+tag_dfm <- dfm_select(tweet_dfm, pattern = "#*")
+
+toptag <- names(topfeatures(tag_dfm, 50))
+
+head(toptag, 10)
+
+tag_fcm <- fcm(tag_dfm)
+
+
+
+topgat_fcm <- fcm_select(tag_fcm, pattern = toptag)
+
+textplot_network(
+  topgat_fcm,
+  min_freq = 50,
+  edge_alpha = 0.8,
+  edge_size = 1
+)
+```
+
+### Mention network
+
+```{r}
+#| label: tweet-mention-network
+#| cache: true
+#| dependson: tweet-hashtag-network
+
+set.seed(6302)
+# Mention network--> Connects accounts mentioned together in tweets
+
+user_dfm <- dfm_select(tweet_dfm, pattern = "@*")
+
+topuser <- names(topfeatures(user_dfm, 50))
+
+head(topuser, 20)
+
+user_fcm <- fcm(user_dfm)
+
+
+
+user_fcm <- fcm_select(user_fcm, pattern = topuser)
+
+textplot_network(
+  user_fcm,
+  min_freq = 20,
+  edge_color = "firebrick",
+  edge_alpha = 0.8,
+  edge_size = 1
+)
+```
+
+### Latent Semantic Analysis
+
+```{r}
+
+#| label: tweet-lsa-model
+#| cache: true
+#| cache.lazy: false
+#| cache.vars: [sum_lsa]
+
+# Load the previously completed LSA
+saved_lsa <- readRDS(
+  file.path(private_dir, "tweet_lsa_saved.rds")
+)
+
+# Check that it belongs to the current tweet matrix
+if (!identical(saved_lsa$input_dfm, sumtwtdfm)) {
+  stop("The saved LSA input differs from the current tweet matrix.")
+}
+
+# Retain only the document positions needed by the next chunk
+# The complete model remains محفوظ in the original RDS file
+sum_lsa <- list(
+  docs = saved_lsa$model$docs
+)
+
+# Release the large temporary object
+rm(saved_lsa)
+invisible(gc())
+
+# Compact output
+dim(sum_lsa$docs)
+
+```
+
+```{r}
+#| label: tweet-lsa-results
+#| cache: true
+#| dependson: tweet-lsa-model
+
+# Display and investigate LSA
+
+# Document positions on the LSA dimensions
+
+lsa_data <- as.data.frame(sum_lsa$docs)
+
+names(lsa_data) <- paste0(
+  "Dimension",
+  seq_len(ncol(lsa_data))
+)
+
+lsa_data$tweet <- sum_twt
+
+# Plot the first two dimensions
+ggplot(
+  lsa_data,
+  aes(x = Dimension1, y = Dimension2)
+) +
+  geom_point(alpha = 0.3, color = "steelblue") +
+  labs(
+    title = "LSA of Summit Tweets",
+    x = "Dimension 1",
+    y = "Dimension 2"
+  ) +
+  theme_bw()
+
+# Read tweets at both ends of Dimension 1
+lsa_data %>%
+  arrange(Dimension1) %>%
+  select(Dimension1, tweet) %>%
+  head(5)
+
+lsa_data %>%
+  arrange(desc(Dimension1)) %>%
+  select(Dimension1, tweet) %>%
+  head(5)
+```
+
+## 2(a)(ii). GovInfo presidential documents
+
+```{r}
+#| label: cpd-corpus-summary
+#| cache: true
+#| dependson: tweet-lsa-results
+
+# cpd_corpus was loaded once from RDS in setup; no PDFs are re-extracted.
+tibble(administration = docvars(cpd_corpus, "administration")) %>%
+  count(administration, name = "documents") %>%
+  knitr::kable(caption = "Saved CPD corpus by administration")
+```
+
+### Xi Jinping in context
+
+```{r}
+#| label: cpd-kwic
+#| cache: true
+#| dependson: cpd-corpus-summary
+
+# Read Xi in context
+
+# Keyword in context
+
+cpd_toks <- tokens(cpd_corpus)
+
+xi_context <- kwic(
+  cpd_toks,
+  pattern = phrase("Xi Jinping"),
+  window = 15
+)
+
+head(xi_context, 20)
+
+# Also inspect shorter references
+kwic(
+  cpd_toks,
+  pattern = "Xi",
+  window = 15
+) %>%
+  head(20)
+```
+
+### Keyness by administration
+
+```{r}
+#| label: cpd-keyness
+#| cache: true
+#| dependson: cpd-kwic
+
+# Keyness by administration
+
+# Prepare tokens for keyness
+
+cpd_clean <- quanteda::tokens(
+  cpd_corpus,
+  remove_punct = TRUE,
+  remove_numbers = TRUE,
+  remove_url = TRUE
+)
+
+cpd_clean <- tokens_tolower(cpd_clean)
+
+cpd_clean <- tokens_remove(
+  cpd_clean,
+  pattern = stopwords("en")
+)
+
+cpd_dfm <- dfm(cpd_clean)
+
+# Group documents by administration
+admin_dfm <- dfm_group(
+  cpd_dfm,
+  groups = docvars(cpd_corpus, "administration")
+)
+
+docnames(admin_dfm)
+
+stopifnot(
+  setequal(docnames(admin_dfm), c("Biden", "Trump"))
+)
+
+# Compare Biden with Trump
+admin_keyness <- textstat_keyness(
+  admin_dfm,
+  target = "Biden"
+)
+
+head(admin_keyness, 20)
+
+textplot_keyness(admin_keyness, n = 20)
+```
+
+## 2(a)(iii). Comparison of the two sources
+
+*Interpretation will be added after reviewing the results.*
+
+## 2(b). Presidential inaugural addresses
+
+```{r}
+#| label: inaugural-corpus
+#| cache: true
+#| include: false
+#| dependson: cpd-keyness
+
+# Select the Speeches
+
+# US presidential inaugural addresses, 1945 onward
+
+inaug_corpus <- corpus_subset(
+  data_corpus_inaugural,
+  Year >= 1945
+)
+
+ndoc(inaug_corpus)
+
+docnames(inaug_corpus)
+
+head(docvars(inaug_corpus))
+```
+
+### Speech length
+
+```{r}
+#| label: inaugural-length
+#| cache: true
+#| dependson: inaugural-corpus
+
+# Speech Length
+
+# Tokens for length and lexical diversity
+# Retain stopwords for these measures
+
+inaug_toks <- tokens(
+  inaug_corpus,
+  remove_punct = TRUE,
+  remove_numbers = TRUE,
+  remove_symbols = TRUE
+)
+
+inaug_toks <- tokens_tolower(inaug_toks)
+
+inaug_stats <- tibble(
+  document = docnames(inaug_corpus),
+  Year = docvars(inaug_corpus, "Year"),
+  President = docvars(inaug_corpus, "President"),
+  Party = docvars(inaug_corpus, "Party"),
+  words = as.numeric(ntoken(inaug_toks))
+)
+
+knitr::kable(inaug_stats)
+
+ggplot(inaug_stats, aes(x = Year, y = words)) +
+  geom_line() +
+  geom_point(aes(color = Party), size = 3) +
+  labs(
+    title = "Length of Inaugural Addresses",
+    x = "Year",
+    y = "Word Tokens"
+  ) +
+  theme_bw()
+```
+
+### Lexical diversity
+
+```{r}
+#| label: inaugural-diversity
+#| cache: true
+#| dependson: inaugural-length
+
+# Lexical diversity
+
+inaug_lexdiv <- textstat_lexdiv(
+  inaug_toks,
+  measure = c("TTR", "MATTR"),
+  MATTR_window = 100
+)
+
+inaug_stats <- left_join(
+  inaug_stats,
+  inaug_lexdiv,
+  by = "document"
+)
+
+ggplot(inaug_stats, aes(x = Year, y = MATTR)) +
+  geom_line() +
+  geom_point(aes(color = Party), size = 3) +
+  labs(
+    title = "Vocabulary Diversity of Inaugural Addresses",
+    x = "Year",
+    y = "MATTR"
+  ) +
+  theme_bw()
+```
+
+### Readability
+
+```{r}
+#| label: inaugural-readability
+#| cache: true
+#| dependson: inaugural-diversity
+
+# Calculate readability using the original texts
+inaug_readability <- textstat_readability(
+  inaug_corpus,
+  measure = "Flesch"
+)
+
+# Add readability scores to the results table
+inaug_stats <- left_join(
+  inaug_stats,
+  inaug_readability,
+  by = "document"
+)
+
+# Plot readability
+ggplot(inaug_stats, aes(x = Year, y = Flesch)) +
+  geom_line() +
+  geom_point(aes(color = Party), size = 3) +
+  labs(
+    title = "Readability of Inaugural Addresses",
+    x = "Year",
+    y = "Flesch Reading Ease"
+  ) +
+  theme_bw()
+
+# Display the results table
+knitr::kable(inaug_stats, digits = 3)
+
+```
+
+### Cosine similarity
+
+```{r}
+#| label: inaugural-similarity
+#| cache: true
+#| dependson: inaugural-readability
+#| fig-height: 9
+
+# Cosine Similarity
+# Content-word DFM for similarity and keyness
+
+inaug_content <- tokens_remove(
+  inaug_toks,
+  pattern = stopwords("en")
+)
+
+inaug_dfm <- dfm(inaug_content)
+
+# Cosine similarity
+inaug_similarity <- textstat_simil(
+  inaug_dfm,
+  method = "cosine",
+  margin = "documents"
+)
+
+similarity_matrix <- as.matrix(inaug_similarity)
+
+# Heatmap
+heatmap(
+  similarity_matrix,
+  Rowv = NA,
+  Colv = NA,
+  scale = "none",
+  margins = c(9, 9)
+)
+
+# Most similar distinct speech pairs
+pair_index <- which(
+  upper.tri(similarity_matrix),
+  arr.ind = TRUE
+)
+
+similarity_pairs <- tibble(
+  speech1 = rownames(similarity_matrix)[pair_index[, 1]],
+  speech2 = colnames(similarity_matrix)[pair_index[, 2]],
+  similarity = similarity_matrix[pair_index]
+) %>%
+  arrange(desc(similarity))
+
+head(similarity_pairs, 10)
+```
+
+### Keyness by party
+
+```{r}
+#| label: inaugural-party-keyness
+#| cache: true
+#| dependson: inaugural-similarity
+
+# Keyness by Party
+# Group speeches by party
+
+party_dfm <- dfm_group(
+  inaug_dfm,
+  groups = docvars(inaug_corpus, "Party")
+)
+
+docnames(party_dfm)
+
+# Democratic speeches compared with the remaining party group
+party_keyness <- textstat_keyness(
+  party_dfm,
+  target = "Democratic"
+)
+
+head(party_keyness, 20)
+
+textplot_keyness(party_keyness, n = 20)
+```
+
+### Latest address in the installed corpus
+
+```{r}
+#| label: inaugural-latest
+#| cache: true
+#| dependson: inaugural-party-keyness
+
+# Check the installed corpus
+
+packageVersion("quanteda")
+
+tail(docnames(data_corpus_inaugural))
+
+max(docvars(data_corpus_inaugural, "Year"))
+
+# Check specifically for 2025
+
+
+any(docvars(data_corpus_inaugural, "Year") == 2025)
+```
+
+## 3. Wordfish
+
+### Model preparation and orientation
+
+```{r}
+#| label: wordfish-preparation
+#| cache: true
+#| dependson: inaugural-latest
+
+# Retain words occurring in at least two speeches
+
+wordfish_dfm <- dfm_trim(
+  inaug_dfm,
+  min_docfreq = 2,
+  docfreq_type = "count"
+)
+
+# Compare feature counts
+nfeat(inaug_dfm)
+nfeat(wordfish_dfm)
+
+# Confirm that no document has become empty
+stopifnot(
+  all(ntoken(wordfish_dfm) > 0)
+)
+
+
+
+
+
+
+# Identify the earliest and latest speeches
+
+speech_years <- docvars(wordfish_dfm, "Year")
+
+first_document <- which.min(speech_years)
+last_document <- which.max(speech_years)
+
+# Inspect the two documents used to orient the scale
+docnames(wordfish_dfm)[
+  c(first_document, last_document)
+]
+```
+
+### Model estimation
+
+```{r}
+#| label: wordfish-model
+#| cache: true
+#| dependson: wordfish-preparation
+
+# Estimate Wordfish
+inaug_wordfish <- textmodel_wordfish(
+  wordfish_dfm,
+  dir = c(first_document, last_document)
+)
+
+# Examine model output
+summary(inaug_wordfish)
+```
+
+### Estimated document positions
+
+```{r}
+#| label: wordfish-positions
+#| cache: true
+#| dependson: wordfish-model
+#| fig-height: 9
+
+# Plot estimated document positions
+textplot_scale1d(inaug_wordfish)
+
+# Create a results table
+
+wordfish_results <- tibble::tibble(
+  document = quanteda::docnames(wordfish_dfm),
+  Year = quanteda::docvars(wordfish_dfm, "Year"),
+  President = quanteda::docvars(wordfish_dfm, "President"),
+  Party = quanteda::docvars(wordfish_dfm, "Party"),
+  position = as.numeric(inaug_wordfish$theta),
+  standard_error = as.numeric(inaug_wordfish$se.theta)
+)
+
+wordfish_results <- dplyr::arrange(
+  wordfish_results,
+  position
+)
+
+knitr::kable(wordfish_results, digits = 3)
+```
+
+### Positions by year and party
+
+```{r}
+#| label: wordfish-year-party
+#| cache: true
+#| dependson: wordfish-positions
+
+# Examine the relationship with year and party
+
+# Positions over time, with party labels
+
+ggplot(
+  wordfish_results,
+  aes(x = Year, y = position, color = Party)
+) +
+  geom_point(size = 3) +
+  geom_text(
+    aes(label = document),
+    vjust = -0.6,
+    size = 3,
+    check_overlap = TRUE
+  ) +
+  labs(
+    title = "Wordfish Positions of Inaugural Addresses",
+    x = "Year",
+    y = "Estimated Wordfish Position"
+  ) +
+  theme_bw()
+```
+
+### Words associated with each end of the scale
+
+```{r}
+#| label: wordfish-words
+#| cache: true
+#| dependson: wordfish-year-party
+
+# Examine words and speeches at both ends
+
+# Word coefficients
+
+wordfish_words <- tibble(
+  word = featnames(wordfish_dfm),
+  beta = as.numeric(inaug_wordfish$beta)
+)
+
+# Words associated with the lower end
+wordfish_words %>%
+  arrange(beta) %>%
+  head(15)
+
+# Words associated with the higher end
+wordfish_words %>%
+  arrange(desc(beta)) %>%
+  head(15)
+
+# Identify speeches at the extremes
+lowest_document <- wordfish_results$document[
+  which.min(wordfish_results$position)
+]
+
+highest_document <- wordfish_results$document[
+  which.max(wordfish_results$position)
+]
+
+lowest_document
+highest_document
+```
+
+<details>
+
+<summary>Read the two speeches at the extremes</summary>
+
+```{r}
+#| label: wordfish-extreme-texts
+#| cache: true
+#| dependson: wordfish-words
+#| results: markup
+
+# Read the original speeches
+inaug_text <- as.character(inaug_corpus)
+
+cat(
+  inaug_text[lowest_document],
+  sep = "\n"
+)
+
+cat(
+  inaug_text[highest_document],
+  sep = "\n"
+)
+```
+
+</details>
+
+## CPD data note
+
+*Add source, permission, exact query, selection rules, and gaps after reviewing the collection records.*
+
+## Collection log and manifest
+
+The collection log and metadata manifest are the files to publish with this report. Do not publish the source PDFs, full-text corpus, or cache directory.
+
+```{r}
+#| label: collection-record-links
+#| cache: false
+#| results: asis
+
+relative_root <- ""
+link_dir <- input_dir
+while (!identical(link_dir, project_dir)) {
+  relative_root <- paste0(relative_root, "../")
+  link_dir <- dirname(link_dir)
+}
+record_files <- c("cpd_search_log.csv", "cpd_manifest_reviewed.csv")
+record_labels <- c("Collection log", "Document manifest")
+for (i in seq_along(record_files)) {
+  record_path <- file.path(output_dir, record_files[i])
+  if (file.exists(record_path)) {
+    cat(sprintf("[%s](%soutputs/assign06/%s)\n\n",
+                record_labels[i], relative_root, record_files[i]))
+  } else {
+    cat(sprintf("%s: file not found locally; add it before publication.\n\n",
+                record_labels[i]))
+  }
+}
+```
+
+<!-- Original collection and PDF preparation preserved for reference only. -->
+
+```{r}
+#| label: collection-reference-do-not-run
+#| cache: false
+#| include: false
+#| eval: false
+
+# Search GovInfo
+# Search GovInfo for CPD documents mentioning Xi Jinping
+
+govinfo_key <- Sys.getenv("GOVINFO_API_KEY")
+
+if (!nzchar(govinfo_key)) {
+  stop("GOVINFO_API_KEY was not found.")
+}
+
+end_date <- format(Sys.Date(), "%Y-%m-%d")
+
+query <- paste0(
+  'collection:cpd "Xi Jinping" ',
+  'publishdate:range(2021-01-20,', end_date, ')'
+)
+
+offset <- "*"
+seen_offsets <- character()
+govfiles3 <- tibble()
+search_log <- tibble()
+
+repeat {
+
+  if (offset %in% seen_offsets) {
+    stop("Repeated cursor: the search is incomplete.")
+  }
+
+  seen_offsets <- c(seen_offsets, offset)
+
+  response <- request("https://api.govinfo.gov/search") %>%
+    req_headers(`X-Api-Key` = govinfo_key) %>%
+    req_body_json(list(
+      query = query,
+      pageSize = 100L,
+      offsetMark = offset,
+      sorts = list(list(
+        field = "publishdate",
+        sortOrder = "ASC"
+      ))
+    )) %>%
+    req_retry(max_tries = 4) %>%
+    req_timeout(90) %>%
+    req_perform() %>%
+    resp_body_json(simplifyVector = FALSE)
+  
+  # Extract one row per document
+# Keep only the fields needed for the following blocks
+
+page <- purrr::map_dfr(response$results, function(document) {
+
+  if (length(document$packageId) != 1L) {
+    stop("A search result has a missing or unexpected packageId.")
+  }
+
+  tibble(
+    packageId = as.character(document$packageId),
+    title = if (length(document$title) == 0L) {
+      NA_character_
+    } else {
+      paste(unlist(document$title), collapse = "; ")
+    }
+  )
+
+})
+
+  if (is.null(response$count)) {
+    stop("Unexpected API response: missing result count.")
+  }
+
+  total_matches <- as.integer(response$count)
+
+  search_log <- bind_rows(
+    search_log,
+    tibble(
+      page = nrow(search_log) + 1L,
+      records = nrow(page),
+      reported_total = total_matches
+    )
+  )
+
+  if (nrow(page) == 0) {
+    stop("No results on this page. Check query and pagination.")
+  }
+
+  govfiles3 <- bind_rows(govfiles3, page) %>%
+    distinct(packageId, .keep_all = TRUE)
+
+  if (nrow(govfiles3) >= total_matches) break
+
+  next_offset <- response$offsetMark
+
+  if (is.null(next_offset)) {
+    next_offset <- response$nextOffsetMark
+  }
+
+  if (is.null(next_offset)) {
+    stop("Missing next cursor: collection is incomplete.")
+  }
+
+  offset <- as.character(next_offset)
+
+  Sys.sleep(0.3)
+}
+
+stopifnot(nrow(govfiles3) == total_matches)
+
+# Check completeness
+nrow(govfiles3)
+total_matches
+
+# Save search records without the key
+write_csv(
+  search_log,
+  "outputs/assign06/cpd_search_log.csv"
+)
+
+writeLines(
+  c(
+    paste("Query:", query),
+    paste("Collection date:", Sys.Date()),
+    "Date filter: publication date.",
+    paste("Unique matches:", nrow(govfiles3))
+  ),
+  "outputs/assign06/cpd_collection_note.txt"
+)
+
+saveRDS(
+  govfiles3,
+  "data/assign06_private/cpd_search_results.rds"
+)
+
+
+
+# Prepare PDF links
+
+# Preparing for bulk download of government documents
+pdf_govfiles_id <- govfiles3$packageId
+
+pdf_govfiles_url <- paste0(
+  "https://www.govinfo.gov/content/pkg/",
+  pdf_govfiles_id,
+  "/pdf/",
+  pdf_govfiles_id,
+  ".pdf"
+)
+
+save_dir <- "data/assign06_private/cpd"
+
+dir.create(
+  save_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+
+
+# Download PDFs --> Investigate any failed downloads. Having found every document is # different from successfully downloading every document.
+
+# Function to download PDFs
+download_govfiles_pdf <- function(url, id) {
+
+  tryCatch({
+
+    destfile <- file.path(
+      save_dir,
+      paste0("govfiles_", id, ".pdf")
+    )
+
+    status <- download.file(
+      url,
+      destfile = destfile,
+      mode = "wb",
+      quiet = TRUE
+    )
+
+    if (status != 0) stop("Download failed")
+
+    Sys.sleep(runif(1, 1, 3))
+
+    return("downloaded")
+
+  }, error = function(e) {
+
+    return("failed")
+
+  })
+}
+
+# Download all matching documents
+
+start.time <- Sys.time()
+
+message("Starting downloads")
+
+results <- seq_along(pdf_govfiles_url) %>%
+  map_chr(
+    ~ download_govfiles_pdf(
+      pdf_govfiles_url[.],
+      pdf_govfiles_id[.]
+    )
+  )
+
+message("Finished downloads")
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+
+time.taken
+table(results)
+
+
+# Create the manifest
+
+# Document manifest
+cpd_manifest <- tibble(
+  document = pdf_govfiles_id,
+  title = govfiles3$title,
+  source_url = paste0(
+    "https://www.govinfo.gov/app/details/",
+    pdf_govfiles_id
+  ),
+  download_status = results,
+  administration = NA_character_,
+  verified = FALSE
+)
+
+write_csv(
+  cpd_manifest,
+  "outputs/assign06/cpd_manifest_to_review.csv"
+)
+
+
+
+
+# Automatically identify the president using GovInfo metadata
+
+library(xml2)
+library(httr2)
+library(tidyverse)
+
+# Read the manifest created in Block 12
+cpd_manifest <- read_csv(
+  "outputs/assign06/cpd_manifest_to_review.csv",
+  show_col_types = FALSE
+)
+
+# Folder for metadata files
+metadata_dir <- "data/assign06_private/cpd_metadata"
+
+dir.create(
+  metadata_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+# Function to identify the president
+get_president <- function(id) {
+
+  metadata_url <- paste0(
+    "https://www.govinfo.gov/metadata/pkg/",
+    id,
+    "/mods.xml"
+  )
+
+  metadata_file <- file.path(
+    metadata_dir,
+    paste0(id, ".xml")
+  )
+
+  tryCatch({
+
+    # Reuse metadata already downloaded
+    if (file.exists(metadata_file)) {
+
+      metadata <- read_xml(metadata_file)
+
+    } else {
+
+      response <- request(metadata_url) %>%
+        req_retry(max_tries = 3) %>%
+        req_timeout(60) %>%
+        req_perform()
+
+      metadata <- read_xml(resp_body_raw(response))
+
+      # Check that the response is a MODS metadata record
+      root_name <- xml_find_chr(
+        metadata,
+        "local-name(/*)"
+      )
+
+      if (root_name != "mods") {
+        stop("Unexpected metadata format.")
+      }
+
+      write_xml(metadata, metadata_file)
+
+      Sys.sleep(0.3)
+    }
+
+    # Read names ONLY within the dedicated president field
+    president_names <- xml_find_all(
+      metadata,
+      "//*[local-name()='president']/*[local-name()='name']"
+    ) %>%
+      xml_text() %>%
+      str_squish()
+
+    president_names <- unique(
+      president_names[nzchar(president_names)]
+    )
+
+    president_text <- paste(
+      president_names,
+      collapse = "; "
+    )
+
+    is_biden <- str_detect(
+      president_text,
+      regex("\\bBiden\\b", ignore_case = TRUE)
+    )
+
+    is_trump <- str_detect(
+      president_text,
+      regex("\\bTrump\\b", ignore_case = TRUE)
+    )
+
+    administration <- case_when(
+      is_biden & !is_trump ~ "Biden",
+      is_trump & !is_biden ~ "Trump",
+      TRUE ~ NA_character_
+    )
+
+    tibble(
+      president_metadata = president_text,
+      administration = administration,
+      verified = !is.na(administration),
+      verification_method = "GovInfo president metadata",
+      metadata_status = ifelse(
+        is.na(administration),
+        "needs_check",
+        "matched"
+      )
+    )
+
+  }, error = function(e) {
+
+    tibble(
+      president_metadata = NA_character_,
+      administration = NA_character_,
+      verified = FALSE,
+      verification_method = "GovInfo president metadata",
+      metadata_status = "retrieval_or_parse_failed"
+    )
+
+  })
+}
+
+# Identify the president for each document
+president_results <- seq_len(nrow(cpd_manifest)) %>%
+  map_dfr(function(i) {
+
+    message(
+      "Checking document ",
+      i,
+      " of ",
+      nrow(cpd_manifest)
+    )
+
+    get_president(cpd_manifest$document[i])
+  })
+
+# Replace the blank administration and verification columns
+cpd_manifest <- cpd_manifest %>%
+  select(-any_of(c("administration", "verified"))) %>%
+  bind_cols(president_results)
+
+# Inspect the results
+table(
+  cpd_manifest$administration,
+  useNA = "ifany"
+)
+
+table(cpd_manifest$metadata_status)
+
+# Save the file expected by Block 13
+write_csv(
+  cpd_manifest,
+  "outputs/assign06/cpd_manifest_reviewed.csv"
+)
+
+# Save only unresolved cases separately
+unresolved <- cpd_manifest %>%
+  filter(!verified)
+
+write_csv(
+  unresolved,
+  "outputs/assign06/cpd_metadata_unresolved.csv"
+)
+
+# Check whether you can proceed
+if (nrow(unresolved) == 0 &&
+    all(cpd_manifest$download_status == "downloaded")) {
+
+  message(
+    "All administrations identified and downloads recorded ",
+    "as successful. Proceed to Block 13."
+  )
+
+} else {
+
+  message(
+    "Some records need attention. Check the tables below ",
+    "before proceeding to Block 13."
+  )
+
+  print(
+    unresolved %>%
+      select(document, title, metadata_status, source_url)
+  )
+
+  print(
+    cpd_manifest %>%
+      filter(download_status != "downloaded") %>%
+      select(document, download_status)
+  )
+}
+
+
+
+
+
+# Extract the text and create a corpus
+# Read the reviewed manifest
+# Load the saved corpus
+cpd_corpus <- readRDS(
+  "data/assign06_private/cpd_corpus.rds"
+)
+cpd_manifest <- read_csv(
+  "outputs/assign06/cpd_manifest_reviewed.csv",
+  show_col_types = FALSE
+)
+
+# Check that no documents were lost or duplicated
+stopifnot(
+  !anyDuplicated(cpd_manifest$document),
+  setequal(cpd_manifest$document, pdf_govfiles_id),
+  all(cpd_manifest$download_status == "downloaded"),
+  all(cpd_manifest$administration %in% c("Biden", "Trump")),
+  isTRUE(all(cpd_manifest$verified))
+)
+
+# Extract text from each PDF
+cpd_manifest$text <- map_chr(
+  cpd_manifest$document,
+  function(id) {
+
+    filename <- file.path(
+      save_dir,
+      paste0("govfiles_", id, ".pdf")
+    )
+
+    paste(pdf_text(filename), collapse = "\n")
+  }
+)
+
+# Check for empty text
+stopifnot(all(nzchar(trimws(cpd_manifest$text))))
+
+# Create corpus
+cpd_corpus <- corpus(
+  cpd_manifest,
+  text_field = "text",
+  docid_field = "document"
+)
+
+ndoc(cpd_corpus)
+
+table(docvars(cpd_corpus, "administration"))
+```
