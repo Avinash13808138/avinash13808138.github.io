@@ -13,17 +13,6 @@ params:
   recovery_file: "C:/Users/avina/OneDrive/Documents/assignment07_recovery_20261109_202351.RData"
 ---
 
-
-> **Notebook execution:** The code below is displayed in full. Original workflow
-> chunks are not re-executed during rendering; the adjacent outputs are retrieved
-> from the saved session. They are previous results, not proof that every displayed
-> chunk ran successfully in this render. Missing results are flagged. This prevents
-> duplicate API collection. Public tables suppress comment-level fields and
-> explicit handles; unreconciled channel-period summaries are withheld. The private recovery file must remain on your computer.
->
-> The descriptive answers belong in your separate report. This notebook does not
-> replace the collection logs, manifests, or final publication checks.
-
 [Written report and data note](Summary_Assignment07.qmd) · [Aggregate downloads](#aggregate-downloads)
 
 ## Recovery setup
@@ -4809,9 +4798,3 @@ for (filename in public_files) {
   }
 }
 ```
-
-The original YouTube collection logs and manifests remain unrecovered. Do not
-substitute the PDF-download logs from Assignment 6. Full keyness downloads
-containing handles and four stale channel-period tables are not included.
-Private backups, validation text, raw comments, and credentials must not be
-published. This page is a recovery notebook, not evidence of a complete rerun.
