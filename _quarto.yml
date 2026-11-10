@@ -17,6 +17,9 @@ project:
     - Assignment_05_Summary.qmd
     - Summary_Assignment_6.qmd
     - Assignment6.qmd
+    - assign07.qmd
+    - Summary_Assignment07.qmd
+    
 
   resources:
     - Avinash_Singh_Resume.pdf
@@ -28,6 +31,21 @@ project:
     - epps6302_assignment06.pdf
     - outputs/assign06/cpd_search_log.csv
     - outputs/assign06/cpd_manifest_reviewed.csv
+    - epps6302_assignment07.pdf
+    - outputs/assign07/aggregate_tables/3a_authors_overall.csv
+    - outputs/assign07/aggregate_tables/3a_duplicates_overall.csv
+    - outputs/assign07/aggregate_tables/3a_likes_overall.csv
+    - outputs/assign07/aggregate_tables/3a_reply_overall.csv
+    - outputs/assign07/aggregate_tables/3a_status_by_channel.csv
+    - outputs/assign07/aggregate_tables/3a_status_overall.csv
+    - outputs/assign07/aggregate_tables/overlap_summary.csv
+    - outputs/assign07/aggregate_tables/phrase_counts.csv
+    - outputs/assign07/aggregate_tables/quota_plan.csv
+    - outputs/assign07/aggregate_tables/search_summary.csv
+    - outputs/assign07/aggregate_tables/sentiment_summary.csv
+    - outputs/assign07/aggregate_tables/validation_summary.csv
+    
+    
 website:
   title: "avinash13808138.github.io"
 
@@ -92,7 +110,17 @@ website:
             
           - href: Summary_Assignment_6.qmd
             text: "Assignment 06 Summary"
-
+            
+          - href: epps6302_assignment07.pdf
+            text: "epps6302_assignment07 - Instructions"
+            
+          - href: assign07.qmd
+            text: "Assignment 07 Solutions"
+            
+          - href: Summary_Assignment07.qmd
+            text: "Assignment 07 Summary"
+            
+          
 # Apply these execution settings to all .qmd pages
 execute:
   warning: false

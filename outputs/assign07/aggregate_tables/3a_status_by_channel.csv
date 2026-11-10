@@ -1,0 +1,25 @@
+"video_period","channel_title","status","n_videos"
+"after","Al Jazeera English","ok",3
+"after","Al Jazeera English","disabled",0
+"after","Al Jazeera English","none",0
+"after","Al Jazeera English","error",0
+"after","CNN","ok",3
+"after","CNN","disabled",0
+"after","CNN","none",0
+"after","CNN","error",0
+"after","NBC News","ok",3
+"after","NBC News","disabled",0
+"after","NBC News","none",0
+"after","NBC News","error",0
+"before","Al Jazeera English","ok",3
+"before","Al Jazeera English","disabled",0
+"before","Al Jazeera English","none",0
+"before","Al Jazeera English","error",0
+"before","CNN","ok",3
+"before","CNN","disabled",0
+"before","CNN","none",0
+"before","CNN","error",0
+"before","NBC News","ok",3
+"before","NBC News","disabled",0
+"before","NBC News","none",0
+"before","NBC News","error",0

@@ -1,0 +1,8 @@
+video_period,channel_title,total_comments,comments_with_author_id,comments_missing_author_id,unique_identifiable_authors,top_10pct_authors_n,comments_from_top_authors,top_author_share_identified_percent,top_author_share_all_comments_percent
+after,Al Jazeera English,72,72,0,54,6,20,27.77777777777778,27.77777777777778
+after,CNN,866,866,0,744,75,197,22.74826789838337,22.74826789838337
+after,NBC News,291,291,0,231,24,71,24.398625429553263,24.398625429553263
+before,Al Jazeera English,76,76,0,66,7,16,21.05263157894737,21.05263157894737
+before,CNN,490,490,0,453,46,83,16.93877551020408,16.93877551020408
+before,NBC News,85,85,0,70,7,19,22.352941176470587,22.352941176470587
+NA,NA,181,181,0,118,12,63,34.806629834254146,34.806629834254146

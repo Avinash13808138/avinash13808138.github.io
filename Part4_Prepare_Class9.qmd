@@ -1,0 +1,295 @@
+---
+title: "Part4_Prepare_Class9"
+format: html
+editor: visual
+---
+
+This exercise asks R to collect information from YouTube, then compare the comments you retrieved with the video’s reported comment count.
+
+```{r}
+
+library(tuber)
+
+nbc <- get_channel_details(
+  channel_ids = "UCeY0bbntWzzVIaj2z3QigXg"
+)
+
+nbc[, c("title", "subscriber_count")]
+
+
+
+data.frame(
+  channel_name = nbc$title,
+  subscriber_count = nbc$subscriber_count
+)
+```
+
+|          |          |     |
+|:---------|---------:|-----|
+| NBC News | 12200000 |     |
+
+```         
+--- Tuber Metadata --- function: get_channel_details  api_calls: 1  results_found: 1  timestamp: 2026-11-01 09:19:55   (Use tuber_info() for full metadata)
+```
+
++-----------------------------------------+------------------------------------------------------------+
+| Code                                    | What it does                                               |
++=========================================+============================================================+
+| `library(tuber)`                        | Loads the package so you can use its functions             |
++-----------------------------------------+------------------------------------------------------------+
+| `get_channel_details()`                 | Requests channel information from YouTube                  |
++-----------------------------------------+------------------------------------------------------------+
+| `channel_ids = "..."`                   | Identifies the particular channel specified by you         |
++-----------------------------------------+------------------------------------------------------------+
+| `nbc <-`                                | Stores the returned information in an R object named `nbc` |
++-----------------------------------------+------------------------------------------------------------+
+| `nbc[, c("title", "subscriber_count")]` | Displays the channel’s name and reported subscriber count  |
++-----------------------------------------+------------------------------------------------------------+
+
+```{r}
+
+vids <- list_channel_videos(
+  "UCeY0bbntWzzVIaj2z3QigXg",
+  max_results = 50
+)
+
+head(vids, 3)
+names(vids)
+```
+
+This retrieves up to **50 records from the channel’s uploads playlist** and stores them in `vids`. It retrieves information about videos, **not the video files themselves**.
+
+-   `max_results = 50` sets the maximum number returned.
+
+-   `head(vids, 3)` displays the first three records.
+
+-   `names(vids)` displays the column names.
+
+**This finds columns whose names contain “publish,” “date,” or “time,” then displays them for the first video.**
+
+```{r}
+
+date_columns <- grep(
+  "publish|date|time",
+  names(vids),
+  value = TRUE,
+  ignore.case = TRUE
+)
+
+vids[1, unique(c("video_id", date_columns)), drop = FALSE]
+
+
+data.frame(
+  title = vids$title[1],
+  video_id = vids$video_id[1],
+  video_published_at = vids$video_published_at[1]
+)
+```
+
+## Retrieve comments on the first video
+
+```{r}
+
+# Comment on the selected video
+
+stopifnot(nrow(vids) > 0)
+
+selected_video <- vids$video_id[1]
+
+cmts <- list_comment_threads(
+  video_id = selected_video,
+  max_results = 100,
+  text_format = "plainText"
+)
+
+selected_video
+nrow(cmts)
+
+
+
+
+## Compare comment counts
+
+
+video_stats <- get_video_stats(
+  video_ids = selected_video
+)
+
+data.frame(
+  returned_threads = nrow(cmts),
+  reported_comment_count = video_stats$comment_count[1]
+)
+
+
+# investigate replies without making another API request
+names(cmts)
+
+
+
+# Show the reply count for each collected thread
+cmts[, c("thread_id", "total_reply_count")]
+
+# Add the reply counts across the collected threads
+sum(cmts$total_reply_count)
+```
+
+**Results show 2 returned comment threads and 11 reported comments.**
+
+| Required information                    | Your result                       |
+|-----------------------------------------|-----------------------------------|
+| Channel                                 | NBC News                          |
+| Reported subscriber count               | 12,200,000                        |
+| First returned video’s publication time | November 1, 2026, at 15:20:37 UTC |
+| Comment threads collected               | 2                                 |
+| Video’s reported comment count          | 11                                |
+
+**Why might 2 and 11 differ?**
+
+-   **Threads and comments are different units.** Your collection contains top-level threads; replies may contribute to the video’s comment count.
+
+-   **The requests happened at different times.** New comments could have appeared between collecting threads and retrieving statistics.
+
+-   **Availability and count updates can differ.** Moderation or delays in updating counts may also contribute.
+
+**We cannot conclude that the difference is exactly nine replies.** These two numbers alone do not identify the cause. Also, your limit of 100 does not explain this particular difference: both counts are below 100.
+
+**Both collected threads have 0 reported replies.** Therefore, replies attached to those two threads do **not** explain the difference.
+
+| What you checked                                      | Result |
+|-------------------------------------------------------|--------|
+| Top-level comment threads collected                   | 2      |
+| Replies reported for those threads                    | 0      |
+| Video’s reported comment count from the later request | 11     |
+
+**What can we conclude?**
+
+Your two requests returned different counts. Because you collected the threads before requesting the video statistics, **new comments arriving between requests are one possible explanation**. Differences in availability or update timing may also contribute, but your output does not establish the exact cause.
+
+The **100-thread limit did not explain this difference**, since you received only 2.
+
+Your collected data says:
+
+-   **Thread 1:** one top-level comment, **0 replies**.
+
+-   **Thread 2:** one top-level comment, **0 replies**.
+
+The **11** comes from a separate request for the video’s overall comment count. **It does not mean the other nine comments must be replies to your two threads.** They could include additional top-level comments that were not in your earlier collection.
+
+For example, **if nine new top-level comments appeared between your requests**, the video could report 11 comments while your saved two threads still each show zero replies. That is a possible explanation—not something we have verified.
+
+**Zero replies explains the structure of the two threads you collected. It does not explain why your collection contains only 2 while the separate count reports 11.**
+
+## Retrieve the video’s reported comment count
+
+```{r}
+video_stats <- get_video_stats(
+  video_ids = selected_video
+)
+
+data.frame(
+  video_id = selected_video,
+  returned_threads = nrow(cmts),
+  reported_comment_count = video_stats$comment_count[1]
+)
+```
+
+Possible explanations include:
+
+-   **Collection limit:** you requested at most 100 threads.
+
+-   **Different counting units:** threads can contain replies, so threads and individual comments are not interchangeable.
+
+-   **Changes over time:** comments may be added or removed between requests.
+
+A difference does **not automatically mean an error**, and it does not establish that the missing comments were deleted.
+
+## Part 5
+
+**5(a). Who writes comments, who reads them, and who never appears?**
+
+People who **write comments** choose to participate publicly. They might want to express an opinion, ask a question, criticize the video, or respond to someone else.
+
+People who **read comments** include both commenters and silent readers. Your comment dataset does not identify everyone who read the discussion.
+
+People missing from the dataset include:
+
+-   Viewers who never comment.
+
+-   People who never encounter the video.
+
+-   People whose comments are unavailable when you collect.
+
+-   People who avoid public participation.
+
+**The research issue is self-selection:** participation is a choice, and that choice may relate to the opinions you want to study.
+
+In your example, NBC News’s **12.2 million subscribers are not represented by the two comments you retrieved**. Commenters need not be subscribers, and subscribers need not watch or comment.
+
+Also, **two comments do not necessarily mean two different people**. One account can comment repeatedly.
+
+Conclusion: Data captures observable comments from participating accounts on a selected video. It does not automatically represent the views of all viewers, subscribers, or the public.
+
+**5(b). What edits or shapes the comment section?**
+
+Here, “edits” includes processes that change **which comments remain available or receive visibility**, not just changes to their wording.
+
+| Process | How it can affect your data |
+|----|----|
+| Channel moderation | Comments may be removed or restricted |
+| Held-for-review filters | Some submitted comments may not become publicly visible |
+| Author edits or deletions | Text can change or disappear |
+| Ranking | Determines which comments appear first |
+| Your collection limit | Determines how far through that ordering you collect |
+
+The API supports ordering by **time** or **relevance**. Its documented default is **time**; your command did not explicitly request relevance ordering. Public requests also do not provide unrestricted access to held-for-review comments. [developers.google.com](https://developers.google.com/youtube/v3/docs/commentThreads/list?utm_source=chatgpt.com)
+
+**Example:** If critical comments were disproportionately removed, the remaining discussion could appear more supportive. That illustrates a possible mechanism; **we have no evidence that this happened in your NBC News collection**.
+
+Conclusion: Visible comments are shaped by participation, moderation, deletion, and ordering. They are not an untouched record of everything anyone attempted to say.
+
+**5(c). What selects the comments you can collect?**
+
+Your dataset results from several decisions:
+
+| Selection step | What happened in your exercise |
+|----|----|
+| Channel | You used the assigned NBC News channel |
+| Video | You selected the first video returned in its uploads list |
+| Comment type | You requested comment threads, rather than separately collecting all replies |
+| Maximum number | You requested up to 100 threads |
+| Collection time | You collected at a particular moment on November 1, 2026 |
+| Availability | The API returned two threads at that moment |
+
+The assigned video-listing function uses the channel’s **uploads playlist**. Therefore, you did not use keyword-search ranking to choose the video in this exercise. Search ranking would matter in a design that first searched for videos. [gojiplus.github.io](https://gojiplus.github.io/tuber/reference/list_channel_videos.html?utm_source=chatgpt.com)
+
+**Why does the collection day matter?**
+
+A newly published video can accumulate comments rapidly. A collection shortly after publication may capture a different discussion from one conducted several days later.
+
+Your **two returned threads versus eleven reported comments** illustrates why collection timing and measurement need attention. However, those numbers alone do not prove that new comments caused the difference.
+
+Also, requesting 100 comments does **not** create a random sample of 100 viewers. It sets a retrieval limit, and your request returned only two threads.
+
+**Conclusion:** Your sample depends on the selected channel, video, retrieval settings, available comments, and collection time. A larger collection would not automatically remove those selection issues.
+
+**5(d). What does the 30-day rule mean for reproducibility and your website?**
+
+For the public data in this exercise, the assigned policy requires **refreshing or deleting stored data within 30 calendar days**. Refreshing means updating the stored copy from current API data. [developers.google.com](https://developers.google.com/youtube/terms/developer-policies?utm_source=chatgpt.com)
+
+This creates a reproducibility challenge:
+
+| What you preserve | What it enables |
+|----|----|
+| Code and package versions | Repeating the computational procedure |
+| Collection settings and timestamp | Understanding how and when you produced the sample |
+| A later, refreshed collection | Analyzing currently available data, which may differ from the original |
+
+Someone can repeat your procedure but obtain different comments because the discussion has changed.
+
+For your website, remember that comments printed inside an HTML page are also stored copies. Deleting the original CSV does not remove them from the page or repository.
+
+**Conclusion:** Document the method carefully, manage stored copies, and acknowledge that exact recovery of the original dataset may not be possible.
+
+**“What is this comment section a sample of?”**
+
+For your exercise, the most defensible answer is **the publicly retrievable comments on one selected NBC News video under your collection settings at a particular time**. Any claim about a wider audience requires additional evidence and a justified sampling design.

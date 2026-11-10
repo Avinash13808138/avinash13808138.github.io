@@ -11,3 +11,14 @@ govinfo_pdfs/
 
 # Private Assignment 6 data and saved models
 /data/assign06_private/
+
+
+
+
+# Temporary R workspace and recovery files
+.RDataTmp
+*.RData
+*.rdata
+
+# Private datasets, including YouTube comments
+/data/

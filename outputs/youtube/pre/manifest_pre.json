@@ -1,0 +1,277 @@
+{
+  "source": "YouTube Data API v3 via tuber",
+  "software": {
+    "R": "R version 4.4.1 (2024-06-14 ucrt)",
+    "tuber": "2.0.0",
+    "httr2": "1.3.0"
+  },
+  "credential": "API key; public data",
+  "timing": {
+    "search_started_at": "2026-11-09 21:50:55 UTC",
+    "comments_started_at": "2026-11-09 22:36:02 UTC",
+    "comments_finished_at": "2026-11-09 22:36:21 UTC",
+    "statistics_collected_at": "2026-11-09 22:33:50 UTC",
+    "limitation": "Videos were published before Election Day, but collection occurred after Election Day. Comments may have been posted before or after Election Day; this is not a pre-election collection snapshot."
+  },
+  "search": {
+    "term": "US midterm election",
+    "published_after": "2026-09-01T00:00:00Z",
+    "published_before": "2026-10-28T00:00:00Z",
+    "orderings": ["relevance", "viewCount"],
+    "requested_per_ordering": 100,
+    "results": [
+      {
+        "ordering": "relevance",
+        "total_reported": 1000000,
+        "rows_returned": 100,
+        "duplicate_rows": 0,
+        "unique_videos": 100
+      },
+      {
+        "ordering": "viewCount",
+        "total_reported": 1000000,
+        "rows_returned": 100,
+        "duplicate_rows": 0,
+        "unique_videos": 100
+      }
+    ]
+  },
+  "channels": [
+    {
+      "channel_id": "UCNye-wNBqNL5ZzHSJj3l8Bg",
+      "channel_title": "Al Jazeera English",
+      "channel_type": "International broadcaster"
+    },
+    {
+      "channel_id": "UCupvZG-5ko_eiXAupbDfxWw",
+      "channel_title": "CNN",
+      "channel_type": "US cable news"
+    },
+    {
+      "channel_id": "UCeY0bbntWzzVIaj2z3QigXg",
+      "channel_title": "NBC News",
+      "channel_type": "US national network"
+    }
+  ],
+  "channel_collection": {
+    "method": "list_channel_videos; uploads playlist pagination",
+    "page_size": 50,
+    "stopping_rule": "Stop after encountering a video before 2026-09-01",
+    "traversal_costs": [
+      {
+        "channel_title": "Al Jazeera English",
+        "playlist_pages": 73,
+        "recorded_data_units": 73,
+        "missing_dates": 0
+      },
+      {
+        "channel_title": "CNN",
+        "playlist_pages": 56,
+        "recorded_data_units": 56,
+        "missing_dates": 0
+      },
+      {
+        "channel_title": "NBC News",
+        "playlist_pages": 73,
+        "recorded_data_units": 73,
+        "missing_dates": 0
+      }
+    ],
+    "initial_collection": "An initial 500-upload batch per channel was collected. Pagination was subsequently restarted because those tables did not retain continuation tokens. Earlier channel-details and initial-upload requests used 36 units."
+  },
+  "title_filter": {
+    "original": "midterm|election|senate|house race|ballot",
+    "revised": "midterm|election|senate|house race|ballot|congress|governor|gubernatorial|campaign",
+    "case_sensitive": false,
+    "review": "20 kept and 20 dropped titles reviewed per channel. Review identified non-US elections and missed campaign coverage. Candidate matching does not establish substantive relevance."
+  },
+  "video_selection": {
+    "rule": "Three videos per channel selected from revised title-filter candidates whose titles also contain 'midterm'. Ordered by publication date descending, then video ID ascending; the first three per channel were selected. Publication window: 2026-09-01 through 2026-10-27. Selection did not depend on comment availability.",
+    "selected_videos": [
+      {
+        "channel_title": "Al Jazeera English",
+        "video_id": "ML9WMf-vGhs",
+        "date": "2026-10-27",
+        "title": "US Midterms 2026 Latest: We're not in Kansas anymore"
+      },
+      {
+        "channel_title": "Al Jazeera English",
+        "video_id": "RI2BlnHrA0s",
+        "date": "2026-10-27",
+        "title": "Trump says he’ll respect US midterm results if elections are ‘honest’ | AJ Shorts"
+      },
+      {
+        "channel_title": "Al Jazeera English",
+        "video_id": "WujcVk7uowA",
+        "date": "2026-10-27",
+        "title": "US Midterms: The lines that shape America | Al Jazeera Explains"
+      },
+      {
+        "channel_title": "CNN",
+        "video_id": "ReeNBo11saY",
+        "date": "2026-10-27",
+        "title": "2026 Midterm: The state of the race"
+      },
+      {
+        "channel_title": "CNN",
+        "video_id": "aO-Pp0dks38",
+        "date": "2026-10-27",
+        "title": "Campaigns Enter Final Stretch One Week Before Midterms"
+      },
+      {
+        "channel_title": "CNN",
+        "video_id": "pAULCC_ghgc",
+        "date": "2026-10-27",
+        "title": "Ted Cruz warns Democrats may go after Trump if they win midterms"
+      },
+      {
+        "channel_title": "NBC News",
+        "video_id": "e4lepmUJbGo",
+        "date": "2026-10-27",
+        "title": "Trump will respect midterm results if they are 'honest'"
+      },
+      {
+        "channel_title": "NBC News",
+        "video_id": "fJt5xFZXIEQ",
+        "date": "2026-10-26",
+        "title": "Final sprint to midterms"
+      },
+      {
+        "channel_title": "NBC News",
+        "video_id": "6CLDvqUhGQA",
+        "date": "2026-10-25",
+        "title": "Trump and Obama rally supporters in key battleground states ahead of midterms"
+      }
+    ]
+  },
+  "comments": {
+    "function_used": "get_all_comments via collect_comments",
+    "maximum_per_video": 300,
+    "includes_replies": true,
+    "ordering": "Package defaults; no order argument supplied",
+    "duplicate_rule": "One row per comment_id",
+    "join_rule": "many-to-one join to unique video IDs",
+    "videos_attempted": 9,
+    "unique_comments_received": 769,
+    "status_counts": [
+      {
+        "status": "ok",
+        "n": 9
+      }
+    ]
+  },
+  "quota": {
+    "planned_comments": [
+      {
+        "channel_title": "Al Jazeera English",
+        "video_id": "ML9WMf-vGhs",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "Al Jazeera English",
+        "video_id": "RI2BlnHrA0s",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "Al Jazeera English",
+        "video_id": "WujcVk7uowA",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "CNN",
+        "video_id": "ReeNBo11saY",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "CNN",
+        "video_id": "aO-Pp0dks38",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "CNN",
+        "video_id": "pAULCC_ghgc",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "NBC News",
+        "video_id": "e4lepmUJbGo",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "NBC News",
+        "video_id": "fJt5xFZXIEQ",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      },
+      {
+        "channel_title": "NBC News",
+        "video_id": "6CLDvqUhGQA",
+        "maximum_comments": 300,
+        "planned_thread_pages": 3,
+        "reply_page_allowance": 30,
+        "planned_data_units": 33,
+        "search_calls": 0
+      }
+    ],
+    "actual_comment_units": 22,
+    "session_usage_after_comments": [
+      {
+        "bucket": "data",
+        "quota_used": 261,
+        "quota_limit": 10000,
+        "quota_remaining": 9739,
+        "reset_time": "2026-11-10",
+        "requests_last_minute": 22
+      },
+      {
+        "bucket": "search",
+        "quota_used": 4,
+        "quota_limit": 100,
+        "quota_remaining": 96,
+        "reset_time": "2026-11-10",
+        "requests_last_minute": 22
+      },
+      {
+        "bucket": "video_uploads",
+        "quota_used": 0,
+        "quota_limit": 100,
+        "quota_remaining": 100,
+        "reset_time": "2026-11-10",
+        "requests_last_minute": 22
+      }
+    ]
+  },
+  "retention": "Delete collected raw API data by delete_by. Retain code, permitted collection logs, manifests, and aggregate report outputs.",
+  "delete_by": "2026-12-09"
+}

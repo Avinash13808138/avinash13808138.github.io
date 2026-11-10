@@ -1,0 +1,8 @@
+video_period,channel_title,total_comments,comments_with_nonblank_text,missing_or_blank_text,distinct_repeated_texts,comments_in_repeated_text_groups,duplicate_copies_beyond_first,duplicate_copies_percent
+after,Al Jazeera English,72,72,0,2,4,2,2.7777777777777777
+after,CNN,866,864,2,14,28,14,1.6203703703703705
+after,NBC News,291,291,0,1,2,1,0.3436426116838488
+before,Al Jazeera English,76,76,0,0,0,0,0
+before,CNN,490,490,0,1,4,3,0.6122448979591837
+before,NBC News,85,85,0,0,0,0,0
+NA,NA,181,181,0,3,6,3,1.6574585635359116

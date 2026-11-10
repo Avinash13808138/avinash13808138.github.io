@@ -1,0 +1,10 @@
+operation,requests_planned,search_calls,data_units
+NBC News: channel details,1,0,1
+CNN: channel details,1,0,1
+Al Jazeera English: details,1,0,1
+NBC News: uploads lookup allowance,1,0,1
+CNN: uploads lookup allowance,1,0,1
+Al Jazeera: uploads lookup allowance,1,0,1
+NBC News: 500 uploads / 50 per page,10,0,10
+CNN: 500 uploads / 50 per page,10,0,10
+Al Jazeera: 500 uploads / 50 per page,10,0,10

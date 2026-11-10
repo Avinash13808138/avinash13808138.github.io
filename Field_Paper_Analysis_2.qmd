@@ -1,0 +1,1536 @@
+---
+title: "Restricted Sample Mixed-Effects Logistic Regression"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show R code"
+execute:
+  echo: false
+  warning: false
+  error: false
+  message: false
+  output: true
+  cache: true
+  freeze: auto
+---
+
+```{r}
+
+# ============================================================
+# FOUR-MODEL ANALYSIS
+# ORGANIZATIONS WITH AT LEAST 50 ATTACKS
+#
+# Revised model numbering:
+# Model 0 = Null model
+# Model 1 = Ideology + year fixed effects
+# Model 2 = Former Model 4, now the main model
+# Model 3 = Former Model 5, tactical robustness
+# ============================================================
+
+
+# ============================================================
+# 0. INSTALL AND LOAD PACKAGES
+# ============================================================
+
+required_packages <- c(
+  "readxl",
+  "dplyr",
+  "tidyr",
+  "stringr",
+  "lme4",
+  "broom.mixed",
+  "emmeans",
+  "ggplot2",
+  "readr"
+)
+
+packages_to_install <- required_packages[
+  !required_packages %in% rownames(installed.packages())
+]
+
+if (length(packages_to_install) > 0) {
+  install.packages(packages_to_install)
+}
+
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(lme4)
+library(broom.mixed)
+library(emmeans)
+library(ggplot2)
+library(readr)
+
+
+# ============================================================
+# 1. FILE LOCATION
+# ============================================================
+
+file_path <- paste0(
+  "D:/PhD in Political Science-UTD/Field Paper/Data/",
+  "GTD-India_Avinash_with_Districts_and_OCI_",
+  "MatchedData_with_Controls_Final 2.xlsx"
+)
+
+if (!file.exists(file_path)) {
+  stop(
+    paste0(
+      "Excel file not found at:\n",
+      file_path,
+      "\n\nCurrent working directory:\n",
+      getwd(),
+      "\n\nChange file_path to the actual location of the Excel file."
+    )
+  )
+}
+
+
+# ============================================================
+# 2. READ BOTH WORKSHEETS
+# ============================================================
+
+sheet1 <- read_excel(
+  path = file_path,
+  sheet = "Sheet1"
+)
+
+sheet2 <- read_excel(
+  path = file_path,
+  sheet = "Sheet2"
+)
+
+cat("\nExcel file loaded successfully.\n")
+cat("Sheet 1 rows:", nrow(sheet1), "\n")
+cat("Sheet 1 columns:", ncol(sheet1), "\n")
+cat("Sheet 2 rows:", nrow(sheet2), "\n")
+
+
+# ============================================================
+# 3. CHECK REQUIRED COLUMNS
+# ============================================================
+
+required_sheet1_columns <- c(
+  "eventid",
+  "iyear",
+  "Target Category",
+  "gname",
+  "ideology_code",
+  "ideology_category",
+  "OCI",
+  "conflict_region",
+  "lagged_district_terrorism_intensity",
+  "attacktype1",
+  "weaptype1"
+)
+
+required_sheet2_columns <- c(
+  "Organization",
+  "Total_Count",
+  "Ideological_Category"
+)
+
+missing_sheet1_columns <- setdiff(
+  required_sheet1_columns,
+  names(sheet1)
+)
+
+missing_sheet2_columns <- setdiff(
+  required_sheet2_columns,
+  names(sheet2)
+)
+
+if (length(missing_sheet1_columns) > 0) {
+  stop(
+    paste(
+      "Missing required Sheet 1 columns:",
+      paste(missing_sheet1_columns, collapse = ", ")
+    )
+  )
+}
+
+if (length(missing_sheet2_columns) > 0) {
+  stop(
+    paste(
+      "Missing required Sheet 2 columns:",
+      paste(missing_sheet2_columns, collapse = ", ")
+    )
+  )
+}
+
+
+# ============================================================
+# 4. PREPARE SHEET 2 ORGANIZATION REFERENCE
+# ============================================================
+
+focal_categories <- c(
+  "Maoist",
+  "Islamist",
+  "Separatist/Ethnonationalist"
+)
+
+organization_reference <- sheet2 %>%
+  transmute(
+    organization = str_squish(as.character(Organization)),
+    total_count = as.numeric(Total_Count),
+    ideology_sheet2 = str_squish(
+      as.character(Ideological_Category)
+    )
+  ) %>%
+  filter(
+    ideology_sheet2 %in% focal_categories,
+    total_count >= 50
+  ) %>%
+  distinct(
+    organization,
+    .keep_all = TRUE
+  ) %>%
+  arrange(
+    ideology_sheet2,
+    desc(total_count)
+  )
+
+cat("\n")
+cat("============================================================\n")
+cat("ORGANIZATIONS MEETING THE 50-ATTACK THRESHOLD\n")
+cat("============================================================\n")
+
+print(
+  organization_reference,
+  n = Inf
+)
+
+eligible_summary <- organization_reference %>%
+  group_by(ideology_sheet2) %>%
+  summarise(
+    eligible_organizations = n_distinct(organization),
+    sheet2_attack_count = sum(total_count),
+    .groups = "drop"
+  )
+
+cat("\nEligible organizations by ideology:\n")
+print(eligible_summary)
+
+cat(
+  "\nTotal eligible organizations:",
+  n_distinct(organization_reference$organization),
+  "\n"
+)
+
+cat(
+  "Total attacks represented in Sheet 2:",
+  sum(organization_reference$total_count),
+  "\n"
+)
+
+
+# ============================================================
+# 5. PREPARE SHEET 1
+# ============================================================
+
+incident_data <- sheet1 %>%
+  mutate(
+    organization = str_squish(as.character(gname)),
+    
+    target_category = suppressWarnings(
+      as.integer(as.character(`Target Category`))
+    ),
+    
+    ideology_code = suppressWarnings(
+      as.integer(as.character(ideology_code))
+    ),
+    
+    year_numeric = suppressWarnings(
+      as.integer(as.character(iyear))
+    ),
+    
+    OCI = suppressWarnings(
+      as.numeric(OCI)
+    ),
+    
+    lagged_district_terrorism_intensity =
+      suppressWarnings(
+        as.numeric(lagged_district_terrorism_intensity)
+      ),
+    
+    attacktype1 = suppressWarnings(
+      as.integer(as.character(attacktype1))
+    ),
+    
+    weaptype1 = suppressWarnings(
+      as.integer(as.character(weaptype1))
+    )
+  )
+
+
+# ============================================================
+# 6. CREATE LOGGED DISTRICT TERRORISM INTENSITY
+# ============================================================
+
+# Sheet 1 contains the unlogged variable.
+# log1p(x) calculates ln(1 + x).
+
+incident_data <- incident_data %>%
+  mutate(
+    ln_lagged_district_terrorism_intensity =
+      log1p(lagged_district_terrorism_intensity)
+  )
+
+
+# ============================================================
+# 7. FILTER SHEET 1 USING ELIGIBLE ORGANIZATIONS FROM SHEET 2
+# ============================================================
+
+threshold_sample <- incident_data %>%
+  inner_join(
+    organization_reference,
+    by = "organization"
+  ) %>%
+  filter(
+    ideology_code %in% c(1, 2, 3)
+  )
+
+cat("\n")
+cat("============================================================\n")
+cat("SAMPLE AFTER APPLYING SHEET 2 THRESHOLD\n")
+cat("============================================================\n")
+
+cat(
+  "Incidents before complete-case filtering:",
+  nrow(threshold_sample),
+  "\n"
+)
+
+cat(
+  "Organizations before complete-case filtering:",
+  n_distinct(threshold_sample$organization),
+  "\n"
+)
+
+cat(
+  "Organization-years before complete-case filtering:",
+  n_distinct(
+    paste(
+      threshold_sample$organization,
+      threshold_sample$year_numeric,
+      sep = "::"
+    )
+  ),
+  "\n"
+)
+
+
+# ============================================================
+# 8. CHECK IDEOLOGY CONSISTENCY BETWEEN SHEETS
+# ============================================================
+
+ideology_consistency <- threshold_sample %>%
+  distinct(
+    organization,
+    ideology_category,
+    ideology_sheet2
+  ) %>%
+  mutate(
+    ideology_category = str_squish(
+      as.character(ideology_category)
+    )
+  ) %>%
+  filter(
+    ideology_category != ideology_sheet2
+  )
+
+if (nrow(ideology_consistency) > 0) {
+  warning(
+    "Some organizations have different ideological labels ",
+    "in Sheet 1 and Sheet 2. Review ideology_consistency."
+  )
+  
+  print(ideology_consistency)
+} else {
+  cat(
+    "\nSheet 1 and Sheet 2 ideological classifications match.\n"
+  )
+}
+
+
+
+# ============================================================
+# 8A. REPORT THE SAMPLE AFTER OCI MATCHING
+# ============================================================
+
+oci_matched_sample <- threshold_sample %>%
+  filter(
+    !is.na(OCI),
+    target_category %in% c(0, 1)
+  ) %>%
+  mutate(
+    ideology = factor(
+      ideology_code,
+      levels = c(1, 2, 3),
+      labels = c(
+        "Maoist",
+        "Separatist/Ethnonationalist",
+        "Islamist"
+      )
+    )
+  )
+
+oci_matched_summary <- tibble(
+  Statistic = c(
+    "Incidents",
+    "Organizations",
+    "Organization-years",
+    "Hard-target incidents",
+    "Soft-target incidents",
+    "Hard-target percentage",
+    "Soft-target percentage",
+    "First observed year",
+    "Last observed year",
+    "Observed years",
+    "Mean OCI",
+    "OCI standard deviation",
+    "Minimum OCI",
+    "Maximum OCI"
+  ),
+
+  Value = c(
+    nrow(oci_matched_sample),
+
+    n_distinct(
+      oci_matched_sample$organization
+    ),
+
+    n_distinct(
+      paste(
+        oci_matched_sample$organization,
+        oci_matched_sample$year_numeric,
+        sep = "::"
+      )
+    ),
+
+    sum(
+      oci_matched_sample$target_category == 1
+    ),
+
+    sum(
+      oci_matched_sample$target_category == 0
+    ),
+
+    100 * mean(
+      oci_matched_sample$target_category == 1
+    ),
+
+    100 * mean(
+      oci_matched_sample$target_category == 0
+    ),
+
+    min(
+      oci_matched_sample$year_numeric
+    ),
+
+    max(
+      oci_matched_sample$year_numeric
+    ),
+
+    n_distinct(
+      oci_matched_sample$year_numeric
+    ),
+
+    mean(
+      oci_matched_sample$OCI
+    ),
+
+    sd(
+      oci_matched_sample$OCI
+    ),
+
+    min(
+      oci_matched_sample$OCI
+    ),
+
+    max(
+      oci_matched_sample$OCI
+    )
+  )
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("SAMPLE AFTER OCI MATCHING\n")
+cat("============================================================\n")
+
+print(oci_matched_summary)
+
+
+oci_matched_by_ideology <- oci_matched_sample %>%
+  group_by(ideology) %>%
+  summarise(
+    Incidents = n(),
+
+    Organizations = n_distinct(
+      organization
+    ),
+
+    `Organization-years` = n_distinct(
+      paste(
+        organization,
+        year_numeric,
+        sep = "::"
+      )
+    ),
+
+    `Hard targets` = sum(
+      target_category == 1
+    ),
+
+    `Soft targets` = sum(
+      target_category == 0
+    ),
+
+    `Hard-target percentage` =
+      100 * mean(
+        target_category == 1
+      ),
+
+    .groups = "drop"
+  )
+
+cat("\nOCI-matched sample by ideology:\n")
+print(oci_matched_by_ideology)
+
+
+# ============================================================
+# 9. CREATE A COMMON ANALYTICAL SAMPLE
+# ============================================================
+
+# All four models use the same observations.
+# Including Model 3 variables here ensures that differences between
+# models are not caused by changes in the sample.
+
+required_model_variables <- c(
+  "target_category",
+  "organization",
+  "year_numeric",
+  "ideology_code",
+  "OCI",
+  "conflict_region",
+  "ln_lagged_district_terrorism_intensity",
+  "attacktype1",
+  "weaptype1"
+)
+
+analysis <- threshold_sample %>%
+  filter(
+    if_all(
+      all_of(required_model_variables),
+      ~ !is.na(.x)
+    )
+  ) %>%
+  filter(
+    target_category %in% c(0, 1)
+  ) %>%
+  mutate(
+    ideology = factor(
+      ideology_code,
+      levels = c(1, 2, 3),
+      labels = c(
+        "Maoist",
+        "Separatist/Ethnonationalist",
+        "Islamist"
+      )
+    ),
+    
+    # Maoist is the reference ideology.
+    ideology = relevel(
+      ideology,
+      ref = "Maoist"
+    ),
+    
+    conflict_region = factor(
+      str_squish(as.character(conflict_region))
+    ),
+    
+    # Rest of India is the reference conflict region.
+    conflict_region = relevel(
+      conflict_region,
+      ref = "Rest of India"
+    ),
+    
+    # Year is categorical, creating year fixed effects.
+    year = factor(year_numeric),
+    
+    # Organization is the random-intercept grouping variable.
+    organization = factor(organization),
+    
+    # Tactical controls are categorical.
+    attack_type = factor(attacktype1),
+    weapon_type = factor(weaptype1)
+  ) %>%
+  droplevels()
+
+
+# ============================================================
+# 10. REPORT THE FINAL ANALYTICAL SAMPLE
+# ============================================================
+
+cat("\n")
+cat("============================================================\n")
+cat("FINAL COMMON ANALYTICAL SAMPLE\n")
+cat("============================================================\n")
+
+sample_summary <- tibble(
+  Statistic = c(
+    "Incidents",
+    "Organizations",
+    "Organization-years",
+    "Hard-target incidents",
+    "Soft-target incidents",
+    "First observed year",
+    "Last observed year",
+    "Observed year categories",
+    "Estimated year fixed-effect coefficients"
+  ),
+  
+  Value = c(
+    nrow(analysis),
+    n_distinct(analysis$organization),
+    n_distinct(
+      paste(
+        analysis$organization,
+        analysis$year_numeric,
+        sep = "::"
+      )
+    ),
+    sum(analysis$target_category == 1),
+    sum(analysis$target_category == 0),
+    min(analysis$year_numeric),
+    max(analysis$year_numeric),
+    n_distinct(analysis$year_numeric),
+    nlevels(analysis$year) - 1
+  )
+)
+
+print(sample_summary)
+
+sample_by_ideology <- analysis %>%
+  group_by(ideology) %>%
+  summarise(
+    incidents = n(),
+    organizations = n_distinct(organization),
+    organization_years = n_distinct(
+      paste(
+        organization,
+        year_numeric,
+        sep = "::"
+      )
+    ),
+    hard_targets = sum(target_category == 1),
+    soft_targets = sum(target_category == 0),
+    hard_target_percentage =
+      100 * mean(target_category == 1),
+    .groups = "drop"
+  )
+
+cat("\nSample by ideology:\n")
+print(sample_by_ideology)
+
+
+# ============================================================
+# 11. ORGANIZATION-LEVEL INCLUSION TABLE
+# ============================================================
+
+analytical_counts <- analysis %>%
+  count(
+    organization,
+    ideology,
+    name = "analytical_incidents"
+  ) %>%
+  mutate(
+    organization = as.character(organization)
+  )
+
+organization_inclusion_table <- organization_reference %>%
+  left_join(
+    analytical_counts,
+    by = "organization"
+  ) %>%
+  mutate(
+    analytical_incidents =
+      replace_na(analytical_incidents, 0L),
+    
+    included_in_final_sample =
+      if_else(
+        analytical_incidents > 0,
+        "Yes",
+        "No"
+      )
+  ) %>%
+  arrange(
+    ideology_sheet2,
+    desc(total_count)
+  )
+
+cat("\n")
+cat("============================================================\n")
+cat("ORGANIZATION INCLUSION TABLE\n")
+cat("============================================================\n")
+
+print(
+  organization_inclusion_table,
+  n = Inf
+)
+
+excluded_after_complete_cases <-
+  organization_inclusion_table %>%
+  filter(
+    included_in_final_sample == "No"
+  )
+
+cat("\nEligible organizations lost after complete-case filtering:\n")
+print(
+  excluded_after_complete_cases,
+  n = Inf
+)
+
+
+# ============================================================
+# 12. MODEL CONTROL SETTINGS
+# ============================================================
+
+model_control <- glmerControl(
+  optimizer = "bobyqa",
+  optCtrl = list(
+    maxfun = 200000
+  ),
+  calc.derivs = TRUE
+)
+
+
+# ============================================================
+# MODEL 0
+# NULL MIXED-EFFECTS LOGISTIC REGRESSION
+# ============================================================
+
+model0 <- glmer(
+  target_category ~
+    1 +
+    (1 | organization),
+  
+  data = analysis,
+  family = binomial(link = "logit"),
+  control = model_control,
+  nAGQ = 1
+)
+
+
+# ============================================================
+# MODEL 1
+# IDEOLOGY + YEAR FIXED EFFECTS
+# ============================================================
+
+model1 <- glmer(
+  target_category ~
+    ideology +
+    year +
+    (1 | organization),
+  
+  data = analysis,
+  family = binomial(link = "logit"),
+  control = model_control,
+  nAGQ = 1
+)
+
+
+# ============================================================
+# MODEL 2
+# MAIN MODEL
+# FORMER MODEL 4 IN THE PYTHON NOTEBOOK
+# ============================================================
+
+model2 <- glmer(
+  target_category ~
+    ideology * OCI +
+    conflict_region +
+    ln_lagged_district_terrorism_intensity +
+    year +
+    (1 | organization),
+  
+  data = analysis,
+  family = binomial(link = "logit"),
+  control = model_control,
+  nAGQ = 1
+)
+
+
+# ============================================================
+# MODEL 3
+# TACTICAL ROBUSTNESS MODEL
+# FORMER MODEL 5 IN THE PYTHON NOTEBOOK
+# ============================================================
+
+model3 <- glmer(
+  target_category ~
+    ideology * OCI +
+    conflict_region +
+    ln_lagged_district_terrorism_intensity +
+    attack_type +
+    weapon_type +
+    year +
+    (1 | organization),
+  
+  data = analysis,
+  family = binomial(link = "logit"),
+  control = model_control,
+  nAGQ = 1
+)
+
+
+# ============================================================
+# 13. PRINT MODEL SUMMARIES
+# ============================================================
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 0\n")
+cat("============================================================\n")
+print(summary(model0))
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 1\n")
+cat("============================================================\n")
+print(summary(model1))
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 2: MAIN MODEL\n")
+cat("============================================================\n")
+print(summary(model2))
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 3: TACTICAL ROBUSTNESS\n")
+cat("============================================================\n")
+print(summary(model3))
+
+
+# ============================================================
+# 14. FIXED-EFFECT TABLE FUNCTION
+# ============================================================
+
+fixed_effect_table <- function(model, model_name) {
+  
+  broom.mixed::tidy(
+    model,
+    effects = "fixed",
+    conf.int = TRUE,
+    conf.method = "Wald",
+    exponentiate = FALSE
+  ) %>%
+    mutate(
+      Model = model_name,
+      odds_ratio = exp(estimate),
+      OR_conf_low = exp(conf.low),
+      OR_conf_high = exp(conf.high)
+    ) %>%
+    select(
+      Model,
+      term,
+      estimate,
+      std.error,
+      statistic,
+      p.value,
+      conf.low,
+      conf.high,
+      odds_ratio,
+      OR_conf_low,
+      OR_conf_high
+    )
+}
+
+table_model0 <- fixed_effect_table(
+  model0,
+  "Model 0"
+)
+
+table_model1 <- fixed_effect_table(
+  model1,
+  "Model 1"
+)
+
+table_model2 <- fixed_effect_table(
+  model2,
+  "Model 2: Main model"
+)
+
+table_model3 <- fixed_effect_table(
+  model3,
+  "Model 3: Tactical robustness"
+)
+
+all_fixed_effects <- bind_rows(
+  table_model0,
+  table_model1,
+  table_model2,
+  table_model3
+)
+
+cat("\nFixed-effect results:\n")
+print(
+  all_fixed_effects,
+  n = Inf
+)
+
+
+# ============================================================
+# 15. RANDOM-EFFECT AND ICC FUNCTION
+# ============================================================
+
+random_effect_diagnostics <- function(model, model_name) {
+  
+  variance_table <- as.data.frame(
+    VarCorr(model)
+  )
+  
+  organization_variance <- variance_table %>%
+    filter(
+      grp == "organization",
+      var1 == "(Intercept)"
+    ) %>%
+    slice(1) %>%
+    pull(vcov)
+  
+  organization_sd <- sqrt(
+    organization_variance
+  )
+  
+  logistic_level1_variance <- pi^2 / 3
+  
+  ICC <- organization_variance /
+    (
+      organization_variance +
+        logistic_level1_variance
+    )
+  
+  tibble(
+    Model = model_name,
+    organization_variance =
+      organization_variance,
+    organization_SD =
+      organization_sd,
+    ICC = ICC,
+    ICC_percentage = 100 * ICC
+  )
+}
+
+random_effects_table <- bind_rows(
+  random_effect_diagnostics(
+    model0,
+    "Model 0"
+  ),
+  
+  random_effect_diagnostics(
+    model1,
+    "Model 1"
+  ),
+  
+  random_effect_diagnostics(
+    model2,
+    "Model 2: Main model"
+  ),
+  
+  random_effect_diagnostics(
+    model3,
+    "Model 3: Tactical robustness"
+  )
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("RANDOM EFFECTS AND ICC\n")
+cat("============================================================\n")
+
+print(random_effects_table)
+
+
+# ============================================================
+# 16. MODEL-FIT COMPARISON
+# ============================================================
+
+model_fit_table <- tibble(
+  Model = c(
+    "Model 0",
+    "Model 1",
+    "Model 2: Main model",
+    "Model 3: Tactical robustness"
+  ),
+  
+  Observations = c(
+    nobs(model0),
+    nobs(model1),
+    nobs(model2),
+    nobs(model3)
+  ),
+  
+  Organizations = c(
+    nlevels(analysis$organization),
+    nlevels(analysis$organization),
+    nlevels(analysis$organization),
+    nlevels(analysis$organization)
+  ),
+  
+  log_likelihood = c(
+    as.numeric(logLik(model0)),
+    as.numeric(logLik(model1)),
+    as.numeric(logLik(model2)),
+    as.numeric(logLik(model3))
+  ),
+  
+  AIC = c(
+    AIC(model0),
+    AIC(model1),
+    AIC(model2),
+    AIC(model3)
+  ),
+  
+  BIC = c(
+    BIC(model0),
+    BIC(model1),
+    BIC(model2),
+    BIC(model3)
+  ),
+  
+  singular_fit = c(
+    isSingular(model0, tol = 1e-4),
+    isSingular(model1, tol = 1e-4),
+    isSingular(model2, tol = 1e-4),
+    isSingular(model3, tol = 1e-4)
+  )
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL-FIT COMPARISON\n")
+cat("============================================================\n")
+
+print(model_fit_table)
+
+
+# ============================================================
+# 17. CONVERGENCE CHECK
+# ============================================================
+
+convergence_status <- function(model, model_name) {
+  
+  messages <- model@optinfo$conv$lme4$messages
+  
+  tibble(
+    Model = model_name,
+    convergence_warning = if (
+      is.null(messages)
+    ) {
+      "None"
+    } else {
+      paste(messages, collapse = " | ")
+    },
+    singular_fit = isSingular(
+      model,
+      tol = 1e-4
+    )
+  )
+}
+
+convergence_table <- bind_rows(
+  convergence_status(model0, "Model 0"),
+  convergence_status(model1, "Model 1"),
+  convergence_status(
+    model2,
+    "Model 2: Main model"
+  ),
+  convergence_status(
+    model3,
+    "Model 3: Tactical robustness"
+  )
+)
+
+cat("\nConvergence diagnostics:\n")
+print(convergence_table)
+
+
+
+# ============================================================
+# 18. MODEL 2 IDEOLOGY-SPECIFIC OCI SLOPES
+# ============================================================
+
+model2_oci_slopes <- emtrends(
+  model2,
+  specs = ~ ideology,
+  var = "OCI",
+  nuisance = c(
+    "year",
+    "conflict_region"
+  ),
+  wt.nuis = "proportional"
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 2: IDEOLOGY-SPECIFIC OCI SLOPES\n")
+cat("============================================================\n")
+
+print(
+  summary(
+    model2_oci_slopes,
+    infer = c(TRUE, TRUE)
+  )
+)
+
+model2_pairwise_slopes <- pairs(
+  model2_oci_slopes,
+  adjust = "tukey"
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 2: PAIRWISE OCI-SLOPE COMPARISONS\n")
+cat("============================================================\n")
+
+print(
+  summary(
+    model2_pairwise_slopes,
+    infer = c(TRUE, TRUE)
+  )
+)
+
+
+
+# ============================================================
+# 19. MODEL 2 PAIRWISE SLOPE COMPARISONS
+# ============================================================
+
+model2_pairwise_slopes <- pairs(
+  model2_oci_slopes,
+  adjust = "tukey"
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 2: PAIRWISE OCI-SLOPE COMPARISONS\n")
+cat("============================================================\n")
+
+print(
+  summary(
+    model2_pairwise_slopes,
+    infer = c(TRUE, TRUE)
+  )
+)
+
+# ============================================================
+# 20. MODEL 3 IDEOLOGY-SPECIFIC OCI SLOPES
+# ============================================================
+
+model3_oci_slopes <- emtrends(
+  model3,
+  specs = ~ ideology,
+  var = "OCI",
+  nuisance = c(
+    "year",
+    "conflict_region",
+    "attack_type",
+    "weapon_type"
+  ),
+  wt.nuis = "proportional"
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 3: IDEOLOGY-SPECIFIC OCI SLOPES\n")
+cat("============================================================\n")
+
+print(
+  summary(
+    model3_oci_slopes,
+    infer = c(TRUE, TRUE)
+  )
+)
+
+model3_pairwise_slopes <- pairs(
+  model3_oci_slopes,
+  adjust = "tukey"
+)
+
+cat("\nModel 3 pairwise slope comparisons:\n")
+
+print(
+  summary(
+    model3_pairwise_slopes,
+    infer = c(TRUE, TRUE)
+  )
+)
+
+
+# ============================================================
+# 21. IDEOLOGY × CONFLICT-REGION OVERLAP
+# ============================================================
+
+overlap_counts <- table(
+  analysis$ideology,
+  analysis$conflict_region
+)
+
+overlap_row_percentages <- prop.table(
+  overlap_counts,
+  margin = 1
+) * 100
+
+cat("\n")
+cat("============================================================\n")
+cat("IDEOLOGY × CONFLICT-REGION COUNTS\n")
+cat("============================================================\n")
+
+print(overlap_counts)
+
+cat("\nRow percentages:\n")
+print(
+  round(
+    overlap_row_percentages,
+    2
+  )
+)
+
+chi_square_result <- suppressWarnings(
+  chisq.test(overlap_counts)
+)
+
+cramers_v <- sqrt(
+  as.numeric(chi_square_result$statistic) /
+    (
+      sum(overlap_counts) *
+        min(
+          nrow(overlap_counts) - 1,
+          ncol(overlap_counts) - 1
+        )
+    )
+)
+
+cat(
+  "\nCramer's V:",
+  round(cramers_v, 4),
+  "\n"
+)
+
+# ============================================================
+# 22. MODEL 2 PREDICTED PROBABILITIES
+# MEMORY-EFFICIENT VERSION
+# ============================================================
+
+OCI_grid <- seq(
+  from = as.numeric(
+    quantile(
+      analysis$OCI,
+      0.05,
+      na.rm = TRUE
+    )
+  ),
+  to = as.numeric(
+    quantile(
+      analysis$OCI,
+      0.95,
+      na.rm = TRUE
+    )
+  ),
+  length.out = 30
+)
+
+# Year and conflict region do not interact with ideology or OCI.
+# Treating them as nuisance factors averages over their observed
+# distributions without creating every possible combination.
+
+model2_predictions <- emmeans(
+  model2,
+  specs = ~ ideology | OCI,
+  at = list(
+    OCI = OCI_grid
+  ),
+  nuisance = c(
+    "year",
+    "conflict_region"
+  ),
+  wt.nuis = "proportional",
+  type = "response"
+)
+
+model2_prediction_data <- as.data.frame(
+  summary(
+    model2_predictions,
+    type = "response"
+  )
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("MODEL 2 PREDICTED PROBABILITIES\n")
+cat("============================================================\n")
+
+print(model2_prediction_data)
+
+
+# ============================================================
+# 23. MODEL 2 PREDICTED-PROBABILITY GRAPH
+# ============================================================
+
+# Identify the response-probability column produced by emmeans.
+# It is normally called "prob".
+
+probability_column <- intersect(
+  c("prob", "response", "emmean"),
+  names(model2_prediction_data)
+)[1]
+
+if (is.na(probability_column)) {
+  stop(
+    "Could not identify the predicted-probability column. ",
+    "Run names(model2_prediction_data) to inspect the output."
+  )
+}
+
+# Identify the confidence-interval columns.
+lower_column <- intersect(
+  c("asymp.LCL", "lower.CL"),
+  names(model2_prediction_data)
+)[1]
+
+upper_column <- intersect(
+  c("asymp.UCL", "upper.CL"),
+  names(model2_prediction_data)
+)[1]
+
+if (
+  is.na(lower_column) ||
+  is.na(upper_column)
+) {
+  stop(
+    "Could not identify the confidence-interval columns. ",
+    "Run names(model2_prediction_data) to inspect the output."
+  )
+}
+
+plot_data <- model2_prediction_data %>%
+  mutate(
+    predicted_probability =
+      .data[[probability_column]],
+    confidence_lower =
+      .data[[lower_column]],
+    confidence_upper =
+      .data[[upper_column]]
+  )
+
+prediction_graph <- ggplot(
+  plot_data,
+  aes(
+    x = OCI,
+    y = predicted_probability,
+    color = ideology,
+    fill = ideology
+  )
+) +
+  geom_ribbon(
+    aes(
+      ymin = confidence_lower,
+      ymax = confidence_upper
+    ),
+    alpha = 0.15,
+    color = NA
+  ) +
+  geom_line(
+    linewidth = 1
+  ) +
+  labs(
+    x = "Operational Capacity Index (OCI)",
+    y = "Predicted probability of hard-target selection",
+    color = "Ideology",
+    fill = "Ideology"
+  ) +
+  coord_cartesian(
+    ylim = c(0, 1)
+  ) +
+  theme_classic(
+    base_size = 12
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+
+print(prediction_graph)
+
+
+
+# ============================================================
+# 24. SAVE RESULTS
+# ============================================================
+
+output_directory <- file.path(
+  dirname(file_path),
+  "high_frequency_organization_results"
+)
+
+if (!dir.exists(output_directory)) {
+  dir.create(
+    output_directory,
+    recursive = TRUE
+  )
+}
+
+write_csv(
+  organization_reference,
+  file.path(
+    output_directory,
+    "eligible_organizations_sheet2.csv"
+  )
+)
+
+write_csv(
+  organization_inclusion_table,
+  file.path(
+    output_directory,
+    "organization_inclusion_table.csv"
+  )
+)
+
+write_csv(
+  sample_summary,
+  file.path(
+    output_directory,
+    "sample_summary.csv"
+  )
+)
+
+write_csv(
+  sample_by_ideology,
+  file.path(
+    output_directory,
+    "sample_by_ideology.csv"
+  )
+)
+
+write_csv(
+  all_fixed_effects,
+  file.path(
+    output_directory,
+    "all_model_fixed_effects.csv"
+  )
+)
+
+write_csv(
+  random_effects_table,
+  file.path(
+    output_directory,
+    "random_effects_and_ICC.csv"
+  )
+)
+
+write_csv(
+  model_fit_table,
+  file.path(
+    output_directory,
+    "model_fit_comparison.csv"
+  )
+)
+
+write_csv(
+  convergence_table,
+  file.path(
+    output_directory,
+    "convergence_diagnostics.csv"
+  )
+)
+
+write_csv(
+  as.data.frame(
+    summary(
+      model2_oci_slopes,
+      infer = c(TRUE, TRUE)
+    )
+  ),
+  file.path(
+    output_directory,
+    "model2_ideology_specific_OCI_slopes.csv"
+  )
+)
+
+write_csv(
+  as.data.frame(
+    summary(
+      model2_pairwise_slopes,
+      infer = c(TRUE, TRUE)
+    )
+  ),
+  file.path(
+    output_directory,
+    "model2_pairwise_OCI_slope_tests.csv"
+  )
+)
+
+write_csv(
+  model2_prediction_data,
+  file.path(
+    output_directory,
+    "model2_predicted_probabilities.csv"
+  )
+)
+
+ggsave(
+  filename = file.path(
+    output_directory,
+    "model2_predicted_probabilities.png"
+  ),
+  plot = prediction_graph,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+saveRDS(
+  model0,
+  file.path(
+    output_directory,
+    "model0.rds"
+  )
+)
+
+saveRDS(
+  model1,
+  file.path(
+    output_directory,
+    "model1.rds"
+  )
+)
+
+saveRDS(
+  model2,
+  file.path(
+    output_directory,
+    "model2_main.rds"
+  )
+)
+
+saveRDS(
+  model3,
+  file.path(
+    output_directory,
+    "model3_tactical_robustness.rds"
+  )
+)
+
+cat("\n")
+cat("============================================================\n")
+cat("ANALYSIS COMPLETE\n")
+cat("============================================================\n")
+
+cat(
+  "Results saved in:\n",
+  output_directory,
+  "\n"
+)
+```

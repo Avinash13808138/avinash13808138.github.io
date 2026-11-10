@@ -1,0 +1,19 @@
+video_period,channel_title,video_id,status,comments_reported,comments_received,reported_minus_received,received_percent,reached_cap,interpretation
+before,Al Jazeera English,ML9WMf-vGhs,ok,46,46,0,100,FALSE,Counts match at collection
+before,Al Jazeera English,RI2BlnHrA0s,ok,17,17,0,100,FALSE,Counts match at collection
+before,Al Jazeera English,WujcVk7uowA,ok,13,13,0,100,FALSE,Counts match at collection
+before,CNN,ReeNBo11saY,ok,243,243,0,100,FALSE,Counts match at collection
+before,CNN,aO-Pp0dks38,ok,31,31,0,100,FALSE,Counts match at collection
+before,CNN,pAULCC_ghgc,ok,1627,300,1327,18.43884449907806,TRUE,Collection reached the 300-comment cap
+before,NBC News,e4lepmUJbGo,ok,21,21,0,100,FALSE,Counts match at collection
+before,NBC News,fJt5xFZXIEQ,ok,13,13,0,100,FALSE,Counts match at collection
+before,NBC News,6CLDvqUhGQA,ok,85,85,0,100,FALSE,Counts match at collection
+after,Al Jazeera English,1vy0aip4vOU,ok,4,4,0,100,FALSE,Counts match at collection
+after,Al Jazeera English,Ndwx2NDGHhw,ok,59,60,-1,101.69491525423729,FALSE,Received more than reported; cause unverified
+after,Al Jazeera English,S7Zm69VunSQ,ok,8,8,0,100,FALSE,Counts match at collection
+after,CNN,dy7RW6cueoU,ok,897,300,597,33.44481605351171,TRUE,Collection reached the 300-comment cap
+after,CNN,5DCkKCyDDI0,ok,422,300,122,71.09004739336493,TRUE,Collection reached the 300-comment cap
+after,CNN,HMNrBWKy2kQ,ok,838,300,538,35.79952267303103,TRUE,Collection reached the 300-comment cap
+after,NBC News,DHWpJ6lF9us,ok,66,66,0,100,FALSE,Counts match at collection
+after,NBC News,M5U_8cOVB08,ok,237,237,0,100,FALSE,Counts match at collection
+after,NBC News,wBAVrH6C2l8,ok,17,17,0,100,FALSE,Counts match at collection

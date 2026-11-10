@@ -1,0 +1,4 @@
+channel,max_playlist_pages,playlist_units,lookup_units_allowance,maximum_data_units,search_calls
+NBC News,200,200,200,400,0
+CNN,200,200,200,400,0
+Al Jazeera English,200,200,200,400,0

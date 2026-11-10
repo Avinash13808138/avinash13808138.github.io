@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Part4_Prepare_Class9</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Part4_Prepare_Class9_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Part4_Prepare_Class9_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Part4_Prepare_Class9_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Part4_Prepare_Class9_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Part4_Prepare_Class9_files/libs/quarto-html/popper.min.js"></script>
+<script src="Part4_Prepare_Class9_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Part4_Prepare_Class9_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Part4_Prepare_Class9_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Part4_Prepare_Class9_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Part4_Prepare_Class9_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Part4_Prepare_Class9_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Part4_Prepare_Class9_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Part4_Prepare_Class9</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This exercise asks R to collect information from YouTube, then compare the comments you retrieved with the video’s reported comment count.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tuber)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>nbc <span class="ot">&lt;-</span> <span class="fu">get_channel_details</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">channel_ids =</span> <span class="st">"UCeY0bbntWzzVIaj2z3QigXg"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>nbc[, <span class="fu">c</span>(<span class="st">"title"</span>, <span class="st">"subscriber_count"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     title subscriber_count
+1 NBC News         12200000
+
+--- Tuber Metadata ---
+function: get_channel_details  api_calls: 1  results_found: 1  timestamp: 2026-11-01 10:03:23  
+(Use tuber_info() for full metadata)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">channel_name =</span> nbc<span class="sc">$</span>title,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subscriber_count =</span> nbc<span class="sc">$</span>subscriber_count</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  channel_name subscriber_count
+1     NBC News         12200000</code></pre>
+</div>
+</div>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">NBC News</td>
+<td style="text-align: right;">12200000</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<pre><code>--- Tuber Metadata --- function: get_channel_details  api_calls: 1  results_found: 1  timestamp: 2026-11-01 09:19:55   (Use tuber_info() for full metadata)</code></pre>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>library(tuber)</code></td>
+<td>Loads the package so you can use its functions</td>
+</tr>
+<tr class="even">
+<td><code>get_channel_details()</code></td>
+<td>Requests channel information from YouTube</td>
+</tr>
+<tr class="odd">
+<td><code>channel_ids = "..."</code></td>
+<td>Identifies the particular channel specified by you</td>
+</tr>
+<tr class="even">
+<td><code>nbc &lt;-</code></td>
+<td>Stores the returned information in an R object named <code>nbc</code></td>
+</tr>
+<tr class="odd">
+<td><code>nbc[, c("title", "subscriber_count")]</code></td>
+<td>Displays the channel’s name and reported subscriber count</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vids <span class="ot">&lt;-</span> <span class="fu">list_channel_videos</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"UCeY0bbntWzzVIaj2z3QigXg"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_results =</span> <span class="dv">50</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vids, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                  playlist_item_id              playlist_id
+1 VVVlWTBiYm50V3p6VklhajJ6M1FpZ1hnLkJaZ2ZvelRWQkdJ UUeY0bbntWzzVIaj2z3QigXg
+2 VVVlWTBiYm50V3p6VklhajJ6M1FpZ1hnLjVSVjJWN1YtMFhB UUeY0bbntWzzVIaj2z3QigXg
+3 VVVlWTBiYm50V3p6VklhajJ6M1FpZ1hnLlF4LW9FbEJTUVpv UUeY0bbntWzzVIaj2z3QigXg
+     video_id
+1 BZgfozTVBGI
+2 5RV2V7V-0XA
+3 Qx-oElBSQZo
+                                                                                                title
+1                                       Sen. Tim Scott calls Darline Graham ‘a very strong candidate’
+2 Nikki Haley says South Carolina ‘wants to stay a red state’ ahead of Senate contest for Graham seat
+3                                         Kornacki breaks down final poll numbers before Election Day
+                                                                                                                                                                                                                                            description
+1                                         Sen. Tim Scott, R-S.C., predicts Sen. Darline Graham will win her election against Annie Andrews in South Carolina to keep the seat she was appointed to after the death of her brother, Sen. Lindsey Graham.
+2 Ryan Nobles, Amy Walter, former Congresswoman Val Demings and former U.N. Ambassador and South Carolina Governor Nikki Haley join the Meet the Press roundtable for a discussion about the state of play with less than two days before Election Day.
+3                                           NBC News chief data analyst Steve Kornacki joins “Meet the Press” to break down the last NBC News national poll before Election Day to gauge which party may have the momentum as the final votes are cast.
+          published_at               channel_id channel_title position
+1 2026-11-01T16:01:23Z UCeY0bbntWzzVIaj2z3QigXg      NBC News        0
+2 2026-11-01T15:20:37Z UCeY0bbntWzzVIaj2z3QigXg      NBC News        1
+3 2026-11-01T14:59:50Z UCeY0bbntWzzVIaj2z3QigXg      NBC News        2
+    video_owner_channel_id video_owner_channel_title   video_published_at
+1 UCeY0bbntWzzVIaj2z3QigXg                  NBC News 2026-11-01T16:01:23Z
+2 UCeY0bbntWzzVIaj2z3QigXg                  NBC News 2026-11-01T15:20:37Z
+3 UCeY0bbntWzzVIaj2z3QigXg                  NBC News 2026-11-01T14:59:50Z
+  privacy_status
+1         public
+2         public
+3         public
+
+--- Tuber Metadata ---
+function: list_playlist_items  api_calls: 1  results_found: 50  timestamp: 2026-11-01 10:03:24  
+(Use tuber_info() for full metadata)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(vids)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "playlist_item_id"          "playlist_id"              
+ [3] "video_id"                  "title"                    
+ [5] "description"               "published_at"             
+ [7] "channel_id"                "channel_title"            
+ [9] "position"                  "video_owner_channel_id"   
+[11] "video_owner_channel_title" "video_published_at"       
+[13] "privacy_status"           </code></pre>
+</div>
+</div>
+<p>This retrieves up to <strong>50 records from the channel’s uploads playlist</strong> and stores them in <code>vids</code>. It retrieves information about videos, <strong>not the video files themselves</strong>.</p>
+<ul>
+<li><p><code>max_results = 50</code> sets the maximum number returned.</p></li>
+<li><p><code>head(vids, 3)</code> displays the first three records.</p></li>
+<li><p><code>names(vids)</code> displays the column names.</p></li>
+</ul>
+<p><strong>This finds columns whose names contain “publish,” “date,” or “time,” then displays them for the first video.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>date_columns <span class="ot">&lt;-</span> <span class="fu">grep</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"publish|date|time"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(vids),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>vids[<span class="dv">1</span>, <span class="fu">unique</span>(<span class="fu">c</span>(<span class="st">"video_id"</span>, date_columns)), drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     video_id         published_at   video_published_at
+1 BZgfozTVBGI 2026-11-01T16:01:23Z 2026-11-01T16:01:23Z
+
+--- Tuber Metadata ---
+function: list_playlist_items  api_calls: 1  results_found: 50  timestamp: 2026-11-01 10:03:24  
+(Use tuber_info() for full metadata)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> vids<span class="sc">$</span>title[<span class="dv">1</span>],</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">video_id =</span> vids<span class="sc">$</span>video_id[<span class="dv">1</span>],</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">video_published_at =</span> vids<span class="sc">$</span>video_published_at[<span class="dv">1</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                          title    video_id
+1 Sen. Tim Scott calls Darline Graham ‘a very strong candidate’ BZgfozTVBGI
+    video_published_at
+1 2026-11-01T16:01:23Z</code></pre>
+</div>
+</div>
+<section id="retrieve-comments-on-the-first-video" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-comments-on-the-first-video">Retrieve comments on the first video</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comment on the selected video</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">nrow</span>(vids) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>selected_video <span class="ot">&lt;-</span> vids<span class="sc">$</span>video_id[<span class="dv">1</span>]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>cmts <span class="ot">&lt;-</span> <span class="fu">list_comment_threads</span>(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">video_id =</span> selected_video,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_results =</span> <span class="dv">100</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_format =</span> <span class="st">"plainText"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>selected_video</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "BZgfozTVBGI"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cmts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compare comment counts</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>video_stats <span class="ot">&lt;-</span> <span class="fu">get_video_stats</span>(</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">video_ids =</span> selected_video</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">returned_threads =</span> <span class="fu">nrow</span>(cmts),</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">reported_comment_count =</span> video_stats<span class="sc">$</span>comment_count[<span class="dv">1</span>]</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  returned_threads reported_comment_count
+1                0                      0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># investigate replies without making another API request</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cmts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "comment_id"               "parent_id"               
+ [3] "video_id"                 "author_name"             
+ [5] "author_channel_id"        "author_channel_url"      
+ [7] "author_profile_image_url" "text_display"            
+ [9] "text_original"            "can_rate"                
+[11] "viewer_rating"            "like_count"              
+[13] "published_at"             "updated_at"              
+[15] "moderation_status"        "thread_id"               
+[17] "total_reply_count"        "is_public"               
+[19] "can_reply"               </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the reply count for each collected thread</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>cmts[, <span class="fu">c</span>(<span class="st">"thread_id"</span>, <span class="st">"total_reply_count"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] thread_id         total_reply_count
+&lt;0 rows&gt; (or 0-length row.names)
+
+--- Tuber Metadata ---
+function: list_comment_threads  api_calls: 1  results_found: 0  timestamp: 2026-11-01 10:03:24  
+(Use tuber_info() for full metadata)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the reply counts across the collected threads</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(cmts<span class="sc">$</span>total_reply_count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p><strong>Results show 2 returned comment threads and 11 reported comments.</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Required information</th>
+<th>Your result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Channel</td>
+<td>NBC News</td>
+</tr>
+<tr class="even">
+<td>Reported subscriber count</td>
+<td>12,200,000</td>
+</tr>
+<tr class="odd">
+<td>First returned video’s publication time</td>
+<td>November 1, 2026, at 15:20:37 UTC</td>
+</tr>
+<tr class="even">
+<td>Comment threads collected</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Video’s reported comment count</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why might 2 and 11 differ?</strong></p>
+<ul>
+<li><p><strong>Threads and comments are different units.</strong> Your collection contains top-level threads; replies may contribute to the video’s comment count.</p></li>
+<li><p><strong>The requests happened at different times.</strong> New comments could have appeared between collecting threads and retrieving statistics.</p></li>
+<li><p><strong>Availability and count updates can differ.</strong> Moderation or delays in updating counts may also contribute.</p></li>
+</ul>
+<p><strong>We cannot conclude that the difference is exactly nine replies.</strong> These two numbers alone do not identify the cause. Also, your limit of 100 does not explain this particular difference: both counts are below 100.</p>
+<p><strong>Both collected threads have 0 reported replies.</strong> Therefore, replies attached to those two threads do <strong>not</strong> explain the difference.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>What you checked</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Top-level comment threads collected</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Replies reported for those threads</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>Video’s reported comment count from the later request</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What can we conclude?</strong></p>
+<p>Your two requests returned different counts. Because you collected the threads before requesting the video statistics, <strong>new comments arriving between requests are one possible explanation</strong>. Differences in availability or update timing may also contribute, but your output does not establish the exact cause.</p>
+<p>The <strong>100-thread limit did not explain this difference</strong>, since you received only 2.</p>
+<p>Your collected data says:</p>
+<ul>
+<li><p><strong>Thread 1:</strong> one top-level comment, <strong>0 replies</strong>.</p></li>
+<li><p><strong>Thread 2:</strong> one top-level comment, <strong>0 replies</strong>.</p></li>
+</ul>
+<p>The <strong>11</strong> comes from a separate request for the video’s overall comment count. <strong>It does not mean the other nine comments must be replies to your two threads.</strong> They could include additional top-level comments that were not in your earlier collection.</p>
+<p>For example, <strong>if nine new top-level comments appeared between your requests</strong>, the video could report 11 comments while your saved two threads still each show zero replies. That is a possible explanation—not something we have verified.</p>
+<p><strong>Zero replies explains the structure of the two threads you collected. It does not explain why your collection contains only 2 while the separate count reports 11.</strong></p>
+</section>
+<section id="retrieve-the-videos-reported-comment-count" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-the-videos-reported-comment-count">Retrieve the video’s reported comment count</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>video_stats <span class="ot">&lt;-</span> <span class="fu">get_video_stats</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">video_ids =</span> selected_video</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">video_id =</span> selected_video,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">returned_threads =</span> <span class="fu">nrow</span>(cmts),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">reported_comment_count =</span> video_stats<span class="sc">$</span>comment_count[<span class="dv">1</span>]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     video_id returned_threads reported_comment_count
+1 BZgfozTVBGI                0                      0</code></pre>
+</div>
+</div>
+<p>Possible explanations include:</p>
+<ul>
+<li><p><strong>Collection limit:</strong> you requested at most 100 threads.</p></li>
+<li><p><strong>Different counting units:</strong> threads can contain replies, so threads and individual comments are not interchangeable.</p></li>
+<li><p><strong>Changes over time:</strong> comments may be added or removed between requests.</p></li>
+</ul>
+<p>A difference does <strong>not automatically mean an error</strong>, and it does not establish that the missing comments were deleted.</p>
+</section>
+<section id="part-5" class="level2">
+<h2 class="anchored" data-anchor-id="part-5">Part 5</h2>
+<p><strong>5(a). Who writes comments, who reads them, and who never appears?</strong></p>
+<p>People who <strong>write comments</strong> choose to participate publicly. They might want to express an opinion, ask a question, criticize the video, or respond to someone else.</p>
+<p>People who <strong>read comments</strong> include both commenters and silent readers. Your comment dataset does not identify everyone who read the discussion.</p>
+<p>People missing from the dataset include:</p>
+<ul>
+<li><p>Viewers who never comment.</p></li>
+<li><p>People who never encounter the video.</p></li>
+<li><p>People whose comments are unavailable when you collect.</p></li>
+<li><p>People who avoid public participation.</p></li>
+</ul>
+<p><strong>The research issue is self-selection:</strong> participation is a choice, and that choice may relate to the opinions you want to study.</p>
+<p>In your example, NBC News’s <strong>12.2 million subscribers are not represented by the two comments you retrieved</strong>. Commenters need not be subscribers, and subscribers need not watch or comment.</p>
+<p>Also, <strong>two comments do not necessarily mean two different people</strong>. One account can comment repeatedly.</p>
+<p>Conclusion: Data captures observable comments from participating accounts on a selected video. It does not automatically represent the views of all viewers, subscribers, or the public.</p>
+<p><strong>5(b). What edits or shapes the comment section?</strong></p>
+<p>Here, “edits” includes processes that change <strong>which comments remain available or receive visibility</strong>, not just changes to their wording.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Process</th>
+<th>How it can affect your data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Channel moderation</td>
+<td>Comments may be removed or restricted</td>
+</tr>
+<tr class="even">
+<td>Held-for-review filters</td>
+<td>Some submitted comments may not become publicly visible</td>
+</tr>
+<tr class="odd">
+<td>Author edits or deletions</td>
+<td>Text can change or disappear</td>
+</tr>
+<tr class="even">
+<td>Ranking</td>
+<td>Determines which comments appear first</td>
+</tr>
+<tr class="odd">
+<td>Your collection limit</td>
+<td>Determines how far through that ordering you collect</td>
+</tr>
+</tbody>
+</table>
+<p>The API supports ordering by <strong>time</strong> or <strong>relevance</strong>. Its documented default is <strong>time</strong>; your command did not explicitly request relevance ordering. Public requests also do not provide unrestricted access to held-for-review comments. <a href="https://developers.google.com/youtube/v3/docs/commentThreads/list?utm_source=chatgpt.com">developers.google.com</a></p>
+<p><strong>Example:</strong> If critical comments were disproportionately removed, the remaining discussion could appear more supportive. That illustrates a possible mechanism; <strong>we have no evidence that this happened in your NBC News collection</strong>.</p>
+<p>Conclusion: Visible comments are shaped by participation, moderation, deletion, and ordering. They are not an untouched record of everything anyone attempted to say.</p>
+<p><strong>5(c). What selects the comments you can collect?</strong></p>
+<p>Your dataset results from several decisions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Selection step</th>
+<th>What happened in your exercise</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Channel</td>
+<td>You used the assigned NBC News channel</td>
+</tr>
+<tr class="even">
+<td>Video</td>
+<td>You selected the first video returned in its uploads list</td>
+</tr>
+<tr class="odd">
+<td>Comment type</td>
+<td>You requested comment threads, rather than separately collecting all replies</td>
+</tr>
+<tr class="even">
+<td>Maximum number</td>
+<td>You requested up to 100 threads</td>
+</tr>
+<tr class="odd">
+<td>Collection time</td>
+<td>You collected at a particular moment on November 1, 2026</td>
+</tr>
+<tr class="even">
+<td>Availability</td>
+<td>The API returned two threads at that moment</td>
+</tr>
+</tbody>
+</table>
+<p>The assigned video-listing function uses the channel’s <strong>uploads playlist</strong>. Therefore, you did not use keyword-search ranking to choose the video in this exercise. Search ranking would matter in a design that first searched for videos. <a href="https://gojiplus.github.io/tuber/reference/list_channel_videos.html?utm_source=chatgpt.com">gojiplus.github.io</a></p>
+<p><strong>Why does the collection day matter?</strong></p>
+<p>A newly published video can accumulate comments rapidly. A collection shortly after publication may capture a different discussion from one conducted several days later.</p>
+<p>Your <strong>two returned threads versus eleven reported comments</strong> illustrates why collection timing and measurement need attention. However, those numbers alone do not prove that new comments caused the difference.</p>
+<p>Also, requesting 100 comments does <strong>not</strong> create a random sample of 100 viewers. It sets a retrieval limit, and your request returned only two threads.</p>
+<p><strong>Conclusion:</strong> Your sample depends on the selected channel, video, retrieval settings, available comments, and collection time. A larger collection would not automatically remove those selection issues.</p>
+<p><strong>5(d). What does the 30-day rule mean for reproducibility and your website?</strong></p>
+<p>For the public data in this exercise, the assigned policy requires <strong>refreshing or deleting stored data within 30 calendar days</strong>. Refreshing means updating the stored copy from current API data. <a href="https://developers.google.com/youtube/terms/developer-policies?utm_source=chatgpt.com">developers.google.com</a></p>
+<p>This creates a reproducibility challenge:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What you preserve</th>
+<th>What it enables</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Code and package versions</td>
+<td>Repeating the computational procedure</td>
+</tr>
+<tr class="even">
+<td>Collection settings and timestamp</td>
+<td>Understanding how and when you produced the sample</td>
+</tr>
+<tr class="odd">
+<td>A later, refreshed collection</td>
+<td>Analyzing currently available data, which may differ from the original</td>
+</tr>
+</tbody>
+</table>
+<p>Someone can repeat your procedure but obtain different comments because the discussion has changed.</p>
+<p>For your website, remember that comments printed inside an HTML page are also stored copies. Deleting the original CSV does not remove them from the page or repository.</p>
+<p><strong>Conclusion:</strong> Document the method carefully, manage stored copies, and acknowledge that exact recovery of the original dataset may not be possible.</p>
+<p><strong>“What is this comment section a sample of?”</strong></p>
+<p>For your exercise, the most defensible answer is <strong>the publicly retrievable comments on one selected NBC News video under your collection settings at a particular time</strong>. Any claim about a wider audience requires additional evidence and a justified sampling design.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

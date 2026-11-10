@@ -11,6 +11,7 @@ library(quanteda.textplots)
 library(readr)
 library(ggplot2)
 
+
 # Twitter data about President Biden and Xi summit in Novemeber 2021
 # Do some background search/study on the event
 # 
@@ -47,6 +48,7 @@ topuser <- names(topfeatures(user_dfm, 50))
 head(topuser, 20)
 user_fcm <- fcm(user_dfm)
 head(user_fcm, 20)
+
 
 user_fcm <- fcm_select(user_fcm, pattern = topuser)
 textplot_network(user_fcm, min_freq = 20, edge_color = "firebrick", edge_alpha = 0.8, edge_size = 1)
@@ -93,3 +95,4 @@ agg_sentiment <- aggregate(sentiment_scores$sentiment, by = list(sentiment_score
 element_id), FUN = mean)
 colnames(agg_sentiment) <- c("tweet_id", "avg_sentiment")
 head(agg_sentiment)
+

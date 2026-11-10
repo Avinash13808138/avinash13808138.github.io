@@ -1,0 +1,61 @@
+---
+title: "Assignment 7: Written answers"
+author: "Avinash Singh"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+editor: visual
+---
+
+## 2a. Planned versus observed quota
+
+The original collection used eight search calls, matching the search plan, and 286 data units. The recorded remaining budgets were 92 search calls and 9,714 data units. These figures exclude later preview attempts; the complete operation-level reconciliation belongs alongside the quota table.
+
+## 2b(i–iii) and 2e. Search comparison
+
+In pre-election results, Al Jazeera English dominated relevance ranking with 36 of 100 videos; CNN dominated view-count ranking with 27 of 100. Ranking therefore changed channel representation. Post-election searches each reported 1,000,000 results but returned 100 unique videos, with no within-list duplicates. They shared 28 videos, leaving 72 unique to each ordering. Reported totals describe the service's matching-result estimate, not the number actually retrieved or verified as relevant.
+
+## 2c(i–iii). Channel route and title filtering
+
+The revised upload route found candidates absent from search: 198 for Al Jazeera English, 172 for CNN, and 195 for NBC News. Reaching beyond September 1 required 73, 56, and 73 playlist units respectively, excluding the earlier initial batches. Title review revealed both foreign-election false positives and omitted congressional or gubernatorial coverage. Adding congress, governor, gubernatorial, and campaign broadened coverage but could increase irrelevant matches. These remain candidates, not a verified census.
+
+## 3a(i–iv). Collection characteristics
+
+Across 18 videos, 769 comments came from pre-election videos and 1,292 from post-election videos. The 300-comment cap constrained four CNN videos. Moderation, deletion, replies, and timing may also explain count differences, but their individual contributions cannot be measured. One video returned 60 comments after reporting 59.
+
+All 18 requests were `ok`: none were disabled, empty, or errors. This does not establish that these channels never disable comments. Replies comprised 388 comments (18.83%). About 70.94% received no likes; the top 21 comments received 51.36% of all likes. The most active 170 of 1,694 identifiable authors contributed 24.70% of comments. Among nonblank texts, 31 repeated-text groups contained 77 comments, including 46 copies beyond the first.
+
+## 3b(i). Unit and preprocessing
+
+Each comment, including replies, was a document; two blank texts were excluded, leaving 2,059. URLs and explicit @mentions were removed from analysis text. Context tokens retained symbols; feature tokens requested symbol removal, although some emoji remained in the actual keyness results. Posting period was distinguished from video publication period: 115 comments under pre-election videos were posted afterward. Election Day comments were excluded from before–after comparisons.
+
+## 3b(ii–iii). Contexts and phrases
+
+Reviewed contexts used party and candidate names for criticism, blame, and electoral expectations, while vote and ballot also described participation and procedures. Allegations of interference were commenters' unverified claims, not evidence of irregularities. The added phrases were gas prices and popular vote, occurring 18 times and once respectively. Early voting appeared once; the other required exact phrases were absent.
+
+## 3b(iv). Interpreting keyness
+
+NBC's distinctive terms included Miller and Byron; CNN's included Vance and Cruz; Al Jazeera English's included Schumer and Jeffries. Before-election features emphasized vote; afterward, names and outcome language featured prominently. Context checks also identified promotional material and medical vocabulary concentrated in very few comments. Consequently, distinctiveness reflects selected topics, repetition, and participation—not necessarily general audience attitudes or an election effect.
+
+## 3b(v). Sentiment and validation
+
+Negative classifications exceeded positive classifications for CNN and NBC in both posting periods; Al Jazeera English showed the reverse. Dictionary agreement with 40 AI-assisted reference labels was 55% (22 agreements; Cohen's kappa = 0.268). Ten of 27 reference-negative comments became neither. Negation, contextual criticism, missing vocabulary, and balanced positive/negative counts contributed to disagreement. These labels originated with AI; human review must be documented rather than represented as independent hand-coding.
+
+## 3c. Comparison with Assignment 6
+
+Summit tweets were produced by archived Twitter accounts for followers and wider discussion audiences. Their archive's selection rules constrain coverage; the same archive supports reanalysis, but live recollection is uncertain. They support claims about archived discourse, not representative public opinion.
+
+Presidential documents communicate to citizens, journalists, and governments. GovInfo inclusion and the Xi-related selection define the corpus; some matches occurred in metadata. Recollection depends on preserved identifiers and selection rules. The supported claim concerns official communication, not citizens' views or private government intentions.
+
+YouTube comments address creators, viewers, and other commenters. Video selection, rankings, caps, moderation, and self-selection shape inclusion. Repeating collection may return different comments. All collection occurred after Election Day, including retrieval from pre-election videos. The findings therefore describe retrieved contributions under selected videos, not voters generally.
+
+# 4a. YouTube data note
+
+**Source and access.** Public YouTube Data API v3 responses were collected through `tuber` using an environment-stored API key. Following the assignment, search calls and data units were budgeted separately, no page or transcript scraping was used, and each manifest requires a deletion deadline no more than 30 days after collection. Private backups containing collected data are subject to the same retention constraint.
+
+**Method.** The exact query was **US midterm election**, using relevance and view-count ordering, requesting 100 results per ordering. Video windows were September 1–October 27, 2026 and November 4 through the collection request on November 9. Channels were NBC News, CNN, and Al Jazeera English. The title filter was expanded from `midterm|election|senate|house race|ballot` to include congress, governor, gubernatorial, and campaign. Shortlisting subsequently required midterm in the title. Three videos per channel per publication period were selected, with a cap of 300 comments each.
+
+**Selection and known gaps.** The sample is purposive, not representative. Title matching, availability, repeated posting, promotional content, and collection timing influence results. Video and comment periods differ. Exact timestamps and deletion dates should be taken from the original manifests. Assignment 6's supplied output does not document its original tweet query or complete presidential-document selection rules, limiting reconstruction of those collections.
+
+**Public materials.** Publish the code, plots, aggregate tables, collection logs, and manifests after checking their contents. Do not publish raw comments, commenter identifiers, credentials, validation text, or recovery backups. The private recovery file is not a permanent reproducibility archive.

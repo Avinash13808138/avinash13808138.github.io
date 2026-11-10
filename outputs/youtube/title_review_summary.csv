@@ -1,0 +1,16 @@
+channel_title,filter_decision,relevance_review,n_titles
+Al Jazeera English,dropped,No explicit midterm connection in title,20
+Al Jazeera English,kept,Not relevant: non-US election,8
+Al Jazeera English,kept,Relevant based on title,10
+Al Jazeera English,kept,Unclear: inspect additional context,2
+CNN,dropped,No explicit midterm connection in title,18
+CNN,dropped,Unclear: inspect additional context,2
+CNN,kept,Not relevant: non-US election,1
+CNN,kept,Relevant based on title,17
+CNN,kept,Unclear: inspect additional context,2
+NBC News,dropped,No explicit midterm connection in title,17
+NBC News,dropped,Relevant based on title,1
+NBC News,dropped,Unclear: inspect additional context,2
+NBC News,kept,No explicit 2026 connection: title references 2024,1
+NBC News,kept,Relevant based on title,15
+NBC News,kept,Unclear: inspect additional context,4
